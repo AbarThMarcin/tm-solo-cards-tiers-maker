@@ -1,0 +1,43 @@
+@use 'variables' as v;
+@import url('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+// General & Scrollbar
+body {
+   background-color: v.$bg-dark;
+   font-family: 'Saira Condensed', sans-serif;
+   color: #fff;
+}
+body::-webkit-scrollbar {
+   position: absolute;
+}
+body::-webkit-scrollbar-track {
+   background-color: transparent;
+   border-radius: 3px;
+}
+body::-webkit-scrollbar-thumb {
+   background-color: v.$primary-red-dark;
+   border: 2px solid rgba(0, 0, 0, 0.5);
+   border-radius: 10px;
+}
+
+// Content
+section {
+   padding: 15px 0;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   min-height: 807px;
+   &:not(:last-of-type) {
+      border-bottom: 2px solid v.$section-divider-clr;
+   }
+}
+
+@media (max-width: 768px) {
+   .custom-section-content {
+      flex-direction: column !important;
+      img {
+         margin-block-end: 20px;
+      }
+   }
+}

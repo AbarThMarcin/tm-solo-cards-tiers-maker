@@ -1,0 +1,5 @@
+@use 'variables' as v;
+
+.custom-navbar {
+   background-color: v.$primary-red-dark;
+}

@@ -1,0 +1,27 @@
+@use 'variables' as v;
+
+.contact-icon {
+   color: #fff;
+   cursor: pointer;
+   &:hover {
+      scale: 1.1;
+      color: v.$primary-red-light;
+   }
+   transition: all 100ms ease-in-out;
+}
+
+@media (max-width: 575px) {
+   .custom-footer {
+      justify-content: center;
+      img,
+      span {
+         display: none;
+      }
+      a {
+         margin: 0 !important;
+         &:not(:last-of-type) {
+            margin-right: 0.5rem !important;
+         }
+      }
+   }
+}
