@@ -2,7 +2,7 @@ import React from 'react'
 import { Navbar as NavbarBS, Container } from 'react-bootstrap'
 import { Nav, NavDropdown } from 'react-bootstrap'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { UserInterface } from '../App'
+import { UserInterface } from '../interfaces/userInterface'
 
 interface Props {
    user: UserInterface | null

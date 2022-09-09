@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Button, Form } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import { signin } from '../api/apiUser'
-import { UserInterface } from '../App'
+import { UserInterface } from '../interfaces/userInterface'
 
 interface Props {
    setUser: React.Dispatch<React.SetStateAction<UserInterface | null>>
@@ -19,7 +19,7 @@ export const Signin: React.FC<Props> = ({ setUser }) => {
       if (localStorage.getItem('user')) navigate('/')
    }, [])
 
-   const handleSubmit = async (e: React.FormEvent<EventTarget>) => {
+   const handleSubmit = async (e: React.FormEvent<EventTarget>): Promise<void> => {
       e.preventDefault()
 
       if (loading) return
@@ -41,32 +41,44 @@ export const Signin: React.FC<Props> = ({ setUser }) => {
       }
    }
 
-   const handleInputEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const handleInputEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
       setEmail(e.target.value)
       setError('')
    }
 
-   const handleInputPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const handleInputPassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
       setPassword(e.target.value)
       setError('')
    }
 
    return (
-      <section>
-         <Form style={{ maxWidth: '400px', width: '400px', position: 'relative' }} onSubmit={handleSubmit}>
+      <section className="section">
+         <Form
+            style={{ maxWidth: '400px', width: '400px', position: 'relative' }}
+            onSubmit={handleSubmit}
+         >
             {error && <div className="form-error">{error}</div>}
             <Form.Group className="mb-3" controlId="formBasicEmail">
                <Form.Label>Email address</Form.Label>
-               <Form.Control type="email" placeholder="Enter email" onInput={handleInputEmail} required />
+               <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  onInput={handleInputEmail}
+                  required
+               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
                <Form.Label>Password</Form.Label>
-               <Form.Control type="password" placeholder="Password" onInput={handleInputPassword} required />
+               <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  onInput={handleInputPassword}
+                  required
+               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
                <Form.Text>
-                  Don't have an account?{' '}
-                  <Link to='/signup'>Sign Up</Link>
+                  Don't have an account? <Link to="/signup">Sign Up</Link>
                </Form.Text>
             </Form.Group>
             <Button variant="primary" type="submit" disabled={loading}>

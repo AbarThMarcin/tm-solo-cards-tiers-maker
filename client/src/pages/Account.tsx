@@ -7,5 +7,9 @@ export const Account: React.FC = () => {
    useEffect(() => {
       if (!localStorage.getItem('user')) navigate('/signin')
    }, [])
-   return <section>Account</section>
+   return (
+      <article>
+         <section className="section">Account</section>
+      </article>
+   )
 }

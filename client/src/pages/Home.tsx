@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { UserInterface } from '../App'
-import logo from '../assets/images/logo.png'
+import logo from '../assets/images/logos/logo.png'
+import { UserInterface } from '../interfaces/userInterface'
 
 interface Props {
    user: UserInterface | null
@@ -9,8 +9,8 @@ interface Props {
 
 export const Home: React.FC<Props> = ({ user }) => {
    return (
-      <>
-         <section>
+      <article>
+         <section className='section'>
             <div className="custom-section-content h-50 w-100 d-flex justify-content-center align-items-center">
                <img
                   src={logo}
@@ -37,7 +37,7 @@ export const Home: React.FC<Props> = ({ user }) => {
                <button>{user ? 'GET STARTED' : 'SIGN UP'}</button>
             </Link>
          </section>
-         <section>
+         <section className='section'>
             <div className="custom-section-content h-50 w-100 d-flex justify-content-center align-items-center flex-row-reverse">
                <img
                   src={logo}
@@ -64,7 +64,7 @@ export const Home: React.FC<Props> = ({ user }) => {
                <button>SEE MORE</button>
             </Link>
          </section>
-         <section>
+         <section className='section'>
             <div className="custom-section-content h-50 w-100 d-flex justify-content-center align-items-center">
                <img
                   src={logo}
@@ -91,7 +91,7 @@ export const Home: React.FC<Props> = ({ user }) => {
                <button>SEE ALL CARDS</button>
             </Link>
          </section>
-         <section>
+         <section className='section'>
             <div className="custom-section-content h-50 w-100 d-flex justify-content-center align-items-center flex-row-reverse">
                <img
                   src={logo}
@@ -117,10 +117,14 @@ export const Home: React.FC<Props> = ({ user }) => {
             <Link to="/tm-solo-game">
                <button>SEE DETAILS</button>
             </Link>
-            <a href='https://terraforming-mars-solo.herokuapp.com' target="_blank" rel="noopener noreferrer">
+            <a
+               href="https://terraforming-mars-solo.herokuapp.com"
+               target="_blank"
+               rel="noopener noreferrer"
+            >
                <button>PLAY NOW</button>
             </a>
          </section>
-      </>
+      </article>
    )
 }
