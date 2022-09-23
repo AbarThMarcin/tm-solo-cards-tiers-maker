@@ -53,7 +53,9 @@ export const Card: React.FC<Props> = ({ card }) => {
    }
 
    return (
-      <>
+      <div
+         className='card-container'
+      >
          <div className={`card full-size card-bg-${card.type}`}>
             {/* BLACK INSET BORDER */}
             <div className="black-border">
@@ -235,6 +237,6 @@ export const Card: React.FC<Props> = ({ card }) => {
                   )
             )}
          </div>
-      </>
+      </div>
    )
 }

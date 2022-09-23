@@ -10,6 +10,7 @@ export const PARAMETERS = {
    OCEAN: 'ocean',
    GREENERY: 'greenery',
    OXYGEN: 'oxygen',
+   NONE: 'noparam',
 }
 
 export const getParameterIcon = (parameterName: string) => {

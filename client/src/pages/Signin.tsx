@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import { signin } from '../api/apiUser'
-import { UserInterface } from '../interfaces/userInterface'
+import { useUser } from '../context/UserContext'
 
 interface Props {
-   setUser: React.Dispatch<React.SetStateAction<UserInterface | null>>
+   tiersClicked: boolean
+   setTiersClicked: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const Signin: React.FC<Props> = ({ setUser }) => {
+export const Signin: React.FC<Props> = ({ tiersClicked, setTiersClicked }) => {
    const navigate = useNavigate()
+   const { setUser } = useUser()
    const [email, setEmail] = useState<string>('')
    const [password, setPassword] = useState<string>('')
    const [loading, setLoading] = useState<boolean>(false)
@@ -32,7 +34,12 @@ export const Signin: React.FC<Props> = ({ setUser }) => {
 
          localStorage.setItem('user', JSON.stringify(data))
          setUser(data)
-         navigate('/')
+         if (tiersClicked) {
+            setTiersClicked(false)
+            navigate('/lists')
+         } else {
+            navigate('/')
+         }
 
          setLoading(false)
       } catch (error) {

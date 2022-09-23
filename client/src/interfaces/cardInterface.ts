@@ -10,6 +10,9 @@ export interface CardInterface {
    tags: string[]
    effect: string | null
    iconNames: IconNamesInterface
+   production: string[]
+   parameters: string[]
+   canHaveUnits: string | null
 }
 
 export interface ReqInterface {

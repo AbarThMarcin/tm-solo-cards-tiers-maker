@@ -1,13 +1,10 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
+import { useUser } from '../context/UserContext'
 import logo from '../assets/images/logos/logo.png'
-import { UserInterface } from '../interfaces/userInterface'
 
-interface Props {
-   user: UserInterface | null
-}
+export const Home: React.FC = () => {
+   const { user } = useUser()
 
-export const Home: React.FC<Props> = ({ user }) => {
    return (
       <article>
          <section className='section'>

@@ -10,4 +10,6 @@ export const REQUIREMENTS = {
    CEOS_FAVOURITE_PROJECT: "ceo's favourite project",
    RAD_SUITS: 'rad-suits',
    ECOLOGICAL_ZONE: 'ecological-zone',
+   OTHER: 'Other',
+   NONE: 'noreq'
 }

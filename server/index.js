@@ -7,6 +7,7 @@ const connectDB = require('./config/mongoDB')
 const { urlNotFound, errorHandler } = require('./middleware/errorsMiddleware')
 // Routes
 const userRoutes = require('./routes/userRoutes')
+const tiersListRoutes = require('./routes/tiersListRoutes')
 
 // Initialize App
 const app = express()
@@ -22,6 +23,7 @@ connectDB()
 
 // Routes
 app.use('/api/users', userRoutes)
+app.use('/api/tiers-lists', tiersListRoutes)
 
 // Deployment
 __dirname = path.resolve()

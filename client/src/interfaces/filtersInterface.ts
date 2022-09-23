@@ -3,16 +3,17 @@ export interface FiltersStateInt {
    tags: string[]
    tagsAndOr: string
    cardTypes: string[]
-   cost: number | null
+   cost: string | number
    costMinMaxEqual: string
    production: string[]
    productionAndOr: string
    vp: boolean | null
    vpNegPosAll: string
-   requirement: string | null
+   requirements: string[]
+   requirementsAndOr: string
    parameters: string[]
    parametersAndOr: string
-   canHaveUnits: string | null
+   canHaveUnits: string[]
 }
 
 export interface FiltersActionInt {

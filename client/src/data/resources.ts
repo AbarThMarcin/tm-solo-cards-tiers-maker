@@ -24,6 +24,7 @@ export const RESOURCES = {
    SCIENCE: 'science',
    FIGHTER: 'fighter',
    PROD_BG: 'prodBg',
+   NONE: 'noprod'
 }
 
 export const getResIcon = (type: string) => {
