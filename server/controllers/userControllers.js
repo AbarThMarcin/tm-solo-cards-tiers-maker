@@ -2,17 +2,6 @@ const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 const { generateToken } = require('../utils/generateToken')
 
-const getUsers = asyncHandler(async (req, res) => {
-   const users = await User.find()
-
-   if (users) {
-      res.status(200).json(users)
-   } else {
-      res.status(403).json({ failure: true, message: 'Users not found' })
-      throw new Error('Users not found')
-   }
-})
-
 const signupUser = asyncHandler(async (req, res) => {
    const { name, email, password } = req.body
 
@@ -23,7 +12,7 @@ const signupUser = asyncHandler(async (req, res) => {
       throw new Error('User already exists')
    }
 
-   const newUser = await create({
+   const newUser = await User.create({
       name,
       email,
       password,
@@ -93,4 +82,4 @@ const updateUser = asyncHandler(async (req, res) => {
    }
 })
 
-module.exports = { getUsers, signinUser, signupUser, updateUser }
+module.exports = { signinUser, signupUser, updateUser }

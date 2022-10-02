@@ -1,20 +1,20 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ListInterface } from '../../interfaces/listInterface'
-import { toUrl } from '../../utils/strings'
 import logo from '../../assets/images/logos/logo.png'
 import { useModal } from '../../context/ModalContext'
 import { NoTiersList } from './NoTiersList'
+import { toUrl } from '../../utils/strings'
+import { useLists } from '../../context/ListsContext'
+import { useUser } from '../../context/UserContext'
+import { deleteTiersList } from '../../api/apiTiersList'
+import { ACTIONS_LISTS } from '../../store/actions/actionsLists'
 
-interface Props {
-   lists: ListInterface[]
-   deleteList: (list: ListInterface) => Promise<void>
-}
-
-export const ListSnap: React.FC<Props> = ({ lists, deleteList }) => {
+export const ListSnap: React.FC = () => {
    const navigate = useNavigate()
+   const { user } = useUser()
+   const { stateLists, dispatchLists, selectedListId, setSelectedListId } = useLists()
    const { setModal } = useModal()
-   const { tierListName } = useParams()
-   const list: ListInterface | undefined = lists.find((l) => toUrl(l.name) === tierListName)
+   const list: ListInterface | undefined = stateLists.find((list) => list._id === selectedListId)
 
    const handleClickDelete = (): void => {
       setModal((prev) => ({
@@ -22,8 +22,19 @@ export const ListSnap: React.FC<Props> = ({ lists, deleteList }) => {
          showInpTxt: false,
          show: true,
          text: `Are you sure you want to delete the following list: \n${list?.name}?`,
-         onContinue: () => deleteList(list!),
+         onContinue: () => deleteList(list?._id || ''),
       }))
+   }
+
+   const deleteList = async (listId: String): Promise<any> => {
+      if (!user) return
+      const res = await deleteTiersList(user.token, { id: listId })
+      if (res.success) {
+         const newLists = stateLists.filter((l) => l._id !== listId)
+         dispatchLists({ type: ACTIONS_LISTS.SET_LISTS, payload: newLists })
+         setSelectedListId(newLists.length > 0 ? newLists[0]._id : null)
+      }
+      return res
    }
 
    return (
@@ -40,7 +51,7 @@ export const ListSnap: React.FC<Props> = ({ lists, deleteList }) => {
                   style={{ maxWidth: '100%', maxHeight: '300px', height: 'auto' }}
                   alt="mars-logo"
                />
-               <button onClick={() => navigate('details')}>EDIT</button>
+               <button onClick={() => navigate(toUrl(list.name))}>EDIT</button>
                <button onClick={handleClickDelete}>DELETE</button>
             </>
          ) : (

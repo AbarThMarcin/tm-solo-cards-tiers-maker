@@ -1,6 +1,6 @@
 import React from 'react'
 import { FiltersActionInt } from '../../../interfaces/filtersInterface'
-import { ACTIONS_FILTERS } from '../../../store/actionsFilters'
+import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
 import { debounce } from '../../../utils/debounce'
 
 interface Props {

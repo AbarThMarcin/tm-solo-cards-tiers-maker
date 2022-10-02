@@ -16,3 +16,8 @@ export interface RateInterface {
    cardId: number
    value: string
 }
+
+export interface ListActionInt {
+   type: string
+   payload: any
+}

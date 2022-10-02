@@ -2,7 +2,7 @@ import React from 'react'
 import { TAGS } from '../../../data/tags'
 import { FiltersActionInt, FiltersStateInt } from '../../../interfaces/filtersInterface'
 import { AND_OR } from '../../../pages/CardsList'
-import { ACTIONS_FILTERS } from '../../../store/actionsFilters'
+import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
 
 interface Props {
    stateFilters: FiltersStateInt
@@ -128,7 +128,7 @@ export const FilterTags: React.FC<Props> = ({ stateFilters, dispatchFilters }) =
             }
          />
          <label htmlFor="tagsor">Or</label>
-         <button onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.RESET_TAGS, payload: '' })}>
+         <button onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.RESET_TAGS })}>
             <small>RESET TAGS</small>
          </button>
       </div>

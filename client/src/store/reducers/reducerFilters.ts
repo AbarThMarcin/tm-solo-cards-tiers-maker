@@ -1,8 +1,8 @@
-import { FiltersActionInt, FiltersStateInt } from "../interfaces/filtersInterface"
-import { initFilters } from "../pages/CardsList"
-import { ACTIONS_FILTERS } from './actionsFilters'
+import { FiltersActionInt, FiltersStateInt } from "../../interfaces/filtersInterface"
+import { initFilters } from "../../pages/CardsList"
+import { ACTIONS_FILTERS } from '../actions/actionsFilters'
 
-export const reducerFilters = (state: FiltersStateInt, action: FiltersActionInt) => {
+export const reducerFilters = (state: FiltersStateInt, action: FiltersActionInt): FiltersStateInt => {
    switch (action.type) {
       // Tags
       case ACTIONS_FILTERS.TOGGLE_TAG:

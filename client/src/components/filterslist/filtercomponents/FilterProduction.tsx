@@ -2,7 +2,7 @@ import React from 'react'
 import { RESOURCES } from '../../../data/resources'
 import { FiltersActionInt, FiltersStateInt } from '../../../interfaces/filtersInterface'
 import { AND_OR } from '../../../pages/CardsList'
-import { ACTIONS_FILTERS } from '../../../store/actionsFilters'
+import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
 
 interface Props {
    stateFilters: FiltersStateInt
@@ -143,7 +143,7 @@ export const FilterProduction: React.FC<Props> = ({ stateFilters, dispatchFilter
          <label htmlFor="prodor">Or</label>
          <button
             onClick={() =>
-               dispatchFilters({ type: ACTIONS_FILTERS.RESET_PRODUCTION, payload: '' })
+               dispatchFilters({ type: ACTIONS_FILTERS.RESET_PRODUCTION })
             }
          >
             <small>RESET PRODUCTION</small>

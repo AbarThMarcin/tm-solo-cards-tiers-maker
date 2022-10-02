@@ -1,7 +1,7 @@
 import React from 'react'
 import { RESOURCES } from '../../../data/resources'
 import { FiltersActionInt, FiltersStateInt } from '../../../interfaces/filtersInterface'
-import { ACTIONS_FILTERS } from '../../../store/actionsFilters'
+import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
 
 interface Props {
    stateFilters: FiltersStateInt
@@ -51,7 +51,7 @@ export const FilterUnits: React.FC<Props> = ({ stateFilters, dispatchFilters }) 
             fighter
          </div>
          <button
-            onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.RESET_UNITS, payload: '' })}
+            onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.RESET_UNITS })}
          >
             <small>RESET UNITS</small>
          </button>

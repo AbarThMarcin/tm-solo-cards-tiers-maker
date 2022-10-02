@@ -2,7 +2,7 @@ import React from 'react'
 import { PARAMETERS } from '../../../data/parameters'
 import { FiltersActionInt, FiltersStateInt } from '../../../interfaces/filtersInterface'
 import { AND_OR } from '../../../pages/CardsList'
-import { ACTIONS_FILTERS } from '../../../store/actionsFilters'
+import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
 
 interface Props {
    stateFilters: FiltersStateInt
@@ -115,7 +115,7 @@ export const FilterParams: React.FC<Props> = ({ stateFilters, dispatchFilters })
          />
          <label htmlFor="paramor">Or</label>
          <button
-            onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.RESET_PARAMETERS, payload: '' })}
+            onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.RESET_PARAMETERS })}
          >
             <small>RESET PARAMS</small>
          </button>

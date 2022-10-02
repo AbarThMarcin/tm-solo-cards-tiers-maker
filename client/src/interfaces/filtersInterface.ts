@@ -18,5 +18,5 @@ export interface FiltersStateInt {
 
 export interface FiltersActionInt {
    type: string
-   payload: string
+   payload?: any
 }

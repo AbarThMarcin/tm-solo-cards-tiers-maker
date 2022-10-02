@@ -1,7 +1,7 @@
 import React from 'react'
 import { CARD_TYPES } from '../../../data/cards'
 import { FiltersActionInt, FiltersStateInt } from '../../../interfaces/filtersInterface'
-import { ACTIONS_FILTERS } from '../../../store/actionsFilters'
+import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
 
 interface Props {
    stateFilters: FiltersStateInt

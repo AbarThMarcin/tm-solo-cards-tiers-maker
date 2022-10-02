@@ -2,7 +2,7 @@ import React from 'react'
 import { REQUIREMENTS } from '../../../data/requirements'
 import { FiltersActionInt, FiltersStateInt } from '../../../interfaces/filtersInterface'
 import { AND_OR } from '../../../pages/CardsList'
-import { ACTIONS_FILTERS } from '../../../store/actionsFilters'
+import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
 
 interface Props {
    stateFilters: FiltersStateInt
@@ -134,7 +134,7 @@ export const FilterReqs: React.FC<Props> = ({ stateFilters, dispatchFilters }) =
             }
          />
          <label htmlFor="reqor">Or</label>
-         <button onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.RESET_REQS, payload: '' })}>
+         <button onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.RESET_REQS })}>
             <small>RESET REQS</small>
          </button>
       </div>

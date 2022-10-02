@@ -1,48 +1,26 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useModal } from '../../../../context/ModalContext'
-import { CARDS } from '../../../../data/cards'
-import { ListInterface, PlayerInterface } from '../../../../interfaces/listInterface'
-import { getCards } from '../../../../utils/arrays'
+import { useModal } from '../../../context/ModalContext'
+import { CARDS } from '../../../data/cards'
+import { ListInterface, PlayerInterface } from '../../../interfaces/listInterface'
+import { getCards } from '../../../utils/arrays'
 import { ListDetailsRate } from './ListDetailsRate'
 import { AiTwotoneEdit } from 'react-icons/ai'
 import { TiDelete } from 'react-icons/ti'
-import { INPUT_TYPES } from '../../../../interfaces/modalInterface'
-import { CardInterface } from '../../../../interfaces/cardInterface'
+import { INPUT_TYPES } from '../../../interfaces/modalInterface'
+import { CardInterface } from '../../../interfaces/cardInterface'
+import { useUser } from '../../../context/UserContext'
+import { updateTiersList } from '../../../api/apiTiersList'
+import { useLists } from '../../../context/ListsContext'
+import { ACTIONS_LISTS } from '../../../store/actions/actionsLists'
 
 interface Props {
    list: ListInterface
-   deletePlayer: (listId: string, playerId: string, players: PlayerInterface[]) => Promise<void>
-   editPlayer: (
-      listId: string,
-      playerId: string,
-      playerName: string,
-      players: PlayerInterface[]
-   ) => Promise<void>
-   addRate: (
-      listId: string,
-      playerId: string,
-      cardId: number,
-      rate: string,
-      players: PlayerInterface[]
-   ) => Promise<void>
-   editRate: (
-      listId: string,
-      playerId: string,
-      cardId: number,
-      newRate: string,
-      players: PlayerInterface[]
-   ) => Promise<void>
    handleClickAddPlayer: () => void
 }
 
-export const ListDetailsTable: React.FC<Props> = ({
-   list,
-   deletePlayer,
-   editPlayer,
-   addRate,
-   editRate,
-   handleClickAddPlayer,
-}) => {
+export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }) => {
+   const { user } = useUser()
+   const { dispatchLists } = useLists()
    const { setModal } = useModal()
    const [filteredCardsIds, setFilteredCardsIds] = useState<number[]>(list.drawnCardsIds)
    const filteredCardsDrawn = useMemo(() => getCards(CARDS, filteredCardsIds), [filteredCardsIds])
@@ -85,7 +63,6 @@ export const ListDetailsTable: React.FC<Props> = ({
          onContinue: () => deletePlayer(list._id, playerId, list.players),
       })
    }
-
    const handleClickEditPlayer = (playerId: string, playerName: string): void => {
       setModal({
          show: true,
@@ -95,6 +72,38 @@ export const ListDetailsTable: React.FC<Props> = ({
          text: "Enter player's new name:",
          onContinue: (playerName) => editPlayer(list._id, playerId, playerName, list.players),
       })
+   }
+
+   const deletePlayer = async (
+      listId: string,
+      playerId: string,
+      players: PlayerInterface[]
+   ): Promise<any> => {
+      if (!user) return
+      const newPlayers = players.filter((p) => p._id !== playerId)
+      const res = await updateTiersList(user.token, { id: listId, players: newPlayers })
+      if (res.success) {
+         const newList = res.data
+         dispatchLists({ type: ACTIONS_LISTS.EDIT_LIST, payload: newList })
+      }
+      return res
+   }
+   const editPlayer = async (
+      listId: string,
+      playerId: string,
+      playerName: string,
+      players: PlayerInterface[]
+   ): Promise<any> => {
+      if (!user) return
+      const newPlayers = players.map((p) =>
+         p._id === playerId ? { name: playerName, rates: p.rates } : p
+      )
+      const res = await updateTiersList(user.token, { id: listId, players: newPlayers })
+      if (res.success) {
+         const newList = res.data
+         dispatchLists({ type: ACTIONS_LISTS.EDIT_LIST, payload: newList })
+      }
+      return res
    }
 
    const isIncomplete = (player: PlayerInterface): boolean => {
@@ -220,8 +229,6 @@ export const ListDetailsTable: React.FC<Props> = ({
                            list={list}
                            player={player}
                            card={card}
-                           addRate={addRate}
-                           editRate={editRate}
                            isIncomplete={isIncomplete}
                         />
                      ))}

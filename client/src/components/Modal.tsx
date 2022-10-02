@@ -22,7 +22,7 @@ export const Modal: React.FC = () => {
       }
    }
 
-   const handleClickContinue = async (e: React.FormEvent<EventTarget>): Promise<void> => {
+   const handleSubmit = async (e: React.FormEvent<EventTarget>): Promise<void> => {
       e.preventDefault()
       if (loading) return
       setError('')
@@ -52,7 +52,7 @@ export const Modal: React.FC = () => {
          // Add Rate
          if (modal.inputType === INPUT_TYPES.ADD_RATE) {
             if (modal.inputText === '') {
-               setError('Enter a rate (S to F')
+               setError('Enter a rate (F to S')
                return
             }
          }
@@ -77,7 +77,7 @@ export const Modal: React.FC = () => {
       <div className="modal-bg">
          <div className="modal-container">
             <h3>{modal.text}</h3>
-            <form onSubmit={handleClickContinue}>
+            <form onSubmit={handleSubmit}>
                {modal.showInpTxt && (
                   <input
                      type="text"

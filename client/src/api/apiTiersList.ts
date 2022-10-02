@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const getTiersLists = async (token) => {
+export const getTiersLists = async (token: string) => {
    const URI = '/api/tiers-lists/getall'
    const config = {
       headers: {
@@ -12,12 +12,12 @@ export const getTiersLists = async (token) => {
    try {
       const res = await axios.get(URI, config)
       return res.data
-   } catch (error) {
+   } catch (error: any) {
       return error.response.data
    }
 }
 
-export const getTiersList = async (token, body) => {
+export const getTiersList = async (token: string, body: any) => {
    const URI = '/api/tiers-lists/get'
    const config = {
       headers: {
@@ -29,12 +29,12 @@ export const getTiersList = async (token, body) => {
    try {
       const res = await axios.post(URI, body, config)
       return res.data
-   } catch (error) {
+   } catch (error: any) {
       return error.response.data
    }
 }
 
-export const createTiersList = async (token, body) => {
+export const createTiersList = async (token: string, body: any) => {
    const URI = '/api/tiers-lists/create'
    const config = {
       headers: {
@@ -46,12 +46,12 @@ export const createTiersList = async (token, body) => {
    try {
       const res = await axios.post(URI, body, config)
       return res.data
-   } catch (error) {
+   } catch (error: any) {
       return error.response.data
    }
 }
 
-export const deleteTiersList = async (token, body) => {
+export const deleteTiersList = async (token: string, body: any) => {
    const URI = '/api/tiers-lists/delete'
    const config = {
       headers: {
@@ -63,12 +63,12 @@ export const deleteTiersList = async (token, body) => {
    try {
       const res = await axios.post(URI, body, config)
       return res.data
-   } catch (error) {
+   } catch (error: any) {
       return error.response.data
    }
 }
 
-export const updateTiersList = async (token, body) => {
+export const updateTiersList = async (token: string, body: any) => {
    const URI = '/api/tiers-lists/update'
    const config = {
       headers: {
@@ -80,7 +80,7 @@ export const updateTiersList = async (token, body) => {
    try {
       const res = await axios.post(URI, body, config)
       return res.data
-   } catch (error) {
+   } catch (error: any) {
       return error.response.data
    }
 }
