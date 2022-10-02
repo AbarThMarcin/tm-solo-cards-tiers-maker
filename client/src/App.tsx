@@ -28,15 +28,17 @@ export const App: React.FC = () => {
                   <Route index element={<Home />} />
                   <Route path="home" element={<Home />} />
                   <Route path="about" element={<About />} />
-                  {/* <Route
-                     path="lists/*"
-                     element={<TiersMaker setTiersClicked={setTiersClicked} />}
-                  /> */}
-
                   <Route
                      path="lists/*"
                      element={<TiersMaker setTiersClicked={setTiersClicked} />}
                   />
+
+                  {/* <Route
+                     path="lists/*"
+                     element={<TiersMaker setTiersClicked={setTiersClicked} />}
+                  >
+                     <Route index element={} />
+                  </Route> */}
 
                   <Route path="cards" element={<CardsList />} />
                   <Route path="tm-solo-game" element={<TMSoloGame />} />
@@ -47,7 +49,12 @@ export const App: React.FC = () => {
                      }
                   />
                   <Route path="account" element={<Account />} />
-                  <Route path="signup" element={<Signup tiersClicked={tiersClicked} setTiersClicked={setTiersClicked} />} />
+                  <Route
+                     path="signup"
+                     element={
+                        <Signup tiersClicked={tiersClicked} setTiersClicked={setTiersClicked} />
+                     }
+                  />
                   <Route path="*" element={<NoMatch />} />
                </Routes>
             </Container>

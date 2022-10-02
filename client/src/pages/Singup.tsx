@@ -69,7 +69,7 @@ export const Signup: React.FC<Props> = ({ tiersClicked, setTiersClicked }) => {
             {error && <div className="form-error">{error}</div>}
 
             <Form.Group className="mb-3" controlId="formBasicUsername">
-               <Form.Label>Username</Form.Label>
+               <Form.Label>Enter Username</Form.Label>
                <Form.Control
                   type="text"
                   placeholder="Enter Username"
@@ -87,7 +87,7 @@ export const Signup: React.FC<Props> = ({ tiersClicked, setTiersClicked }) => {
                />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
-               <Form.Label>Password</Form.Label>
+               <Form.Label>Enter Password</Form.Label>
                <Form.Control
                   type="password"
                   placeholder="Enter Password"

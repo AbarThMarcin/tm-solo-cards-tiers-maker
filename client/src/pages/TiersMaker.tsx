@@ -59,20 +59,15 @@ export const TiersMaker: React.FC<Props> = ({ setTiersClicked }) => {
                            </header>
                            {isLoading ? (
                               <div>Loading...</div>
+                           ) : stateLists.length === 0 ? (
+                              // No tiers lists
+                              <ListCreateSnap />
                            ) : (
-                              <>
-                                 {true &&
-                                    (stateLists.length === 0 ? (
-                                       // No tiers lists
-                                       <ListCreateSnap />
-                                    ) : (
-                                       // Tiers lists
-                                       <div className="d-flex w-100 h-100 mt-5">
-                                          <ListLinks />
-                                          {!selectedListId ? <ListCreateSnap /> : <ListSnap />}
-                                       </div>
-                                    ))}
-                              </>
+                              // Tiers lists
+                              <div className="d-flex w-100 h-100 mt-5">
+                                 <ListLinks />
+                                 {!selectedListId ? <ListCreateSnap /> : <ListSnap />}
+                              </div>
                            )}
                         </>
                      }

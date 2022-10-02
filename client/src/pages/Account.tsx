@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
-import { Link, useNavigate } from 'react-router-dom'
-import { signup } from '../api/apiUser'
+import { useNavigate } from 'react-router-dom'
+import { updateUser } from '../api/apiUser'
 import { useUser } from '../context/UserContext'
 
 export const Account: React.FC = () => {
    const navigate = useNavigate()
-   const { setUser } = useUser()
+   const { user, setUser } = useUser()
    const [password, setPassword] = useState<string>('')
    const [passwordConf, setPasswordConf] = useState<string>('')
    const [loading, setLoading] = useState<boolean>(false)
@@ -27,17 +27,10 @@ export const Account: React.FC = () => {
          setError('')
          setLoading(true)
 
-         const { data }: any = await signup(username, email, password)
+         const { data }: any = await updateUser(user!.token || '', { password })
 
          localStorage.setItem('user', JSON.stringify(data))
          setUser(data)
-         if (tiersClicked) {
-            setTiersClicked(false)
-            navigate('/lists')
-         } else {
-            navigate('/')
-         }
-
          setLoading(false)
       } catch (error) {
          setError('Invalid email address and/or password')
@@ -64,29 +57,17 @@ export const Account: React.FC = () => {
 
                <Form.Group className="mb-3" controlId="formBasicUsername">
                   <Form.Label>Username</Form.Label>
-                  <Form.Control
-                     type="text"
-                     placeholder="Enter Username"
-                     onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleInput(e, setUsername)
-                     }
-                     required
-                  />
+                  <Form.Control type="text" value={user ? user.name : ''} disabled />
                </Form.Group>
                <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Email address</Form.Label>
-                  <Form.Control
-                     type="email"
-                     placeholder="Enter Email"
-                     onInput={(e: React.ChangeEvent<HTMLInputElement>) => handleInput(e, setEmail)}
-                     required
-                  />
+                  <Form.Control type="email" value={user ? user.email : ''} disabled />
                </Form.Group>
                <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label>Password</Form.Label>
+                  <Form.Label>Enter New Password</Form.Label>
                   <Form.Control
                      type="password"
-                     placeholder="Enter Password"
+                     placeholder="Enter New Password"
                      onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                         handleInput(e, setPassword)
                      }
@@ -94,20 +75,15 @@ export const Account: React.FC = () => {
                   />
                </Form.Group>
                <Form.Group className="mb-3" controlId="formBasicPasswordConf">
-                  <Form.Label>Re-enter Password </Form.Label>
+                  <Form.Label>Re-enter New Password </Form.Label>
                   <Form.Control
                      type="password"
-                     placeholder="Re-enter Password"
+                     placeholder="Re-enter New Password"
                      onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                         handleInput(e, setPasswordConf)
                      }
                      required
                   />
-               </Form.Group>
-               <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Text>
-                     Already have an account? <Link to="/signin">Sign In</Link>
-                  </Form.Text>
                </Form.Group>
                <Button variant="primary" type="submit" disabled={loading}>
                   Submit
