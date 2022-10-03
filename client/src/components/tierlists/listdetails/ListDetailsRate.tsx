@@ -61,7 +61,7 @@ export const ListDetailsRate: React.FC<Props> = ({ list, player, card, isIncompl
             return p
          }
       })
-      const res = await updateTiersList(user.token, { id: listId, players: newPlayers })
+      const res = await updateTiersList(user.token, { listId, players: newPlayers })
       if (res.success) {
          const newList = res.data
          dispatchLists({ type: ACTIONS_LISTS.EDIT_LIST, payload: newList })
@@ -91,7 +91,7 @@ export const ListDetailsRate: React.FC<Props> = ({ list, player, card, isIncompl
             return p
          }
       })
-      const res = await updateTiersList(user.token, { id: listId, players: newPlayers })
+      const res = await updateTiersList(user.token, { listId, players: newPlayers })
       if (res.success) {
          const newList = res.data
          dispatchLists({ type: ACTIONS_LISTS.EDIT_LIST, payload: newList })

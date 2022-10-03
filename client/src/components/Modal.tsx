@@ -12,13 +12,27 @@ export const Modal: React.FC = () => {
       setError('')
       // List & Player
       if (modal.inputType === INPUT_TYPES.LIST || modal.inputType === INPUT_TYPES.PLAYER) {
-         setModal((prev) => ({ ...prev, inputText: e.target.value.replace(/[!#%^&*()<,.{}[\]\\+"':@$?=>|;/]/i, '') }))
-      } else {
+         setModal((prev) => ({
+            ...prev,
+            inputText: e.target.value.replace(/[!#%^&*()<,.{}[\]\\+"':@$?=>|;/]/i, ''),
+         }))
+      } else if (
+         modal.inputType === INPUT_TYPES.ADD_RATE ||
+         modal.inputType === INPUT_TYPES.EDIT_RATE
+      ) {
          // Rate
          const lastChar = e.target.value.slice(-1).toUpperCase()
          if ('SABCDEF'.includes(lastChar)) {
             setModal((prev) => ({ ...prev, inputText: lastChar }))
          }
+      } else if (modal.inputType === INPUT_TYPES.CARD) {
+         // Card ID
+         let val = parseInt(e.target.value).toString()
+         if (val === 'NaN') val = ''
+         if (val) {
+            if (parseInt(val) > 208) val = '208'
+         }
+         setModal((prev) => ({ ...prev, inputText: val }))
       }
    }
 
@@ -52,7 +66,14 @@ export const Modal: React.FC = () => {
          // Add Rate
          if (modal.inputType === INPUT_TYPES.ADD_RATE) {
             if (modal.inputText === '') {
-               setError('Enter a rate (F to S')
+               setError('Enter a rate (F to S)')
+               return
+            }
+         }
+         // Card ID
+         if (modal.inputType === INPUT_TYPES.CARD) {
+            if (modal.inputText === '') {
+               setError('Enter a card ID')
                return
             }
          }

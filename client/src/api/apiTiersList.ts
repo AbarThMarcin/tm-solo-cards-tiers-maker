@@ -84,3 +84,4 @@ export const updateTiersList = async (token: string, body: any) => {
       return error.response.data
    }
 }
+

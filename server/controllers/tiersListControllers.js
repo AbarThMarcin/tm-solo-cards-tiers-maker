@@ -56,10 +56,10 @@ const deleteTiersList = asyncHandler(async (req, res) => {
 })
 
 const updateTiersList = asyncHandler(async (req, res) => {
-   const { id, name, drawnCardsIds, players } = req.body
+   const { listId, name, drawnCardsIds, players } = req.body
    const user = req.user._id
 
-   const tiersList = await TiersList.findOne({ _id: id, user })
+   const tiersList = await TiersList.findOne({ _id: listId, user })
 
    if (tiersList) {
       tiersList.name = name || tiersList.name

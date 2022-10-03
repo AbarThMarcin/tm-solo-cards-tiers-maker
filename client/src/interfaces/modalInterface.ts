@@ -3,6 +3,7 @@ export const INPUT_TYPES = {
    PLAYER: 'PLAYER',
    ADD_RATE: 'ADD_RATE',
    EDIT_RATE: 'EDIT_RATE',
+   CARD: 'CARD'
 }
 
 export interface ModalInterface {

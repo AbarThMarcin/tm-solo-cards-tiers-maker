@@ -44,8 +44,13 @@ export const ListSnap: React.FC = () => {
                <h3>
                   <span>{list?.name}</span>
                </h3>
-               <span>{list.players.length} players</span>
-               <span>{208 - list.drawnCardsIds.length} cards to draw</span>
+               <span>
+                  {list.players.length} {list.players.length === 1 ? 'player' : 'players'}
+               </span>
+               <span>
+                  {208 - list.drawnCardsIds.length}{' '}
+                  {list.drawnCardsIds.length === 207 ? 'card to draw' : 'cards to draw'}
+               </span>
                <img
                   src={logo}
                   style={{ maxWidth: '100%', maxHeight: '300px', height: 'auto' }}

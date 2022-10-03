@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { AiTwotoneEdit } from 'react-icons/ai'
 import { RiArrowGoBackFill } from 'react-icons/ri'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { updateTiersList } from '../../api/apiTiersList'
 import { ListDetailsTable } from '../../components/tierlists/listdetails/ListDetailsTable'
 import { NoTiersList } from '../../components/tierlists/NoTiersList'
@@ -15,14 +15,12 @@ import { toUrl } from '../../utils/strings'
 
 export const ListDetails: React.FC = () => {
    const navigate = useNavigate()
-   const { pathname } = useLocation()
    const { listName } = useParams()
    const { user } = useUser()
    const { stateLists, dispatchLists } = useLists()
    const { setModal } = useModal()
    const list = stateLists.find((l) => toUrl(l.name) === listName)
    const [editNameMode, setEditNameMode] = useState(false)
-
 
    const handleClickAddPlayer = (): void => {
       setModal({
@@ -56,7 +54,7 @@ export const ListDetails: React.FC = () => {
    ): Promise<any> => {
       if (!user) return
       const newPlayers = [...players, { name: playerName, rates: [] }]
-      const res = await updateTiersList(user.token, { id: listId, players: newPlayers })
+      const res = await updateTiersList(user.token, { listId, players: newPlayers })
       if (res.success) {
          const newList = res.data
          dispatchLists({ type: ACTIONS_LISTS.EDIT_LIST, payload: newList })
@@ -65,7 +63,7 @@ export const ListDetails: React.FC = () => {
    }
    const editListName = async (listId: string, listName: string): Promise<any> => {
       if (!user) return
-      const res = await updateTiersList(user.token, { id: listId, name: listName })
+      const res = await updateTiersList(user.token, { listId, name: listName })
       if (res.success) {
          const newList = res.data
          dispatchLists({ type: ACTIONS_LISTS.EDIT_LIST, payload: newList })
@@ -102,11 +100,10 @@ export const ListDetails: React.FC = () => {
                   )}
                </h1>
                {/* Table with buttons */}
-               <ListDetailsTable
-                  list={list}
-                  handleClickAddPlayer={handleClickAddPlayer}
-               />
-               {list.drawnCardsIds.length < 208 && <button>RATE NEW CARD</button>}
+               <ListDetailsTable list={list} handleClickAddPlayer={handleClickAddPlayer} />
+               {list.drawnCardsIds.length < 208 && (
+                  <button onClick={() => navigate('new-rate')}>RATE NEW CARD</button>
+               )}
                {list.players.length < 5 && (
                   <button onClick={handleClickAddPlayer}>ADD NEW PLAYER</button>
                )}

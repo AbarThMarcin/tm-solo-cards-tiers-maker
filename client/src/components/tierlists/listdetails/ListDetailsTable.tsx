@@ -23,17 +23,13 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
    const { dispatchLists } = useLists()
    const { setModal } = useModal()
    const [filteredCardsIds, setFilteredCardsIds] = useState<number[]>(list.drawnCardsIds)
-   const filteredCardsDrawn = useMemo(() => getCards(CARDS, filteredCardsIds), [filteredCardsIds])
+   const [filteredCardsDrawn, setFilteredCardsDrawn] = useState(getCards(CARDS, filteredCardsIds))
    // Filter by card
    const [filterCard, setFilterCard] = useState<string>('')
 
    useEffect(() => {
-      setFilteredCardsIds(list.drawnCardsIds)
-   }, [list.drawnCardsIds])
-
-   useEffect(() => {
       filterCardsDrawn()
-   }, [filterCard])
+   }, [filterCard, list.drawnCardsIds])
 
    const filterCardsDrawn = (): void => {
       const newFilteredCards: CardInterface[] = getCards(CARDS, list.drawnCardsIds).filter(
@@ -50,6 +46,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
          }
       )
       const newFilteredCardsIds = newFilteredCards.map((card) => card.id)
+      setFilteredCardsDrawn(newFilteredCards)
       setFilteredCardsIds(newFilteredCardsIds)
    }
 
@@ -74,6 +71,17 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       })
    }
 
+   const handleClickDeleteCard = (card: CardInterface): void => {
+      setModal({
+         show: true,
+         showInpTxt: false,
+         inputType: INPUT_TYPES.LIST,
+         inputText: '',
+         text: 'Are you sure you want to delete this card?\nThis action is irreversible!',
+         onContinue: () => deleteCard(list._id, card.id, list.players),
+      })
+   }
+
    const deletePlayer = async (
       listId: string,
       playerId: string,
@@ -81,7 +89,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
    ): Promise<any> => {
       if (!user) return
       const newPlayers = players.filter((p) => p._id !== playerId)
-      const res = await updateTiersList(user.token, { id: listId, players: newPlayers })
+      const res = await updateTiersList(user.token, { listId, players: newPlayers })
       if (res.success) {
          const newList = res.data
          dispatchLists({ type: ACTIONS_LISTS.EDIT_LIST, payload: newList })
@@ -98,7 +106,29 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       const newPlayers = players.map((p) =>
          p._id === playerId ? { name: playerName, rates: p.rates } : p
       )
-      const res = await updateTiersList(user.token, { id: listId, players: newPlayers })
+      const res = await updateTiersList(user.token, { listId, players: newPlayers })
+      if (res.success) {
+         const newList = res.data
+         dispatchLists({ type: ACTIONS_LISTS.EDIT_LIST, payload: newList })
+      }
+      return res
+   }
+
+   const deleteCard = async (
+      listId: string,
+      cardId: number,
+      players: PlayerInterface[]
+   ): Promise<any> => {
+      if (!user) return
+      const newDrawnCardsIds = list.drawnCardsIds.filter((id) => id !== cardId)
+      const newPlayers = players.map((p) => {
+         return { ...p, rates: p.rates.filter((rate) => rate.cardId !== cardId) }
+      })
+      const res = await updateTiersList(user.token, {
+         listId,
+         drawnCardsIds: newDrawnCardsIds,
+         players: newPlayers,
+      })
       if (res.success) {
          const newList = res.data
          dispatchLists({ type: ACTIONS_LISTS.EDIT_LIST, payload: newList })
@@ -221,7 +251,10 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
             {filteredCardsDrawn.length > 0 ? (
                filteredCardsDrawn.map((card, idx) => (
                   <tr key={idx}>
-                     <td>{card.id}</td>
+                     <td>
+                        {card.id}
+                        <TiDelete className="pointer" onClick={() => handleClickDeleteCard(card)} />
+                     </td>
                      <td>{getAvgRate(card.id)}</td>
                      {list.players.map((player, idx) => (
                         <ListDetailsRate

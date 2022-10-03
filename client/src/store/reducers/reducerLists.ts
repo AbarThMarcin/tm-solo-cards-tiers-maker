@@ -9,16 +9,6 @@ export const reducerLists = (state: ListInterface[], action: ListActionInt): Lis
          return [...state, action.payload]
       case ACTIONS_LISTS.EDIT_LIST:
          return state.map((l) => (l._id === action.payload._id ? action.payload : l))
-      // case ACTIONS_LISTS.CREATE_PLAYER:
-      //    return state
-      // case ACTIONS_LISTS.DELETE_PLAYER:
-      //    return state
-      // case ACTIONS_LISTS.EDIT_PLAYER:
-      //    return state
-      // case ACTIONS_LISTS.ADD_RATE:
-      //    return state
-      // case ACTIONS_LISTS.EDIT_RATE:
-      //    return state
       default:
          return state
    }
