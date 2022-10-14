@@ -531,7 +531,7 @@ export const CARDS = [
       },
       production: [],
       parameters: [],
-      canHaveUnits: null,
+      canHaveUnits: RESOURCES.ANIMAL,
    },
    {
       id: 25,

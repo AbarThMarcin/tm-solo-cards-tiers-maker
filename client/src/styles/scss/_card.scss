@@ -1,7 +1,7 @@
 $width-small: 160px;
 $width-large: 210px;
-$unit-small: calc($width-small / 7.5);
-$unit-large: calc($width-large / 7.5);
+$unit-small: calc($width-small / 8);
+$unit-large: calc($width-large / 8);
 
 .card-container,
 .card-container * {
@@ -71,6 +71,7 @@ $unit-large: calc($width-large / 7.5);
          justify-content: center;
          align-items: center;
          font-weight: 900;
+         font-size: 0.75rem;
       }
       .info-section {
          position: absolute;
@@ -190,12 +191,12 @@ $unit-large: calc($width-large / 7.5);
          display: flex;
          justify-content: center;
          align-items: center;
-         font-size: $unit-small * 0.73;
+         font-size: $unit-small * 0.69;
          &.mid-long {
-            font-size: $unit-small * 0.63;
+            font-size: $unit-small * 0.59;
          }
          &.long {
-            font-size: $unit-small * 0.53;
+            font-size: $unit-small * 0.49;
          }
       }
       .effect {
@@ -215,11 +216,11 @@ $unit-large: calc($width-large / 7.5);
          transform: translateX(-50%);
          bottom: 2%;
          width: 95%;
-         font-size: $unit-small * 0.41;
-         line-height: $unit-small * 0.41;
+         font-size: $unit-small * 0.39;
+         line-height: $unit-small * 0.39;
          text-align: center;
          color: #000;
-         font-weight: 500;
+         font-weight: 600;
          &.with-vp {
             width: 66%;
             left: 2.8%;

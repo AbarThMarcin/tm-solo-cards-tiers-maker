@@ -1,40 +1,87 @@
 @use 'variables' as v;
 @import url('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;600;700&display=swap');
 
 // General & Scrollbar
+html {
+   background-color: black;
+}
 body {
-   background-color: v.$bg-dark;
+   min-height: 100vh;
+   background-image: url('../../assets/images/bg/bg.jpg');
+   background-repeat: repeat;
+   background-size: contain;
+   background-attachment: fixed;
+   letter-spacing: 1px;
    font-family: 'Saira Condensed', sans-serif;
+   // font-family: 'Teko', sans-serif;
+   font-weight: 300;
+   line-height: 20px;
    color: #fff;
 }
 body::-webkit-scrollbar {
    position: absolute;
+   width: 20px;
 }
 body::-webkit-scrollbar-track {
-   background-color: v.$primary-red-dark;
-   border-radius: 3px;
+   background-color: black;
+   border-radius: 9999px;
 }
 body::-webkit-scrollbar-thumb {
-   background-color: v.$bg-dark;
-   border: 2px solid v.$primary-red-dark;
-   border-radius: 10px;
+   background-color: v.$primary-red-dark;
+   border: 5px solid black;
+   border-radius: 9999px;
 }
 
 // Content
+main {
+   min-height: calc(100vh - v.$nav-height);
+}
+.section-container {
+   padding: 15px;
+   margin-bottom: 0;
+   min-height: calc(100vh - v.$nav-height);
+   background: v.$bg-content-dark;
+}
 .section {
-   padding: 15px 0;
    display: flex;
    justify-content: center;
    align-items: center;
    flex-direction: column;
-   min-height: 807px;
+   min-height: 850px;
    &:not(:last-of-type) {
       border-bottom: 2px solid v.$section-divider-clr;
    }
 }
 
+.home-section-content {
+   display: flex;
+   justify-content: space-evenly;
+   align-items: center;
+   width: 90%;
+   height: 70%;
+   // Image
+   img {
+      height: 450px;
+   }
+   // Title & Short Description
+   header h1 {
+      font-family: Teko;
+      letter-spacing: 4px;
+      font-size: 4.5rem;
+      font-style: italic;
+      line-height: 3.8rem;
+   }
+   p {
+      letter-spacing: 1px;
+      font-size: 2rem;
+      line-height: 2.2rem;
+      font-weight: 400;
+   }
+}
+
 @media (max-width: 768px) {
-   .custom-section-content {
+   .home-section-content {
       flex-direction: column !important;
       img {
          margin-block-end: 20px;
@@ -57,4 +104,17 @@ body::-webkit-scrollbar-thumb {
 
 .pointer {
    cursor: pointer;
+}
+
+strong {
+   letter-spacing: 1.5px;
+   color: v.$btn-theme-light;
+}
+
+strong.red {
+   color: v.$btn-theme-light-red;
+}
+
+strong.blue {
+   color: v.$btn-theme-light-blue;
 }

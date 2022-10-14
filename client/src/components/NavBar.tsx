@@ -1,37 +1,25 @@
 import React from 'react'
 import { Navbar as NavbarBS, Container } from 'react-bootstrap'
-import { Nav, NavDropdown } from 'react-bootstrap'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Nav } from 'react-bootstrap'
+import { Link, NavLink } from 'react-router-dom'
 import { useUser } from '../context/UserContext'
+import logoNav from '../assets/images/logos/logo-nav.png'
 
 interface Props {
    setTiersClicked: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const NavBar: React.FC<Props> = ({ setTiersClicked }) => {
-   const navigate = useNavigate()
-   const { user, setUser } = useUser()
-
-   const handleSignout = () => {
-      localStorage.removeItem('user')
-      setUser(null)
-      navigate('/')
-   }
+   const { user } = useUser()
 
    return (
-      <NavbarBS
-         style={{ zIndex: '0' }}
-         className="custom-navbar shadow-md"
-         variant="dark"
-         expand="lg"
-         sticky="top"
-      >
+      <NavbarBS className="custom-navbar shadow-md" variant="dark" expand="md" sticky="top">
          <Container>
             {/* Logo */}
             <Link className="navbar-brand" to="/">
-               Navbar
+               <img src={logoNav} height={43} alt="mars-logo-nav" />
             </Link>
-            <NavbarBS.Toggle aria-controls="basic-navbar-nav" />
+            <NavbarBS.Toggle aria-controls="basic-navbar-nav" className="custom-toggler" />
             <NavbarBS.Collapse id="basic-navbar-nav">
                <Nav className="ms-auto">
                   <Nav.Link as={NavLink} to="/">
@@ -51,13 +39,11 @@ export const NavBar: React.FC<Props> = ({ setTiersClicked }) => {
                   </Nav.Link>
 
                   {user ? (
-                     <NavDropdown title="Account" id="basic-nav-dropdown">
-                        <NavDropdown.Item as={NavLink} to="/account">
-                           Settings
-                        </NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item onClick={handleSignout}>Logout</NavDropdown.Item>
-                     </NavDropdown>
+                     <>
+                        <Nav.Link as={NavLink} to="/account" onClick={() => setTiersClicked(false)}>
+                           Account
+                        </Nav.Link>
+                     </>
                   ) : (
                      <Nav.Link as={NavLink} to="/signin" onClick={() => setTiersClicked(false)}>
                         Sign In

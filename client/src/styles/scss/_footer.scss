@@ -1,10 +1,15 @@
 @use 'variables' as v;
 
+footer {
+   background: v.$footer-color;
+   height: v.$footer-height;
+}
+
 .contact-icon {
    color: #fff;
    &:hover {
       scale: 1.1;
-      color: v.$primary-red-light;
+      color: v.$btn-theme-light;
    }
    transition: all 100ms ease-in-out;
 }

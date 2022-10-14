@@ -1,8 +1,8 @@
-import iconTr from '../assets/images/parameters/tr.svg'
-import iconTemperature from '../assets/images/parameters/temperature.svg'
-import iconOcean from '../assets/images/tiles/ocean.svg'
-import iconGreenery from '../assets/images/parameters/greenery.svg'
-import iconOxygen from '../assets/images/parameters/oxygen.svg'
+import iconTr from '../assets/images/game/parameters/tr.svg'
+import iconTemperature from '../assets/images/game/parameters/temperature.svg'
+import iconOcean from '../assets/images/game/tiles/ocean.svg'
+import iconGreenery from '../assets/images/game/parameters/greenery.svg'
+import iconOxygen from '../assets/images/game/parameters/oxygen.svg'
 
 export const PARAMETERS = {
    TR: 'tr',

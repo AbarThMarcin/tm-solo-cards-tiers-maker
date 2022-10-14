@@ -46,6 +46,12 @@ export const Account: React.FC = () => {
       setError('')
    }
 
+   const handleSignout = () => {
+      localStorage.removeItem('user')
+      setUser(null)
+      navigate('/')
+   }
+
    return (
       <article>
          <section className="section">
@@ -89,6 +95,9 @@ export const Account: React.FC = () => {
                   Submit
                </Button>
             </Form>
+            <Button variant="primary" disabled={loading} onClick={handleSignout}>
+               Logout
+            </Button>
          </section>
       </article>
    )

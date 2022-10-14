@@ -1,0 +1,42 @@
+@use 'variables' as v;
+
+.buttons-container {
+   margin-top: 30px;
+}
+
+.button-light {
+   margin-inline: 20px;
+   padding-inline: 25px;
+   min-width: 230px;
+   height: 60px;
+   background-color: transparent;
+   border: 3px solid v.$btn-theme-light;
+   border-radius: 8px;
+   color: v.$btn-theme-light;
+   font-size: 2.4rem;
+   margin-block-end: 10px;
+   transition: all 200ms ease-in-out;
+   &:hover {
+      background-color: v.$btn-theme-darker;
+      border: 3px solid v.$btn-theme-darker;
+      color: #fff;
+   }
+   &.red {
+      color: v.$btn-theme-light-red;
+      border: 3px solid v.$btn-theme-light-red;
+      &:hover {
+         background-color: v.$btn-theme-darker-red;
+         border: 3px solid v.$btn-theme-darker-red;
+         color: #fff;
+      }
+   }
+   &.blue {
+      color: v.$btn-theme-light-blue;
+      border: 3px solid v.$btn-theme-light-blue;
+      &:hover {
+         background-color: v.$btn-theme-darker-blue;
+         border: 3px solid v.$btn-theme-darker-blue;
+         color: #fff;
+      }
+   }
+}

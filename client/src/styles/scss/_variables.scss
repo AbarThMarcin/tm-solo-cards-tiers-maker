@@ -1,5 +1,29 @@
+// Background
 $primary-red-dark: rgb(19, 17, 17);
 $primary-red-light: rgb(117, 102, 102);
-$bg-dark: rgb(7, 8, 8);
+$bg-content-dark: linear-gradient(90deg, rgba(6,3,3,1) 0%, rgba(2,1,1,0.96) 11%, rgba(2,1,1,0.955) 50%, rgba(2,1,1,0.96) 89%, rgba(6,3,3,1) 100%);
 
-$section-divider-clr: rgb(27, 26, 26)
+// Navbar
+$nav-color: linear-gradient(
+   0deg,
+   rgba(15, 9, 9, 0.97) 0%,
+   rgba(19, 17, 17, 1) 100%
+);
+$nav-height: 70px;
+
+// Footer
+$footer-color: linear-gradient(
+   0deg,
+   rgba(13, 9, 9, 0.95) 0%,
+   rgba(15, 9, 9, 1) 100%
+);
+$footer-height: 45px;
+
+// Section
+$section-divider-clr: rgb(27, 26, 26);
+$btn-theme-light: rgba(241, 180, 47, 0.8);
+$btn-theme-darker: rgba(94, 67, 9, 0.8);
+$btn-theme-light-red: rgba(241, 102, 47, 0.8);
+$btn-theme-darker-red: rgba(94, 36, 9, 0.8);
+$btn-theme-light-blue: rgba(47, 241, 128, 0.8);
+$btn-theme-darker-blue: rgba(9, 94, 37, 0.8);

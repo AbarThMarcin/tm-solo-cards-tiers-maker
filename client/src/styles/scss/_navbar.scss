@@ -1,5 +1,28 @@
 @use 'variables' as v;
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,400;1,500&display=swap');
 
 .custom-navbar {
-   background-color: v.$primary-red-dark;
+   background: v.$nav-color;
+   z-index: 1;
+   font-size: 1rem;
+   min-height: v.$nav-height;
+}
+
+.navbar-toggler {
+   width: 50px;
+   height: 34px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 3px;
+   &-icon {
+      width: 70%;
+      margin: 0;
+   }
+}
+
+.navbar-collapse {
+   .nav-link {
+      padding: 5px 10px;
+   }
 }

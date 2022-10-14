@@ -23,7 +23,7 @@ export const App: React.FC = () => {
       <>
          <NavBar setTiersClicked={setTiersClicked} />
          <main>
-            <Container>
+            <Container className='section-container'>
                <Routes>
                   <Route index element={<Home />} />
                   <Route path="home" element={<Home />} />
@@ -32,14 +32,6 @@ export const App: React.FC = () => {
                      path="lists/*"
                      element={<TiersMaker setTiersClicked={setTiersClicked} />}
                   />
-
-                  {/* <Route
-                     path="lists/*"
-                     element={<TiersMaker setTiersClicked={setTiersClicked} />}
-                  >
-                     <Route index element={} />
-                  </Route> */}
-
                   <Route path="cards" element={<CardsList />} />
                   <Route path="tm-solo-game" element={<TMSoloGame />} />
                   <Route

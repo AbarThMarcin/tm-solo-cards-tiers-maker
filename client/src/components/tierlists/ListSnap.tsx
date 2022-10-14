@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { ListInterface } from '../../interfaces/listInterface'
-import logo from '../../assets/images/logos/logo.png'
+import imgTiersList from '../../assets/images/pageimages/tiersmaker/img-tiers-list.png'
 import { useModal } from '../../context/ModalContext'
 import { NoTiersList } from './NoTiersList'
 import { toUrl } from '../../utils/strings'
@@ -52,9 +52,9 @@ export const ListSnap: React.FC = () => {
                   {list.drawnCardsIds.length === 207 ? 'card to draw' : 'cards to draw'}
                </span>
                <img
-                  src={logo}
+                  src={imgTiersList}
                   style={{ maxWidth: '100%', maxHeight: '300px', height: 'auto' }}
-                  alt="mars-logo"
+                  alt="mars-logo-with-list"
                />
                <button onClick={() => navigate(toUrl(list.name))}>EDIT</button>
                <button onClick={handleClickDelete}>DELETE</button>

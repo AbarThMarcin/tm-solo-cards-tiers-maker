@@ -1,14 +1,13 @@
 import React from 'react'
 import { Container } from 'react-bootstrap'
-import logoMini from '../assets/images/logos/logo-mini.png'
+import logoFooter from '../assets/images/logos/logo-footer.png'
 import { FaFacebook, FaLinkedin, FaInstagram, FaGithub } from 'react-icons/fa'
 
 export const Footer: React.FC = () => {
    return (
-      <footer>
-         <hr />
-         <Container className="custom-footer d-flex align-items-center pb-2">
-            <img src={logoMini} height="25" alt="mars-mini-logo" />
+      <footer className='d-flex'>
+         <Container className="custom-footer d-flex align-items-center">
+            <img src={logoFooter} height="25" alt="mars-logo-footer" />
             <span className="ms-2">All Rights Reserved.</span>
             <a
                className="contact-icon pointer ms-auto me-2" 
