@@ -6,6 +6,16 @@
 
 Working live demo: TBD
 
+## Built with
+
+-  [React JS](https://reactjs.org/)
+-  [TypeScript](https://www.typescriptlang.org/)
+-  [Bootstrap](https://getbootstrap.com/)
+-  [SASS](https://sass-lang.com/)
+-  [Node JS](https://nodejs.org/)
+-  [Express JS](https://expressjs.com/)
+-  [Mongo DB](https://www.mongodb.com/)
+
 ## Site
 
 ### Home
@@ -31,13 +41,3 @@ Working live demo: TBD
 ### Auth
 
 <!-- ![](https://i.imgur.com/92kgCKT.jpeg) -->
-
-## Built with
-
--  [React JS](https://reactjs.org/)
--  [TypeScript](https://www.typescriptlang.org/)
--  [Bootstrap](https://getbootstrap.com/)
--  [SASS](https://sass-lang.com/)
--  [Node JS](https://nodejs.org/)
--  [Express JS](https://expressjs.com/)
--  [Mongo DB](https://www.mongodb.com/)
