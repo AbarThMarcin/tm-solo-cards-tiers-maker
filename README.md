@@ -1,4 +1,5 @@
-# The Terraforming Mars Solo - Cards Tiers Maker (IN DEVELOPMENT)
+# The Terraforming Mars Solo - Cards Tiers Maker
+# (IN DEVELOPMENT)
 
 #### One place for all Terraforming Mars Solo content, including full cards list and tier maker for solo cards.
 
