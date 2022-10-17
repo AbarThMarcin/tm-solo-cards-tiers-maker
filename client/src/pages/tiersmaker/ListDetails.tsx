@@ -1,20 +1,21 @@
 import React, { useState } from 'react'
 import { AiTwotoneEdit } from 'react-icons/ai'
 import { RiArrowGoBackFill } from 'react-icons/ri'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { updateTiersList } from '../../api/apiTiersList'
 import { ListDetailsTable } from '../../components/tierlists/listdetails/ListDetailsTable'
 import { NoTiersList } from '../../components/tierlists/NoTiersList'
 import { useLists } from '../../context/ListsContext'
 import { useModal } from '../../context/ModalContext'
 import { useUser } from '../../context/UserContext'
+import { useNavigateToTop } from '../../hooks/useNavigateToTop'
 import { PlayerInterface } from '../../interfaces/listInterface'
 import { INPUT_TYPES } from '../../interfaces/modalInterface'
 import { ACTIONS_LISTS } from '../../store/actions/actionsLists'
 import { toUrl } from '../../utils/strings'
 
 export const ListDetails: React.FC = () => {
-   const navigate = useNavigate()
+   const navigate = useNavigateToTop()
    const { listName } = useParams()
    const { user } = useUser()
    const { stateLists, dispatchLists } = useLists()

@@ -16,7 +16,6 @@ body {
    font-family: 'Saira Condensed', sans-serif;
    // font-family: 'Teko', sans-serif;
    font-weight: 300;
-   line-height: 20px;
    color: #fff;
 }
 body::-webkit-scrollbar {
@@ -51,41 +50,6 @@ main {
    min-height: 850px;
    &:not(:last-of-type) {
       border-bottom: 2px solid v.$section-divider-clr;
-   }
-}
-
-.home-section-content {
-   display: flex;
-   justify-content: space-evenly;
-   align-items: center;
-   width: 90%;
-   height: 70%;
-   // Image
-   img {
-      height: 450px;
-   }
-   // Title & Short Description
-   header h1 {
-      font-family: Teko;
-      letter-spacing: 4px;
-      font-size: 4.5rem;
-      font-style: italic;
-      line-height: 3.8rem;
-   }
-   p {
-      letter-spacing: 1px;
-      font-size: 2rem;
-      line-height: 2.2rem;
-      font-weight: 400;
-   }
-}
-
-@media (max-width: 768px) {
-   .home-section-content {
-      flex-direction: column !important;
-      img {
-         margin-block-end: 20px;
-      }
    }
 }
 

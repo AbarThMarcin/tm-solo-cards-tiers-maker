@@ -1,12 +1,12 @@
-import { Link, useNavigate } from 'react-router-dom'
 import { useUser } from '../context/UserContext'
 import imgTiersMaker from '../assets/images/pageimages/home/img-tiers-maker.png'
 import imgTMSolo from '../assets/images/pageimages/home/img-tm-solo.png'
 import imgCardsList from '../assets/images/pageimages/home/img-cards-list.png'
 import imgTMSoloGame from '../assets/images/pageimages/home/img-tm-solo-game.png'
+import { useNavigateToTop } from '../hooks/useNavigateToTop'
 
 export const Home: React.FC = () => {
-   const navigate = useNavigate()
+   const navigate = useNavigateToTop()
    const { user } = useUser()
 
    return (
@@ -81,13 +81,14 @@ export const Home: React.FC = () => {
                <button className="button-light blue" onClick={() => navigate('/tm-solo-game')}>
                   SEE DETAILS
                </button>
-               <a
-                  href="https://terraforming-mars-solo.herokuapp.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
+               <button
+                  className="button-light red"
+                  onClick={() =>
+                     window.open('https://terraforming-mars-solo.herokuapp.com', '_blank')
+                  }
                >
-                  <button className="button-light red">PLAY NOW</button>
-               </a>
+                  PLAY NOW
+               </button>
             </div>
          </section>
       </article>

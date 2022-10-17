@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useLists } from '../../context/ListsContext'
 import { NoTiersList } from '../../components/tierlists/NoTiersList'
 import { toUrl } from '../../utils/strings'
@@ -14,9 +14,10 @@ import { useUser } from '../../context/UserContext'
 import { ListNewRatePlayers } from '../../components/tierlists/ListNewRatePlayers'
 import { useModal } from '../../context/ModalContext'
 import { INPUT_TYPES } from '../../interfaces/modalInterface'
+import { useNavigateToTop } from '../../hooks/useNavigateToTop'
 
 export const ListNewRate: React.FC = () => {
-   const navigate = useNavigate()
+   const navigate = useNavigateToTop()
    const { listName } = useParams()
    const { user } = useUser()
    const { setModal } = useModal()

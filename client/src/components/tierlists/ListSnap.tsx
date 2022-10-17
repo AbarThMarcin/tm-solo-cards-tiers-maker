@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import { ListInterface } from '../../interfaces/listInterface'
 import imgTiersList from '../../assets/images/pageimages/tiersmaker/img-tiers-list.png'
 import { useModal } from '../../context/ModalContext'
@@ -8,9 +7,10 @@ import { useLists } from '../../context/ListsContext'
 import { useUser } from '../../context/UserContext'
 import { deleteTiersList } from '../../api/apiTiersList'
 import { ACTIONS_LISTS } from '../../store/actions/actionsLists'
+import { useNavigateToTop } from '../../hooks/useNavigateToTop'
 
 export const ListSnap: React.FC = () => {
-   const navigate = useNavigate()
+   const navigate = useNavigateToTop()
    const { user } = useUser()
    const { stateLists, dispatchLists, selectedListId, setSelectedListId } = useLists()
    const { setModal } = useModal()

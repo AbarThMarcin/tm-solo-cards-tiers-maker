@@ -1,8 +1,8 @@
 import { RiArrowGoBackFill } from "react-icons/ri"
-import { useNavigate } from "react-router-dom"
+import { useNavigateToTop } from "../../hooks/useNavigateToTop"
 
 export const NoTiersList: React.FC = () => {
-   const navigate = useNavigate()
+   const navigate = useNavigateToTop()
 
    const handleClickGoBack = (): void => {
       navigate('/lists')

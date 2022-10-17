@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
-import { Link, useNavigate } from 'react-router-dom'
 import { signup } from '../api/apiUser'
+import { LinkToTop } from '../components/LinkToTop'
 import { useUser } from '../context/UserContext'
+import { useNavigateToTop } from '../hooks/useNavigateToTop'
 
 interface Props {
    tiersClicked: boolean
@@ -10,7 +11,7 @@ interface Props {
 }
 
 export const Signup: React.FC<Props> = ({ tiersClicked, setTiersClicked }) => {
-   const navigate = useNavigate()
+   const navigate = useNavigateToTop()
    const { setUser } = useUser()
    const [username, setUsername] = useState<string>('')
    const [email, setEmail] = useState<string>('')
@@ -61,18 +62,15 @@ export const Signup: React.FC<Props> = ({ tiersClicked, setTiersClicked }) => {
    }
 
    return (
-      <section className="section">
-         <Form
-            style={{ maxWidth: '400px', width: '400px', position: 'relative' }}
-            onSubmit={handleSubmit}
-         >
+      <section className="section signin-section-content article-section-content">
+         <Form onSubmit={handleSubmit}>
             {error && <div className="form-error">{error}</div>}
 
             <Form.Group className="mb-3" controlId="formBasicUsername">
-               <Form.Label>Enter Username</Form.Label>
+               <Form.Label>Username</Form.Label>
                <Form.Control
                   type="text"
-                  placeholder="Enter Username"
+                  placeholder="Enter username"
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) => handleInput(e, setUsername)}
                   required
                />
@@ -81,16 +79,16 @@ export const Signup: React.FC<Props> = ({ tiersClicked, setTiersClicked }) => {
                <Form.Label>Email address</Form.Label>
                <Form.Control
                   type="email"
-                  placeholder="Enter Email"
+                  placeholder="Enter email address"
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) => handleInput(e, setEmail)}
                   required
                />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
-               <Form.Label>Enter Password</Form.Label>
+               <Form.Label>Password</Form.Label>
                <Form.Control
                   type="password"
-                  placeholder="Enter Password"
+                  placeholder="Enter password"
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) => handleInput(e, setPassword)}
                   required
                />
@@ -99,7 +97,7 @@ export const Signup: React.FC<Props> = ({ tiersClicked, setTiersClicked }) => {
                <Form.Label>Re-enter Password </Form.Label>
                <Form.Control
                   type="password"
-                  placeholder="Re-enter Password"
+                  placeholder="Re-enter password"
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                      handleInput(e, setPasswordConf)
                   }
@@ -108,12 +106,12 @@ export const Signup: React.FC<Props> = ({ tiersClicked, setTiersClicked }) => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
                <Form.Text>
-                  Already have an account? <Link to="/signin">Sign In</Link>
+                  Already have an account? <LinkToTop to="/signin">Sign In</LinkToTop>
                </Form.Text>
             </Form.Group>
-            <Button variant="primary" type="submit" disabled={loading}>
-               Submit
-            </Button>
+            <button type="submit" className='button-signin' disabled={loading}>
+               CREATE ACCOUNT
+            </button>
          </Form>
       </section>
    )

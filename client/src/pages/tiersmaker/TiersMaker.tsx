@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { getTiersLists } from '../../api/apiTiersList'
 import { useUser } from '../../context/UserContext'
 import { Lists } from './Lists'
@@ -9,13 +9,14 @@ import { ListDetails } from './ListDetails'
 import { ListNewRate } from './ListNewRate'
 import { NoTiersList } from '../../components/tierlists/NoTiersList'
 import { Loading } from '../../components/Loading'
+import { useNavigateToTop } from '../../hooks/useNavigateToTop'
 
 interface Props {
    setTiersClicked: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const TiersMaker: React.FC<Props> = ({ setTiersClicked }) => {
-   const navigate = useNavigate()
+   const navigate = useNavigateToTop()
    const { user } = useUser()
    const { stateLists, dispatchLists, selectedListId } = useLists()
    const [isLoading, setIsLoading] = useState(true)

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
 import { updateUser } from '../api/apiUser'
 import { useUser } from '../context/UserContext'
+import { useNavigateToTop } from '../hooks/useNavigateToTop'
 
 export const Account: React.FC = () => {
-   const navigate = useNavigate()
+   const navigate = useNavigateToTop()
    const { user, setUser } = useUser()
    const [password, setPassword] = useState<string>('')
    const [passwordConf, setPasswordConf] = useState<string>('')

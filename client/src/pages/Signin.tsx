@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
-import { Link, useNavigate } from 'react-router-dom'
 import { signin } from '../api/apiUser'
+import { LinkToTop } from '../components/LinkToTop'
 import { useUser } from '../context/UserContext'
+import { useNavigateToTop } from '../hooks/useNavigateToTop'
 
 interface Props {
    tiersClicked: boolean
@@ -10,7 +11,7 @@ interface Props {
 }
 
 export const Signin: React.FC<Props> = ({ tiersClicked, setTiersClicked }) => {
-   const navigate = useNavigate()
+   const navigate = useNavigateToTop()
    const { setUser } = useUser()
    const [email, setEmail] = useState<string>('')
    const [password, setPassword] = useState<string>('')
@@ -59,17 +60,14 @@ export const Signin: React.FC<Props> = ({ tiersClicked, setTiersClicked }) => {
    }
 
    return (
-      <section className="section">
-         <Form
-            style={{ maxWidth: '400px', width: '400px', position: 'relative' }}
-            onSubmit={handleSubmit}
-         >
+      <section className="section signin-section-content article-section-content">
+         <Form onSubmit={handleSubmit}>
             {error && <div className="form-error">{error}</div>}
             <Form.Group className="mb-3" controlId="formBasicEmail">
                <Form.Label>Email address</Form.Label>
                <Form.Control
                   type="email"
-                  placeholder="Enter email"
+                  placeholder="Enter email address"
                   onInput={handleInputEmail}
                   required
                />
@@ -78,19 +76,19 @@ export const Signin: React.FC<Props> = ({ tiersClicked, setTiersClicked }) => {
                <Form.Label>Password</Form.Label>
                <Form.Control
                   type="password"
-                  placeholder="Password"
+                  placeholder="Enter password"
                   onInput={handleInputPassword}
                   required
                />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
                <Form.Text>
-                  Don't have an account? <Link to="/signup">Sign Up</Link>
+                  Don't have an account? <LinkToTop to="/signup">Sign Up</LinkToTop>
                </Form.Text>
             </Form.Group>
-            <Button variant="primary" type="submit" disabled={loading}>
-               Submit
-            </Button>
+            <button type="submit" className='button-signin' disabled={loading}>
+               SIGN IN
+            </button>
          </Form>
       </section>
    )
