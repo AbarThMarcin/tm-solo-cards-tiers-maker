@@ -1,59 +1,66 @@
-import React from 'react'
+import { useFilters } from '../../../context/FiltersContext'
 import { RESOURCES } from '../../../data/resources'
-import { FiltersActionInt, FiltersStateInt } from '../../../interfaces/filtersInterface'
 import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
+import Tippy from '@tippyjs/react'
+import unitMicrobe from '../../../assets/images/game/resources/microbe.svg'
+import unitAnimal from '../../../assets/images/game/resources/animal.svg'
+import unitScience from '../../../assets/images/game/resources/science.svg'
+import unitFighter from '../../../assets/images/game/resources/fighter.svg'
 
-interface Props {
-   stateFilters: FiltersStateInt
-   dispatchFilters: React.Dispatch<FiltersActionInt>
-}
+export const FilterUnits: React.FC = () => {
+   const { stateFilters, dispatchFilters } = useFilters()
 
-export const FilterUnits: React.FC<Props> = ({ stateFilters, dispatchFilters }) => {
-      return <div className="d-flex small w-100">
+   return (
+      <div style={{ width: '39.9%' }} className="custom-filters-units custom-filters-rect">
          <div
             className={`pointer ${
-               stateFilters.canHaveUnits.includes(RESOURCES.MICROBE) && 'bg-primary'
+               stateFilters.canHaveUnits.includes(RESOURCES.MICROBE) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_UNIT, payload: RESOURCES.MICROBE })
             }
          >
-            microbe
+            <img src={unitMicrobe} alt="tag_microbe" />
          </div>
          <div
             className={`pointer ${
-               stateFilters.canHaveUnits.includes(RESOURCES.ANIMAL) && 'bg-primary'
+               stateFilters.canHaveUnits.includes(RESOURCES.ANIMAL) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_UNIT, payload: RESOURCES.ANIMAL })
             }
          >
-            animal
+            <img src={unitAnimal} alt="tag_animal" />
          </div>
          <div
             className={`pointer ${
-               stateFilters.canHaveUnits.includes(RESOURCES.SCIENCE) && 'bg-primary'
+               stateFilters.canHaveUnits.includes(RESOURCES.SCIENCE) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_UNIT, payload: RESOURCES.SCIENCE })
             }
          >
-            science
+            <img src={unitScience} alt="tag_science" />
          </div>
          <div
             className={`pointer ${
-               stateFilters.canHaveUnits.includes(RESOURCES.FIGHTER) && 'bg-primary'
+               stateFilters.canHaveUnits.includes(RESOURCES.FIGHTER) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_UNIT, payload: RESOURCES.FIGHTER })
             }
          >
-            fighter
+            <img src={unitFighter} alt="tag_fighter" />
          </div>
-         <button
-            onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.RESET_UNITS })}
-         >
+         <button onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.RESET_UNITS })}>
             <small>RESET UNITS</small>
          </button>
+         <Tippy
+            content="Any cards, a specific resource can be placed to"
+            delay={[200, null]}
+         >
+            <div className="info-question-mark">?</div>
+         </Tippy>
       </div>
+   )
 }

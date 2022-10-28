@@ -1,21 +1,20 @@
-import React from 'react'
-import { FiltersActionInt } from '../../../interfaces/filtersInterface'
+import { useFilters } from '../../../context/FiltersContext'
 import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
 import { debounce } from '../../../utils/debounce'
 
 interface Props {
    searchRef: React.MutableRefObject<HTMLInputElement>
-   dispatchFilters: React.Dispatch<FiltersActionInt>
 }
 
-export const FilterSearch: React.FC<Props> = ({ searchRef, dispatchFilters }) => {
+export const FilterSearch: React.FC<Props> = ({ searchRef }) => {
+   const { dispatchFilters } = useFilters()
 
    const handleChangeSearch = debounce((e: React.ChangeEvent<HTMLInputElement>) =>
       dispatchFilters({ type: ACTIONS_FILTERS.SET_SEARCHVALUE, payload: e.target.value })
    )
 
    return (
-      <input
+      <input style={{ width: '23.9%' }}
          ref={searchRef}
          type="text"
          onChange={handleChangeSearch}

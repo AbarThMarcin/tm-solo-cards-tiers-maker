@@ -4,7 +4,6 @@ import { useModal } from '../../context/ModalContext'
 import { useUser } from '../../context/UserContext'
 import { INPUT_TYPES } from '../../interfaces/modalInterface'
 import { ACTIONS_LISTS } from '../../store/actions/actionsLists'
-import imgTiersListNew from '../../assets/images/pageimages/tiersmaker/img-tiers-list-new.png'
 
 export const ListCreateSnap: React.FC = () => {
    const { dispatchLists, setSelectedListId } = useLists()
@@ -34,13 +33,18 @@ export const ListCreateSnap: React.FC = () => {
    }
 
    return (
-      <div className="d-flex flex-column ms-auto me-auto">
-         <img
-            src={imgTiersListNew}
-            style={{ maxWidth: '100%', maxHeight: '300px', height: 'auto' }}
-            alt="mars-logo-with-list-create"
-         />
-         <button onClick={handleClickCreateList}>CREATE TIERS LIST</button>
+      <div className="list-snap">
+         <div className="bg bg-new">
+            <div className="full-size">
+               <button
+                  style={{ boxShadow: '0 0 30px 10px #000' }}
+                  className="button-light light-green"
+                  onClick={handleClickCreateList}
+               >
+                  CREATE TIERS LIST
+               </button>
+            </div>
+         </div>
       </div>
    )
 }

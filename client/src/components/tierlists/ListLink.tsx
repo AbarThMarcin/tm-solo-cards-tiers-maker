@@ -15,7 +15,8 @@ export const ListLink: React.FC<Props> = ({ list }) => {
    const { user } = useUser()
    const { setModal } = useModal()
 
-   const handleClickDelete = (): void => {
+   const handleClickDelete = (e: React.MouseEvent<HTMLElement>): void => {
+      e.stopPropagation()
       setModal((prev) => ({
          ...prev,
          showInpTxt: false,
@@ -37,20 +38,18 @@ export const ListLink: React.FC<Props> = ({ list }) => {
    }
 
    return (
-      <>
-         <div className="d-flex">
-            <span
-               style={{
-                  color:
-                     list?._id === selectedListId || (!list && !selectedListId) ? 'red' : 'blue',
-               }}
-               className="jakas-klasa-do-linka pointer"
-               onClick={() => setSelectedListId(list ? list._id : null)}
-            >
-               {list ? list.name : '* EMPTY LIST'}
-            </span>
-            {list && <TiDelete size="20px" className="pointer" onClick={handleClickDelete} />}
-         </div>
-      </>
+      <li
+         className={list?._id === selectedListId || (!list && !selectedListId) ? 'selected' : ''}
+         onClick={() => setSelectedListId(list ? list._id : null)}
+      >
+         <span>{list ? list.name : <strong className="light-green">* CREATE NEW LIST</strong>}</span>
+         {list && (
+            <TiDelete
+               size="20px"
+               className="btn-delete-list pointer ms-1"
+               onClick={(e: any) => handleClickDelete(e)}
+            />
+         )}
+      </li>
    )
 }

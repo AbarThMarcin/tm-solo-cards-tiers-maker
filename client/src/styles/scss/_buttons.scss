@@ -1,43 +1,78 @@
 @use 'variables' as v;
 
-.buttons-container {
-   margin-top: 30px;
+.button {
+   margin-inline: 20px;
+   padding-inline: 25px;
+   background-color: transparent;
+   border-radius: 8px;
+   border: 3px solid v.$btn-theme-light;
+   color: v.$btn-theme-light;
+   transition: all 80ms ease-in-out;
+   line-height: 20px;
 }
 
 .button-light {
-   margin-inline: 20px;
-   padding-inline: 25px;
-   min-width: 230px;
+   @extend .button;
    height: 60px;
-   background-color: transparent;
-   border: 3px solid v.$btn-theme-light;
-   border-radius: 8px;
-   color: v.$btn-theme-light;
    font-size: 2.4rem;
-   line-height: 20px;
    margin-block-end: 10px;
-   transition: all 80ms ease-in-out;
+}
+
+.button-modal {
+   @extend .button;
+   height: 45px;
+   font-size: 1.6rem;
+}
+
+.btn-back {
+   position: absolute;
+   left: -20px;
+   top: 0;
+   margin-left: 30px;
+   color: #fff;
    &:hover {
-      background-color: v.$btn-theme-darker;
-      border: 3px solid v.$btn-theme-darker;
+      color: v.$btn-theme-light-red;
+   }
+}
+
+button:hover {
+   background-color: v.$btn-theme-darker;
+   border: 3px solid v.$btn-theme-darker;
+   color: #fff;
+}
+button.red {
+   color: v.$btn-theme-light-red;
+   border: 3px solid v.$btn-theme-light-red;
+   &:hover {
+      background-color: v.$btn-theme-darker-red;
+      border: 3px solid v.$btn-theme-darker-red;
       color: #fff;
    }
-   &.red {
-      color: v.$btn-theme-light-red;
-      border: 3px solid v.$btn-theme-light-red;
-      &:hover {
-         background-color: v.$btn-theme-darker-red;
-         border: 3px solid v.$btn-theme-darker-red;
-         color: #fff;
-      }
+}
+button.green {
+   color: v.$btn-theme-light-green;
+   border: 3px solid v.$btn-theme-light-green;
+   &:hover {
+      background-color: v.$btn-theme-darker-green;
+      border: 3px solid v.$btn-theme-darker-green;
+      color: #fff;
    }
-   &.blue {
-      color: v.$btn-theme-light-blue;
-      border: 3px solid v.$btn-theme-light-blue;
-      &:hover {
-         background-color: v.$btn-theme-darker-blue;
-         border: 3px solid v.$btn-theme-darker-blue;
-         color: #fff;
-      }
+}
+button.light-green {
+   color: v.$btn-theme-light-lightgreen;
+   border: 3px solid v.$btn-theme-light-lightgreen;
+   &:hover {
+      background-color: v.$btn-theme-darker-green;
+      border: 3px solid v.$btn-theme-darker-green;
+      color: #fff;
+   }
+}
+button.grey {
+   color: #333;
+   border: 3px solid #333;
+   &:hover {
+      background-color: v.$btn-theme-darker-red;
+      border: 3px solid v.$btn-theme-darker-red;
+      color: #fff;
    }
 }

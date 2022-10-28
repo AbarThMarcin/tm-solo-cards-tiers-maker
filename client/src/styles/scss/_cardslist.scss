@@ -1,0 +1,390 @@
+@use 'variables' as v;
+
+.custom-title {
+   margin-bottom: calc(v.$nav-height * -1 - 15px);
+   line-height: 1.6rem;
+}
+
+.hidden-filter-line {
+   background-color: rgba($color: #000000, $alpha: 0.3);
+   width: 100%;
+   height: 100%;
+   font-size: 1.5rem;
+   line-height: 1.5rem;
+   font-weight: 500;
+}
+
+.custom-filters-container {
+   font-size: 1.1rem;
+   margin: 0 auto;
+   width: 70%;
+   min-width: 903px;
+   height: 375px;
+   z-index: 1;
+   position: sticky;
+   top: 0;
+   padding-top: calc(v.$nav-height);
+   overflow-y: hidden;
+   transition: height 200ms ease-in-out;
+   transform-origin: left;
+   .custom-filters {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 10px;
+      height: 100%;
+      width: 100%;
+      background-color: rgba($color: #000000, $alpha: 0.9);
+      // All sections
+      & > div {
+         height: 45px;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         gap: 5px;
+         flex-wrap: wrap;
+         border: 2px solid #111;
+         border-radius: 5px;
+         margin: 2px;
+         padding: 2px;
+         div {
+            &:hover {
+               opacity: 0.8;
+            }
+            height: 100%;
+            img {
+               height: 100%;
+               user-select: none;
+            }
+         }
+         input[type='radio'] {
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: #fff;
+            margin: 0;
+            height: 15px;
+            width: 15px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            display: grid;
+            place-content: center;
+            margin-left: 10px;
+            cursor: pointer;
+            &::before {
+               content: '';
+               height: 11px;
+               width: 11px;
+               border-radius: 50%;
+               transform: scale(0);
+               transition: transform 120ms ease-in-out;
+               box-shadow: inset 25px 25px v.$primary-red-dark;
+            }
+            &:checked::before {
+               transform: scale(1);
+            }
+         }
+         label {
+            user-select: none;
+         }
+      }
+      & > div button,
+      & > button {
+         margin-inline: 10px;
+         border-radius: 6px;
+         background-color: rgb(51, 41, 8);
+         color: #fff;
+         padding: 3px 8px;
+         line-height: 1.1rem;
+         font-size: 1.1rem;
+         border: none;
+         &:hover {
+            background-color: rgb(73, 59, 13);
+         }
+         &:active {
+            background-color: rgb(51, 41, 8);
+         }
+      }
+      // Tags & VP filter
+      .custom-filters-rounded > div {
+         border-radius: 50%;
+         &.bg-selected {
+            box-shadow: 0 0 5px 2px rgb(254, 255, 174);
+         }
+         .no-tag {
+            background-color: #111;
+            font-weight: 500;
+            font-size: 0.7rem;
+            aspect-ratio: 1;
+            border: 2px solid #777;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            line-height: 0.7rem;
+            border-radius: 50%;
+         }
+      }
+      // Production filter
+      .custom-filters-rect > div.bg-selected {
+         box-shadow: 0 0 5px 2px rgb(254, 255, 174);
+      }
+      // Cost filter
+      .input-with-arrows {
+         position: relative;
+         width: 65px;
+         &:hover {
+            opacity: 1;
+         }
+         .change-num {
+            position: absolute;
+            height: 16px;
+            right: 3px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            cursor: pointer;
+            &.inc-num {
+               top: 2px;
+            }
+            &.dec-num {
+               bottom: 2px;
+            }
+            &:hover {
+               color: v.$btn-theme-light;
+               opacity: 1;
+            }
+         }
+         .change-num-mln {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 95%;
+            position: absolute;
+            left: 2px;
+            translate: 0 -50%;
+            top: 50%;
+            &:hover {
+               opacity: 1;
+            }
+            input {
+               position: absolute;
+               text-align: center;
+               width: 100%;
+               height: 100%;
+               background: transparent;
+               border: none;
+               color: #000;
+               font-weight: 700;
+               font-size: 1.4rem;
+               &:focus,
+               &:active {
+                  outline: none;
+               }
+               -moz-appearance: textfield;
+               &::-webkit-outer-spin-button,
+               &::-webkit-inner-spin-button {
+                  -webkit-appearance: none;
+                  margin: 0;
+               }
+            }
+         }
+      }
+      // Search box
+      & > input[type='text'] {
+         background-color: #000;
+         border-radius: 6px;
+         outline: none;
+         border: 2px solid #333;
+         color: v.$btn-theme-light;
+         height: 45px;
+         padding-left: 10px;
+         &:focus,
+         :active {
+            border: 2px solid v.$btn-theme-light;
+         }
+      }
+      // Production Filter
+      .custom-filters-production {
+         gap: 10px;
+         & > div > div {
+            position: relative;
+            aspect-ratio: 1;
+            img {
+               position: absolute;
+               &:nth-of-type(2) {
+                  height: 70%;
+                  top: 50%;
+                  left: 50%;
+                  translate: -50% -50%;
+               }
+            }
+            span {
+               position: absolute;
+               top: 50%;
+               left: 50%;
+               translate: -50% -50%;
+               line-height: 1.1rem;
+               color: #000;
+               font-weight: 700;
+            }
+         }
+      }
+      // Production Filter
+      .custom-filters-vp {
+         .opacity-half {
+            opacity: 0.3;
+         }
+         & > div > div {
+            position: relative;
+            aspect-ratio: 1;
+            img {
+               position: absolute;
+            }
+            span {
+               position: absolute;
+               top: 50%;
+               left: 50%;
+               translate: -50% -50%;
+               line-height: 1.1rem;
+               color: #fff;
+               text-shadow: 0 0 5px #000;
+               font-weight: 700;
+               font-size: 0.9rem;
+            }
+         }
+      }
+      // Card Type Filter
+      .custom-filters-cardtype {
+         div {
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: grid;
+            place-content: center;
+            width: 63px;
+         }
+         & div:nth-of-type(1) {
+            background-color: rgb(9, 75, 9);
+            border: 3px solid rgb(5, 43, 5);
+         }
+         & div:nth-of-type(2) {
+            background-color: rgb(11, 27, 80);
+            border: 3px solid rgb(5, 13, 37);
+         }
+         & div:nth-of-type(3) {
+            background-color: rgb(83, 26, 16);
+            border: 3px solid rgb(41, 13, 8);
+         }
+      }
+      // Requirements Filter
+      .custom-filters-req {
+         gap: 5px;
+         & > div {
+            color: #000;
+            font-size: 0.9rem;
+            font-weight: 800;
+            line-height: 1rem;
+            width: 50px;
+            height: 50%;
+            background: rgb(255, 145, 0);
+            background: linear-gradient(
+               90deg,
+               rgba(255, 145, 0, 1) 0%,
+               rgba(255, 214, 0, 1) 50%,
+               rgba(255, 145, 0, 1) 100%
+            );
+            display: grid;
+            place-content: center;
+            border: 2px solid #333;
+            box-shadow: 0 0 0 1px #fff;
+            margin-right: 10px;
+         }
+      }
+      // Parameters Filter
+      .custom-filters-params > div {
+         margin-right: 6px;
+         &.bg-selected {
+            &:not(:has(img)) {
+               box-shadow: 0 0 5px 2px rgb(254, 255, 174);
+            }
+            img {
+               filter: drop-shadow(0 0 4px rgb(254, 255, 174));
+            }
+         }
+      }
+      // Units Filter
+      .custom-filters-units > div {
+         margin-right: 6px;
+      }
+      // Sort By Section
+      .custom-sortby-section {
+         line-height: 1.1rem;
+         div {
+            width: 230px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            button {
+               margin-inline: 4px;
+               padding: 3px 3px;
+               min-width: 70px;
+               line-height: 1rem;
+               display: flex;
+               justify-content: center;
+               align-items: center;
+               &.active {
+                  box-shadow: 0 0 1px 1px rgba($color: #fff, $alpha: 0.5);
+               }
+            }
+         }
+      }
+   }
+   .no-value {
+      background-color: #111;
+      font-weight: 500;
+      font-size: 0.7rem;
+      width: 45px;
+      border: 2px solid #777;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      line-height: 0.7rem;
+   }
+   &.hidden {
+      height: 127px;
+   }
+}
+
+.no-cards {
+   height: 200px;
+   display: grid;
+   place-content: center;
+   font-size: 1.8rem;
+   font-weight: 500;
+}
+
+.info-question-mark {
+   width: 25px;
+   height: 25px !important;
+   display: grid;
+   place-content: center;
+   background-color: #000;
+   border-radius: 50%;
+   border: 2px solid #666;
+   cursor: help;
+}
+
+@media (max-width: 991px) {
+   .custom-filters-container {
+      transform: scale(0.765);
+   }
+}
+
+@media (max-width: 767px) {
+   .custom-filters-container {
+      transform: scale(0.568);
+   }
+}

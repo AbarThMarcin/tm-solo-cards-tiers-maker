@@ -1,4 +1,4 @@
-import imgMars from '../assets/images/pageimages/about/img-about.png'
+import imgMars from '../assets/images/pageimages/home/img-about.png'
 
 export const About: React.FC = () => {
    return (

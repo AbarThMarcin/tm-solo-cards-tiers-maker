@@ -1,19 +1,22 @@
-import React from 'react'
+import { AND_OR, useFilters } from '../../../context/FiltersContext'
 import { PARAMETERS } from '../../../data/parameters'
-import { FiltersActionInt, FiltersStateInt } from '../../../interfaces/filtersInterface'
-import { AND_OR } from '../../../pages/CardsList'
 import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
+import Tippy from '@tippyjs/react'
+import paramTr from '../../../assets/images/game/parameters/tr.svg'
+import paramTemp from '../../../assets/images/game/other/tempIcon.svg'
+import paramOcean from '../../../assets/images/game/tiles/ocean.svg'
+import paramGreenery from '../../../assets/images/game/tiles/greenery.svg'
+import paramOx from '../../../assets/images/game/other/oxIcon.svg'
 
-interface Props {
-   stateFilters: FiltersStateInt
-   dispatchFilters: React.Dispatch<FiltersActionInt>
-}
+export const FilterParams: React.FC = () => {
+   const { stateFilters, dispatchFilters } = useFilters()
 
-export const FilterParams: React.FC<Props> = ({ stateFilters, dispatchFilters }) => {
    return (
-      <div className="d-flex small justify-content-between w-100">
+      <div style={{ width: '59%' }} className="custom-filters-params">
          <div
-            className={`pointer ${stateFilters.parameters.includes(PARAMETERS.TR) && 'bg-primary'}`}
+            className={`pointer ${
+               stateFilters.parameters.includes(PARAMETERS.TR) && 'bg-selected'
+            }`}
             onClick={() =>
                dispatchFilters({
                   type: ACTIONS_FILTERS.TOGGLE_PARAMETER,
@@ -21,11 +24,11 @@ export const FilterParams: React.FC<Props> = ({ stateFilters, dispatchFilters })
                })
             }
          >
-            tr
+            <img src={paramTr} alt="param_tr" />
          </div>
          <div
             className={`pointer ${
-               stateFilters.parameters.includes(PARAMETERS.TEMPERATURE) && 'bg-primary'
+               stateFilters.parameters.includes(PARAMETERS.TEMPERATURE) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({
@@ -34,11 +37,11 @@ export const FilterParams: React.FC<Props> = ({ stateFilters, dispatchFilters })
                })
             }
          >
-            temp
+            <img src={paramTemp} alt="param_temp" />
          </div>
          <div
             className={`pointer ${
-               stateFilters.parameters.includes(PARAMETERS.OCEAN) && 'bg-primary'
+               stateFilters.parameters.includes(PARAMETERS.OCEAN) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({
@@ -47,11 +50,11 @@ export const FilterParams: React.FC<Props> = ({ stateFilters, dispatchFilters })
                })
             }
          >
-            ocean
+            <img src={paramOcean} alt="param_ocean" />
          </div>
          <div
             className={`pointer ${
-               stateFilters.parameters.includes(PARAMETERS.GREENERY) && 'bg-primary'
+               stateFilters.parameters.includes(PARAMETERS.GREENERY) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({
@@ -60,11 +63,11 @@ export const FilterParams: React.FC<Props> = ({ stateFilters, dispatchFilters })
                })
             }
          >
-            green
+            <img src={paramGreenery} alt="param_greenery" />
          </div>
          <div
             className={`pointer ${
-               stateFilters.parameters.includes(PARAMETERS.OXYGEN) && 'bg-primary'
+               stateFilters.parameters.includes(PARAMETERS.OXYGEN) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({
@@ -73,21 +76,26 @@ export const FilterParams: React.FC<Props> = ({ stateFilters, dispatchFilters })
                })
             }
          >
-            ox
+            <img src={paramOx} alt="param_ox" />
          </div>
-         <div
-            className={`pointer ${
-               stateFilters.parameters.includes(PARAMETERS.NONE) && 'bg-primary'
-            }`}
-            onClick={() =>
-               dispatchFilters({
-                  type: ACTIONS_FILTERS.TOGGLE_PARAMETER,
-                  payload: PARAMETERS.NONE,
-               })
-            }
+         <Tippy
+            content="Any cards without any of the following immediate actions / actions: raise TR, raise temperature, place ocean, place greenery, raise oxygen"
+            delay={[200, null]}
          >
-            no param
-         </div>
+            <div
+               className={`pointer ${
+                  stateFilters.parameters.includes(PARAMETERS.NONE) && 'bg-selected'
+               }`}
+               onClick={() =>
+                  dispatchFilters({
+                     type: ACTIONS_FILTERS.TOGGLE_PARAMETER,
+                     payload: PARAMETERS.NONE,
+                  })
+               }
+            >
+               <div className="no-value">NO PARAM</div>
+            </div>
+         </Tippy>
          <input
             type="radio"
             id="paramand"
@@ -100,7 +108,7 @@ export const FilterParams: React.FC<Props> = ({ stateFilters, dispatchFilters })
                })
             }
          />
-         <label htmlFor="paramand">And</label>
+         <label htmlFor="paramand">AND</label>
          <input
             type="radio"
             id="paramor"
@@ -113,10 +121,8 @@ export const FilterParams: React.FC<Props> = ({ stateFilters, dispatchFilters })
                })
             }
          />
-         <label htmlFor="paramor">Or</label>
-         <button
-            onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.RESET_PARAMETERS })}
-         >
+         <label htmlFor="paramor">OR</label>
+         <button onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.RESET_PARAMETERS })}>
             <small>RESET PARAMS</small>
          </button>
       </div>

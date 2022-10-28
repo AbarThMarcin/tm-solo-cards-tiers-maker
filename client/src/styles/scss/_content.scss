@@ -1,0 +1,55 @@
+@use 'variables' as v;
+
+main {
+   min-height: calc(100vh - v.$nav-height);
+}
+.page-container {
+   position: relative;
+   padding: 15px;
+   margin-bottom: 0;
+   min-height: calc(100vh - v.$nav-height);
+   background: v.$bg-content-dark;
+}
+.section {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   min-height: 850px;
+   &:not(:last-of-type) {
+      border-bottom: 2px solid v.$section-divider-clr;
+   }
+}
+
+.full-size {
+   width: 100%;
+   height: 100%;
+}
+
+.center {
+   position: absolute;
+   left: 50%;
+   top: 50%;
+   transform: translate(-50%, -50%) !important;
+}
+
+.pointer {
+   cursor: pointer;
+}
+
+strong {
+   letter-spacing: 1.5px;
+   color: v.$btn-theme-light;
+}
+
+strong.red {
+   color: v.$btn-theme-light-red;
+}
+
+strong.green {
+   color: v.$btn-theme-light-green;
+}
+
+strong.light-green {
+   color: v.$btn-theme-light-lightgreen;
+}

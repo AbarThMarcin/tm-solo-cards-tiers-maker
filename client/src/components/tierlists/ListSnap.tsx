@@ -1,5 +1,4 @@
 import { ListInterface } from '../../interfaces/listInterface'
-import imgTiersList from '../../assets/images/pageimages/tiersmaker/img-tiers-list.png'
 import { useModal } from '../../context/ModalContext'
 import { NoTiersList } from './NoTiersList'
 import { toUrl } from '../../utils/strings'
@@ -38,26 +37,33 @@ export const ListSnap: React.FC = () => {
    }
 
    return (
-      <div className="d-flex flex-column ms-auto me-auto">
+      <div className="list-snap">
          {list ? (
             <>
-               <h3>
-                  <span>{list?.name}</span>
-               </h3>
-               <span>
-                  {list.players.length} {list.players.length === 1 ? 'player' : 'players'}
-               </span>
-               <span>
-                  {208 - list.drawnCardsIds.length}{' '}
-                  {list.drawnCardsIds.length === 207 ? 'card to draw' : 'cards to draw'}
-               </span>
-               <img
-                  src={imgTiersList}
-                  style={{ maxWidth: '100%', maxHeight: '300px', height: 'auto' }}
-                  alt="mars-logo-with-list"
-               />
-               <button onClick={() => navigate(toUrl(list.name))}>EDIT</button>
-               <button onClick={handleClickDelete}>DELETE</button>
+               <div className="bg">
+                  <div className='full-size'>
+                     <h2>
+                        {list?.name}
+                     </h2>
+                     <span>
+                        <strong className="green" style={{ fontSize: '2rem' }}>{list.players.length}</strong>{' '}
+                        {list.players.length === 1 ? 'player' : 'players'}
+                     </span>
+                     <span>
+                        <strong className="green" style={{ fontSize: '2rem' }}>{208 - list.drawnCardsIds.length}</strong>{' '}
+                        {list.drawnCardsIds.length === 207 ? 'card to draw' : 'cards to draw'}
+                     </span>
+                  </div>
+               </div>
+
+               <div>
+                  <button className="button-light green" onClick={() => navigate(toUrl(list.name))}>
+                     EDIT
+                  </button>
+                  <button className="button-light red" onClick={handleClickDelete}>
+                     DELETE
+                  </button>
+               </div>
             </>
          ) : (
             <NoTiersList />

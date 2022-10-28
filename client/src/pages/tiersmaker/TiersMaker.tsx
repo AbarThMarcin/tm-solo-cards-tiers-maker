@@ -8,7 +8,7 @@ import { ACTIONS_LISTS } from '../../store/actions/actionsLists'
 import { ListDetails } from './ListDetails'
 import { ListNewRate } from './ListNewRate'
 import { NoTiersList } from '../../components/tierlists/NoTiersList'
-import { Loading } from '../../components/Loading'
+import { Loading } from '../Loading'
 import { useNavigateToTop } from '../../hooks/useNavigateToTop'
 
 interface Props {
@@ -40,9 +40,9 @@ export const TiersMaker: React.FC<Props> = ({ setTiersClicked }) => {
 
    return (
       <article>
-         <section className="section justify-content-start">
+         <section className="lists-section-content article-section-content justify-content-start">
             {isLoading ? (
-               <Loading />
+               <Loading large={true} forPage={true}/>
             ) : (
                <Routes>
                   <Route

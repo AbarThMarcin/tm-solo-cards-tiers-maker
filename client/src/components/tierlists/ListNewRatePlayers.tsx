@@ -51,7 +51,7 @@ export const ListNewRatePlayers: React.FC<PropsPlayers> = ({
 
    return (
       <>
-         <div className="d-flex justify-content-evenly w-100">
+         <div className="player-inputs">
             {list.players.map((player, idx) => (
                <ListNewRatePlayer
                   key={idx}
@@ -62,10 +62,16 @@ export const ListNewRatePlayers: React.FC<PropsPlayers> = ({
                />
             ))}
          </div>
-         <button onClick={handleClickDone}>DONE</button>
-         {list.players.length > 0 && (
-            <button onClick={handleClickGoBack}>Continue without rates...</button>
-         )}
+         <div className="buttons">
+            <button className="button-light green" onClick={handleClickDone}>
+               DONE
+            </button>
+            {list.players.length > 0 && (
+               <button className="button-light grey" onClick={handleClickGoBack}>
+                  Continue without rates...
+               </button>
+            )}
+         </div>
       </>
    )
 }
@@ -95,6 +101,7 @@ const ListNewRatePlayer: React.FC<PropsPlayer> = ({ idx, player, rates, setRates
       <div>
          <div>{player.name}</div>
          <input
+            className={`${rate?.toLowerCase()}-tier`}
             type="text"
             value={rate || ''}
             onInput={handleInputRate}

@@ -14,9 +14,11 @@ import { useState } from 'react'
 
 interface Props {
    card: CardInterface
+   modal?: boolean
+   newRate?: boolean
 }
 
-export const Card: React.FC<Props> = ({ card }) => {
+export const Card: React.FC<Props> = ({ card, modal = false, newRate = false }) => {
    const [showInfo, setShowInfo] = useState<boolean>(false)
    const immEffectIcon = getImmEffectIcon(card.id)
 
@@ -54,9 +56,10 @@ export const Card: React.FC<Props> = ({ card }) => {
 
    return (
       <div
-         className='card-container'
+         className={`card-container ${modal && 'big'} ${newRate && 'medium'}`}
+         onClick={(e: React.MouseEvent<HTMLElement>) => e.stopPropagation()}
       >
-         <div className={`card full-size card-bg-${card.type}`}>
+         <div className={`card full-size card-bg-${card.type} `}>
             {/* BLACK INSET BORDER */}
             <div className="black-border">
                {/* NAME */}

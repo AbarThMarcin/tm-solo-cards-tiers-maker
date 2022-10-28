@@ -60,36 +60,39 @@ export const Signin: React.FC<Props> = ({ tiersClicked, setTiersClicked }) => {
    }
 
    return (
-      <section className="section signin-section-content article-section-content">
-         <Form onSubmit={handleSubmit}>
-            {error && <div className="form-error">{error}</div>}
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-               <Form.Label>Email address</Form.Label>
-               <Form.Control
-                  type="email"
-                  placeholder="Enter email address"
-                  onInput={handleInputEmail}
-                  required
-               />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-               <Form.Label>Password</Form.Label>
-               <Form.Control
-                  type="password"
-                  placeholder="Enter password"
-                  onInput={handleInputPassword}
-                  required
-               />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-               <Form.Text>
-                  Don't have an account? <LinkToTop to="/signup">Sign Up</LinkToTop>
-               </Form.Text>
-            </Form.Group>
-            <button type="submit" className='button-signin' disabled={loading}>
-               SIGN IN
-            </button>
-         </Form>
-      </section>
+      <>
+         <section className="auth-bg"></section>
+         <section className="section form-section-content article-section-content">
+            <Form onSubmit={handleSubmit}>
+               {error && <div className="form-error">{error}</div>}
+               <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Email address</Form.Label>
+                  <Form.Control
+                     type="email"
+                     placeholder="Enter email address"
+                     onInput={handleInputEmail}
+                     required
+                  />
+               </Form.Group>
+               <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                     type="password"
+                     placeholder="Enter password"
+                     onInput={handleInputPassword}
+                     required
+                  />
+               </Form.Group>
+               <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Text>
+                     Don't have an account? <LinkToTop to="/signup">Sign Up</LinkToTop>
+                  </Form.Text>
+               </Form.Group>
+               <button type="submit" className="button-submit" disabled={loading}>
+                  SIGN IN
+               </button>
+            </Form>
+         </section>
+      </>
    )
 }

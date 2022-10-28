@@ -1,0 +1,549 @@
+@use 'variables' as v;
+
+.lists-section-content {
+   position: relative;
+   header {
+      margin-bottom: 10px;
+      margin-inline: auto;
+      max-width: calc(100% - 50px);
+   }
+   p {
+      margin-inline: 10%;
+   }
+   // Buttons
+   & > .buttons {
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      button {
+         margin-inline: auto;
+         min-width: 300px;
+      }
+   }
+   // Lists page
+   .lists-wrapper {
+      display: flex;
+      margin-top: 30px;
+      .list-links {
+         background-color: rgba($color: #000000, $alpha: 0.1);
+         border: 1px solid rgba($color: #fff, $alpha: 0.03);
+         margin-top: 50px;
+         padding: 15px;
+         position: relative;
+         height: max-content;
+         flex: 1;
+         &::before {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            left: -1px;
+            top: -1px;
+            border-top: 2px solid rgba($color: v.$primary-red-light, $alpha: 0.5);
+            border-left: 2px solid rgba($color: v.$primary-red-light, $alpha: 0.5);
+         }
+         &::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            right: -1px;
+            bottom: -1px;
+            border-bottom: 2px solid rgba($color: v.$primary-red-light, $alpha: 0.5);
+            border-right: 2px solid rgba($color: v.$primary-red-light, $alpha: 0.5);
+         }
+         h4 {
+            text-align: center;
+         }
+         ul {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+            li {
+               position: relative;
+               width: calc(100% - 15px);
+               padding-left: 5px;
+               border-radius: 3px;
+               border: 1px solid #000;
+               cursor: pointer;
+               .btn-delete-list {
+                  position: absolute;
+                  right: 0;
+                  top: 50%;
+                  translate: 120% -50%;
+                  color: rgb(255, 98, 98);
+                  z-index: 1;
+               }
+               &.selected {
+                  border: 1px solid rgba(255, 236, 236, 0.08);
+               }
+               &:hover {
+                  border: 1px solid #000;
+                  background: rgba(255, 236, 236, 0.1);
+                  background: linear-gradient(
+                     90deg,
+                     rgba(255, 236, 236, 0.1) 0%,
+                     rgba(255, 236, 236, 0.07) 65%,
+                     rgba(255, 236, 236, 0) 100%
+                  );
+               }
+            }
+         }
+         .horizontal-line {
+            position: absolute;
+            right: -30px;
+            top: -30px;
+            width: 4px;
+            height: 400px;
+            border-radius: 50%;
+            background: rgb(255, 236, 236);
+            background: linear-gradient(
+               0deg,
+               rgba(255, 236, 236, 0) 0%,
+               rgba(255, 255, 255, 0.1) 50%,
+               rgba(255, 236, 236, 0) 100%
+            );
+         }
+      }
+      .list-snap {
+         margin: 0 auto;
+         flex: 2.5;
+         padding: 30px;
+         position: relative;
+         text-align: center;
+         .bg {
+            margin-inline: auto;
+            width: 100%;
+            height: 300px;
+            background: url('../../assets/images/mars-raw.png') center
+               center / contain no-repeat;
+            margin-bottom: 30px;
+            div {
+               background: radial-gradient(
+                  circle,
+                  rgba(0, 0, 0, 1) 0%,
+                  rgba(0, 0, 0, 0.8) 30%,
+                  transparent 100%
+               );
+               display: flex;
+               flex-direction: column;
+               justify-content: center;
+               align-items: center;
+               text-shadow: 0 0 10px #000, 0 0 10px #000;
+               h2 {
+                  font-size: 2.5rem;
+               }
+               span {
+                  font-size: 1.6rem;
+               }
+            }
+            &.bg-new {
+               background: url('../../assets/images/mars-raw.png')
+                  center center / contain no-repeat;
+            }
+         }
+      }
+   }
+   // List Details page
+   table {
+      margin-inline: auto;
+      th,
+      td {
+         width: fit-content;
+         min-width: 130px;
+         padding: 0 13px;
+         text-align: center;
+         border: v.$table-border;
+         &.add-player:hover {
+            color: v.$btn-theme-light-lightgreen;
+         }
+         position: relative;
+         & > .show-edit-delete {
+            right: 6px;
+            top: 50%;
+            translate: 0 -50%;
+            &.second-icon {
+               right: 23px;
+            }
+            display: none;
+            opacity: 0.5;
+         }
+         & > .filter-btn {
+            top: 50%;
+            translate: 0 -50%;
+            right: 170px;
+            opacity: 0.5;
+         }
+         &:hover > .show-edit-delete,
+         &:hover > .filter-btn {
+            display: block;
+            &:hover {
+               opacity: 1;
+            }
+         }
+         &.red {
+            color: rgb(255, 132, 132);
+         }
+      }
+      th:first-child,
+      td:first-child {
+         padding-right: 37px;
+         min-width: 412px;
+      }
+      th:nth-child(2),
+      td:nth-child(2) {
+         min-width: 110px;
+      }
+      th:last-child,
+      td:last-child {
+         min-width: 160px;
+      }
+      th {
+         padding: 8px 20px;
+         z-index: 2;
+         position: sticky;
+         top: v.$nav-height;
+         background-color: rgb(19, 7, 1);
+         .exclamation {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            translate: -50% -80%;
+            cursor: help;
+            border: 2px solid rgb(255, 132, 132);
+            padding: 5px;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+         }
+         &:first-child .filter {
+            position: absolute;
+            top: 38px;
+            left: 0;
+            width: 100%;
+            input {
+               padding-left: 10px;
+               padding-right: 40px;
+               width: 90%;
+               background-color: rgba($color: #000, $alpha: 0.97);
+               outline: none;
+               border: 2px solid #555;
+               border-radius: 5px;
+               color: #fff;
+            }
+            .delete-filter {
+               top: 50%;
+               translate: 0 -50%;
+               right: 6%;
+            }
+         }
+         .sort-btn {
+            top: 50%;
+            translate: 0 -50%;
+            left: 3px;
+            opacity: 0.5;
+         }
+         &:not(:first-child) div {
+            height: 30px;
+            overflow-y: hidden;
+         }
+      }
+      td.with-rate {
+         font-size: 1.8rem;
+         font-weight: 500;
+      }
+      position: relative;
+      &::before {
+         content: '';
+         position: absolute;
+         width: 150px;
+         height: 150px;
+         max-height: calc(100% + 10px);
+         left: -10px;
+         top: -10px;
+         border-top: 2px solid rgba($color: v.$primary-red-light, $alpha: 0.5);
+         border-left: 2px solid rgba($color: v.$primary-red-light, $alpha: 0.5);
+         border-top-left-radius: 10px;
+      }
+      &::after {
+         content: '';
+         position: absolute;
+         width: 150px;
+         height: 150px;
+         max-height: calc(100% + 10px);
+         right: -10px;
+         bottom: -10px;
+         border-bottom: 2px solid rgba($color: v.$primary-red-light, $alpha: 0.5);
+         border-right: 2px solid rgba($color: v.$primary-red-light, $alpha: 0.5);
+         border-bottom-right-radius: 10px;
+      }
+      tbody {
+         td span {
+            &.s-tier {
+               color: rgb(255, 255, 255);
+            }
+            &.a-tier {
+               color: rgb(83, 244, 255);
+            }
+            &.b-tier {
+               color: rgb(83, 255, 140);
+            }
+            &.c-tier {
+               color: rgb(166, 255, 83);
+            }
+            &.d-tier {
+               color: rgb(255, 229, 83);
+            }
+            &.e-tier {
+               color: rgb(255, 132, 83);
+            }
+            &.f-tier {
+               color: rgb(255, 83, 83);
+            }
+         }
+         td:first-child {
+            padding-left: 52px;
+            div {
+               position: absolute;
+               width: 35px;
+               height: 20px;
+               left: 8px;
+               top: 50%;
+               translate: 0 -50%;
+               border-radius: 35%;
+               box-shadow: 0 0 3px 7px #000;
+               &.green {
+                  background-color: rgb(9, 75, 9);
+               }
+               &.blue {
+                  background-color: rgb(11, 27, 80);
+               }
+               &.red {
+                  background-color: rgb(83, 26, 16);
+               }
+               &.green, &.blue, &.red {
+                  display: grid;
+                  place-items: center;
+                  font-size: 0.9rem;
+               }
+            }
+         }
+      }
+      tfoot td {
+         font-size: 2rem;
+         font-weight: 500;
+         color: v.$btn-theme-light-lightgreen;
+         border-top: v.$table-foot-border;
+         border-bottom: v.$table-foot-border;
+         &:first-child {
+            border-left: v.$table-foot-border;
+         }
+         &:last-child {
+            border-right: v.$table-foot-border;
+         }
+      }
+   }
+
+   .list-not-found {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 700px;
+   }
+
+   // New Rate
+   .card-placeholder {
+      width: 280px;
+      height: 280px * 1.4;
+      background: rgb(61, 61, 61);
+      background: radial-gradient(circle, rgba(21, 21, 21, 0.98) 0%, rgba(8, 8, 8, 0.84) 100%);
+      border: 5px solid #000;
+      box-shadow: 0 0 0 5px #555;
+      border-radius: calc(250px / 16);
+      margin: 40px auto;
+      display: grid;
+      place-items: center;
+      font-size: 12rem;
+      font-family: Teko;
+      user-select: none;
+      &.shake {
+         animation: shake 0.5s infinite;
+      }
+   }
+   .all-cards-drawn {
+      width: 100%;
+      height: 600px;
+      display: grid;
+      place-items: center;
+      font-size: 2.5rem;
+   }
+   .card-drawn-container {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .player-inputs {
+         margin-block: 30px;
+         display: flex;
+         justify-content: space-evenly;
+         width: 100%;
+         flex-wrap: wrap;
+         opacity: 0;
+         animation: animateInputs 500ms ease-in-out 400ms forwards;
+         div {
+            input {
+               background-color: rgba($color: #000, $alpha: 0.9);
+               text-align: center;
+               outline: none;
+               border: 2px solid #555;
+               border-radius: 5px;
+               color: #fff;
+               width: 150px;
+               height: 50px;
+               font-size: 2rem;
+               &:focus {
+                  outline: v.$btn-theme-light-lightgreen solid 2px;
+               }
+               &.s-tier {
+                  color: rgb(255, 255, 255);
+               }
+               &.a-tier {
+                  color: rgb(83, 244, 255);
+               }
+               &.b-tier {
+                  color: rgb(83, 255, 140);
+               }
+               &.c-tier {
+                  color: rgb(166, 255, 83);
+               }
+               &.d-tier {
+                  color: rgb(255, 229, 83);
+               }
+               &.e-tier {
+                  color: rgb(255, 132, 83);
+               }
+               &.f-tier {
+                  color: rgb(255, 83, 83);
+               }
+            }
+            div {
+               text-align: center;
+               font-size: 1.5rem;
+               font-weight: 500;
+               margin-bottom: 5px;
+            }
+         }
+      }
+      .buttons {
+         width: 100%;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         position: relative;
+         opacity: 0;
+         animation: animateInputs 500ms ease-in-out 600ms forwards;
+         button:nth-child(2) {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            translate: 0 -50%;
+            scale: 0.6;
+         }
+      }
+   }
+   .error {
+      color: rgb(197, 31, 31);
+      font-size: 1.5rem;
+      text-align: center;
+   }
+}
+
+@media (max-width: 767px) {
+   .lists-section-content {
+      p {
+         margin-inline: 0;
+      }
+      .lists-wrapper {
+         flex-direction: column;
+         align-items: center;
+         .list-links {
+            width: 100%;
+            ul li {
+               padding-left: 15%;
+            }
+         }
+         .list-snap {
+            margin-inline: 0;
+            &::before {
+               display: none;
+            }
+         }
+      }
+   }
+}
+
+// Dynamic Media Styles
+@media (max-width: 991px) {
+   .lists-section-content {
+      .card-drawn-container .buttons {
+         flex-direction: column;
+         button:nth-child(2) {
+            position: static;
+            translate: 0 0;
+         }
+      }
+      .lists-wrapper .list-snap {
+         flex: 1.7;
+      }
+   }
+}
+
+@keyframes animateInputs {
+   0% {
+      opacity: 0;
+   }
+   100% {
+      opacity: 1;
+   }
+}
+
+@keyframes shake {
+   0% {
+      transform: translate(1px, 1px) rotate(0deg);
+   }
+   10% {
+      transform: translate(-1px, -2px) rotate(-1deg);
+   }
+   20% {
+      transform: translate(-3px, 0px) rotate(1deg);
+   }
+   30% {
+      transform: translate(3px, 2px) rotate(0deg);
+   }
+   40% {
+      transform: translate(1px, -1px) rotate(1deg);
+   }
+   50% {
+      transform: translate(-1px, 2px) rotate(-1deg);
+   }
+   60% {
+      transform: translate(-3px, 1px) rotate(0deg);
+   }
+   70% {
+      transform: translate(3px, 1px) rotate(-1deg);
+   }
+   80% {
+      transform: translate(-1px, -1px) rotate(1deg);
+   }
+   90% {
+      transform: translate(1px, 2px) rotate(0deg);
+   }
+   100% {
+      transform: translate(1px, -2px) rotate(-1deg);
+   }
+}

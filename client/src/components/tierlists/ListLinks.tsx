@@ -6,14 +6,15 @@ export const ListLinks: React.FC = () => {
    const { stateLists } = useLists()
 
    return (
-      <div>
-         <div>TIERS LISTS</div>
-         <div className="flex-column position-relative">
+      <div className='list-links'>
+         <h4>TIERS LISTS</h4>
+         <ul>
             <ListLink />
             {stateLists.map((list, idx) => (
                <ListLink key={idx} list={list} />
             ))}
-         </div>
+         </ul>
+         <div className="horizontal-line"></div>
       </div>
    )
 }

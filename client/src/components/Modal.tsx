@@ -97,7 +97,9 @@ export const Modal: React.FC = () => {
    return (
       <div className="modal-bg">
          <div className="modal-container">
-            <h3>{modal.text}</h3>
+            <h3>
+               <strong>{modal.text}</strong>
+            </h3>
             <form onSubmit={handleSubmit}>
                {modal.showInpTxt && (
                   <input
@@ -108,13 +110,15 @@ export const Modal: React.FC = () => {
                      onFocus={(e: React.ChangeEvent<HTMLInputElement>) => e.target.select()}
                   />
                )}
-               {error && <h4>{error}</h4>}
-               <button type="button" onClick={closeModal}>
-                  CANCEL
-               </button>
-               <button type="submit" autoFocus={!modal.showInpTxt}>
-                  CONTINUE
-               </button>
+               <div className="buttons-container">
+                  <button className="button-modal grey" type="button" onClick={closeModal}>
+                     CANCEL
+                  </button>
+                  <button className="button-modal" type="submit" autoFocus={!modal.showInpTxt}>
+                     CONTINUE
+                  </button>
+               </div>
+               {error && <h4 className='error'>{error}</h4>}
             </form>
          </div>
       </div>

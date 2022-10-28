@@ -4,18 +4,12 @@
    align-items: center;
    width: 90%;
    height: 70%;
+   margin-bottom: 30px;
    // Image
    img {
       height: 450px;
    }
-   // Title & Short Description
-   header h1 {
-      font-family: Teko;
-      letter-spacing: 4px;
-      font-size: 4.5rem;
-      font-style: italic;
-      line-height: 3.8rem;
-   }
+   // Short Description
    p {
       letter-spacing: 1px;
       font-size: 2rem;

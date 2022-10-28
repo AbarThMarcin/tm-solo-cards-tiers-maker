@@ -1,5 +1,5 @@
+import { initFilters } from "../../context/FiltersContext"
 import { FiltersActionInt, FiltersStateInt } from "../../interfaces/filtersInterface"
-import { initFilters } from "../../pages/CardsList"
 import { ACTIONS_FILTERS } from '../actions/actionsFilters'
 
 export const reducerFilters = (state: FiltersStateInt, action: FiltersActionInt): FiltersStateInt => {

@@ -5,7 +5,11 @@ import imgCardsList from '../assets/images/pageimages/home/img-cards-list.png'
 import imgTMSoloGame from '../assets/images/pageimages/home/img-tm-solo-game.png'
 import { useNavigateToTop } from '../hooks/useNavigateToTop'
 
-export const Home: React.FC = () => {
+interface Props {
+   setTiersClicked: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export const Home: React.FC<Props> = ({ setTiersClicked }) => {
    const navigate = useNavigateToTop()
    const { user } = useUser()
 
@@ -18,13 +22,29 @@ export const Home: React.FC = () => {
                   <header className="text-center">
                      <h1>TIERS MAKER</h1>
                   </header>
-                  <p>
-                     Are you in love with terraforming mars solo? Would you like to rate all cards in <strong className='red'>the best 1-player boardgame - TERRAFORMING MARS</strong> on the planet? You are in the right place! Create an account and start your adventure with cards tiers!
+                  <p data-tip="hello world">
+                     Are you in love with terraforming mars solo? Would you like to rate all cards
+                     in{' '}
+                     <strong className="red">
+                        the best 1-player boardgame - TERRAFORMING MARS
+                     </strong>{' '}
+                     on the planet? You are in the right place! Create an account and start your
+                     adventure with cards tiers!
                   </p>
                </div>
             </div>
-            <div className="buttons-container">
-               <button className="button-light red" onClick={() => navigate('/signup')}>
+            <div>
+               <button
+                  className="button-light red"
+                  onClick={() => {
+                     if (user) {
+                        navigate('/lists')
+                     } else {
+                        setTiersClicked(true)
+                        navigate('/signup')
+                     }
+                  }}
+               >
                   {user ? 'GET STARTED' : 'SIGN UP'}
                </button>
             </div>
@@ -37,12 +57,14 @@ export const Home: React.FC = () => {
                      <h1>TERRAFORMING MARS SOLO</h1>
                   </header>
                   <p>
-                     Have you been searching the best solo boardgame ever created? Seek no more! <strong className='blue'>TERRAFORMING MARS</strong> is there and awaits you to have the best possible experience playing a game without other players!
+                     Have you been searching the best solo boardgame ever created? Seek no more!{' '}
+                     <strong className="green">TERRAFORMING MARS</strong> is there and awaits you to
+                     have the best possible experience playing a game without other players!
                   </p>
                </div>
             </div>
-            <div className="buttons-container">
-               <button className="button-light blue" onClick={() => navigate('/about')}>
+            <div>
+               <button className="button-light green" onClick={() => navigate('/about')}>
                   SEE MORE
                </button>
             </div>
@@ -55,11 +77,13 @@ export const Home: React.FC = () => {
                      <h1>CARDS LIST</h1>
                   </header>
                   <p>
-                     Visit the best <strong className='strong'>TERRAFORMING MARS</strong> cards browser there is! Search cards by type, tags, production, resources, requirements and many more!
+                     Visit the best <strong>TERRAFORMING MARS</strong> cards
+                     browser there is! Search cards by type, tags, production, resources,
+                     requirements and many more!
                   </p>
                </div>
             </div>
-            <div className="buttons-container">
+            <div>
                <button className="button-light" onClick={() => navigate('/cards')}>
                   GO TO CARDS LIST
                </button>
@@ -73,12 +97,14 @@ export const Home: React.FC = () => {
                      <h1>TERRAFORMING MARS SOLO - GAME</h1>
                   </header>
                   <p>
-                     Have you ever wondered what would the best boardgame online for one person look like? Here it is: The <strong className='strong blue'>TERRAFORMING MARS SOLO - GAME</strong>!
+                     Have you ever wondered what would the best boardgame online for one person look
+                     like? Here it is: The{' '}
+                     <strong className="strong green">TERRAFORMING MARS SOLO - GAME</strong>!
                   </p>
                </div>
             </div>
-            <div className="buttons-container">
-               <button className="button-light blue" onClick={() => navigate('/tm-solo-game')}>
+            <div>
+               <button className="button-light green" onClick={() => navigate('/tm-solo-game')}>
                   SEE DETAILS
                </button>
                <button

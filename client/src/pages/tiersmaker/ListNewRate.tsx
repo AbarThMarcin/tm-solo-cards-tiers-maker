@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useLists } from '../../context/ListsContext'
 import { NoTiersList } from '../../components/tierlists/NoTiersList'
@@ -15,6 +15,7 @@ import { ListNewRatePlayers } from '../../components/tierlists/ListNewRatePlayer
 import { useModal } from '../../context/ModalContext'
 import { INPUT_TYPES } from '../../interfaces/modalInterface'
 import { useNavigateToTop } from '../../hooks/useNavigateToTop'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export const ListNewRate: React.FC = () => {
    const navigate = useNavigateToTop()
@@ -26,6 +27,7 @@ export const ListNewRate: React.FC = () => {
    const [isLoading, setIsLoading] = useState<boolean>(false)
    const [error, setError] = useState<string>('')
    const [drawnCardId, setDrawnCardId] = useState<number>(-1)
+   const cardPlaceholderRef = useRef<HTMLDivElement>(null!)
 
    const handleClickDrawCard = (manually: boolean = false): void => {
       if (manually) {
@@ -51,6 +53,7 @@ export const ListNewRate: React.FC = () => {
 
       setIsLoading(true)
       setError('')
+      cardPlaceholderRef.current.classList.add('shake')
       const remainingCardsIds: number[] = sequence(1, 208).filter(
          (n) => !list.drawnCardsIds.includes(n)
       )
@@ -91,31 +94,76 @@ export const ListNewRate: React.FC = () => {
 
    return list ? (
       <>
-         <RiArrowGoBackFill className="pointer" onClick={handleClickGoBack} />
-         <div>New card for: {list.name}</div>
+         <RiArrowGoBackFill className="btn-back pointer" onClick={handleClickGoBack} size={40} />
+         <header>
+            <h2>
+               RATE NEW CARD FOR
+               <br />
+               <strong className="green">{list.name}</strong>
+            </h2>
+         </header>
          {drawnCardId > -1 ? (
-            <>
-               <Card card={getCards(CARDS, [drawnCardId])[0]} />
-               <ListNewRatePlayers
-                  list={list}
-                  handleClickGoBack={handleClickGoBack}
-                  drawnCardId={drawnCardId}
-               />
-            </>
-         ) : list.drawnCardsIds.length === 208 ? (
-            <div>All Cards have been drawn</div>
+            <AnimatePresence>
+               <motion.div
+                  key="keyCardDrawnContainer"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="card-drawn-container"
+               >
+                  <Card card={getCards(CARDS, [drawnCardId])[0]} newRate={true} />
+                  <ListNewRatePlayers
+                     list={list}
+                     handleClickGoBack={handleClickGoBack}
+                     drawnCardId={drawnCardId}
+                  />
+               </motion.div>
+            </AnimatePresence>
+         ) : // <div className="card-drawn-container">
+         //    <Card card={getCards(CARDS, [drawnCardId])[0]} newRate={true} />
+         //    <ListNewRatePlayers
+         //       list={list}
+         //       handleClickGoBack={handleClickGoBack}
+         //       drawnCardId={drawnCardId}
+         //    />
+         // </div>
+         list.drawnCardsIds.length === 208 ? (
+            <div className="all-cards-drawn">ALL CARDS HAVE BEEN DRAWN</div>
          ) : (
             <>
-               <span>"NO CARD YET"</span>
-               <button onClick={() => handleClickDrawCard()} disabled={isLoading}>
-                  DRAW CARD
-               </button>
-               <button onClick={() => handleClickDrawCard(true)} disabled={isLoading}>
-                  ADD CARD MANUALLY
-               </button>
+               <AnimatePresence>
+                  <motion.div
+                     key="keyCardPlaceholder"
+                     ref={cardPlaceholderRef}
+                     initial={{ opacity: 0 }}
+                     animate={{ opacity: 1 }}
+                     exit={{ opacity: 0 }}
+                     transition={{ duration: 0.4 }}
+                     className="card-placeholder"
+                  >
+                     ?
+                  </motion.div>
+               </AnimatePresence>
+               <div style={{ marginInline: 'auto', width: 'fit-content' }}>
+                  <button
+                     className="button-light green"
+                     onClick={() => handleClickDrawCard()}
+                     disabled={isLoading}
+                  >
+                     DRAW CARD
+                  </button>
+                  <button
+                     className="button-light grey"
+                     onClick={() => handleClickDrawCard(true)}
+                     disabled={isLoading}
+                  >
+                     ADD CARD MANUALLY
+                  </button>
+               </div>
             </>
          )}
-         {error && <div>{error}</div>}
+         {error && <div className="error">{error}</div>}
       </>
    ) : (
       <NoTiersList />

@@ -100,11 +100,11 @@ export const ListDetailsRate: React.FC<Props> = ({ list, player, card, isIncompl
    }
 
    return (
-      <td className={isIncomplete(player) ? 'bg-dark' : ''}>
+      <td className={!rate ? 'red' : 'with-rate'}>
          {rate ? (
             <>
-               {rate}
-               <AiTwotoneEdit className="pointer" onClick={handleClickEditRate} />
+               <span className={`${rate.toLowerCase()}-tier`}>{rate}</span>
+               <AiTwotoneEdit className="pointer position-absolute show-edit-delete" onClick={handleClickEditRate} size={20} />
             </>
          ) : (
             <div className="pointer" onClick={handleClickAddRate}>

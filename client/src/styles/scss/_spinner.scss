@@ -1,12 +1,17 @@
 .spinner {
-   position: absolute;
-   left: 50%;
-   top: 100px;
-   translate: -50% 0;
+   margin: 0 auto;
    width: 50px;
    height: 50px;
-   &-lg {
-      width: 200px;
-      height: 200px;
-   }
+}
+.spinner-large {
+   width: 200px;
+   height: 200px;
+}
+.spinner-for-cards {
+   margin-top: 40px;
+   margin-bottom: 300px;
+}
+.spinner-for-page {
+   margin-top: 250px;
+   margin-bottom: 300px;
 }

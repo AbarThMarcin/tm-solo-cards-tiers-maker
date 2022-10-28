@@ -1,4 +1,4 @@
-import imgTMSoloGame from '../assets/images/pageimages/timsologame/img-tm-solo-game.png'
+import imgTMSoloGame from '../assets/images/pageimages/tmsologame/img-tm-solo-game.png'
 
 export const TMSoloGame: React.FC = () => {
    return (
@@ -42,7 +42,7 @@ export const TMSoloGame: React.FC = () => {
                   terraforming by the end of generation 14, you lose.
                </li>
             </ol>
-            <div className="buttons-container d-flex justify-content-center">
+            <div className="d-flex justify-content-center">
                <button
                   className="button-light red"
                   onClick={() =>

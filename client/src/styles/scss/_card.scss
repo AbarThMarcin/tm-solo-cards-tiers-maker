@@ -1,6 +1,8 @@
 $width-small: 160px;
-$width-large: 210px;
+$width-medium: 280px;
+$width-large: 410px;
 $unit-small: calc($width-small / 8);
+$unit-medium: calc($width-medium / 8);
 $unit-large: calc($width-large / 8);
 
 .card-container,
@@ -71,7 +73,7 @@ $unit-large: calc($width-large / 8);
          justify-content: center;
          align-items: center;
          font-weight: 900;
-         font-size: 0.75rem;
+         font-size: $unit-small * 0.75;
       }
       .info-section {
          position: absolute;
@@ -239,44 +241,124 @@ $unit-large: calc($width-large / 8);
          }
       }
    }
-   // &.big {
-   //    width: $width-large;
-   //    height: $width-large * 1.4;
-   //    border-radius: $unit-large * 0.5;
-   //    box-shadow: 0 0 $unit-small * 2.5 $unit-small
-   //       rgba(0, 0, 0, 0.8);
-   //    .card {
-   //       border-radius: $width-large * 0.5;
-   //       .black-border {
-   //          inset: $width-large * 0.15;
-   //          border: $width-large * 0.1 solid #000;
-   //          border-radius: $width-large * 0.5 * 0.8;
-   //       }
-   //       .cost {
-   //          font-size: $width-large * 1.1;
-   //       }
-   //       .req {
-   //          border: $width-large * 0.1 solid #333;
-   //          box-shadow: 0 0 0 $width-large * 0.06 #fff;
-   //          font-size: $width-large * 0.8;
-   //       }
-   //       .name {
-   //          font-size: $width-large * 0.73;
-   //          &.mid-long {
-   //             font-size: $width-large * 0.63;
-   //          }
-   //          &.long {
-   //             font-size: $width-large * 0.53;
-   //          }
-   //       }
-   //       .vp-container {
-   //          right: $width-large * 0.1;
-   //          bottom: $width-large * 0.1;
-   //          width: $width-large * 2;
-   //          height: $width-large * 2;
-   //       }
-   //    }
-   // }
+   &.big {
+      width: $width-large;
+      height: $width-large * 1.4;
+      border-radius: $unit-large * 0.5;
+      box-shadow: 0 0 $unit-large * 2.5 $unit-large rgba(0, 0, 0, 0.8);
+      .card {
+         border-radius: $unit-large * 0.5;
+         .black-border {
+            inset: $unit-large * 0.15;
+            border: $unit-large * 0.1 solid #000;
+            border-radius: $unit-large * 0.5 * 0.8;
+         }
+         .cost {
+            font-size: $unit-large * 1.1;
+         }
+         .id {
+            font-size: $unit-large * 0.6;
+         }
+         .info-btn {
+            width: $unit-large * 0.92;
+            height: $unit-large * 0.92;
+            border: $unit-large * 0.05 solid rgba(9, 0, 87, 0.7);
+            font-size: $unit-large * 0.75;
+         }
+         .info-section {
+            font-size: $unit-large * 0.5;
+            span {
+               line-height: $unit-large * 0.5;
+               &:not(:last-of-type) {
+                  margin-bottom: $unit-large * 0.3;
+               }
+            }
+         }
+         .req {
+            border: $unit-large * 0.1 solid #333;
+            box-shadow: 0 0 0 $unit-large * 0.06 #fff;
+            font-size: $unit-large * 0.8;
+         }
+         .name {
+            font-size: $unit-large * 0.73;
+            &.mid-long {
+               font-size: $unit-large * 0.63;
+            }
+            &.long {
+               font-size: $unit-large * 0.53;
+            }
+         }
+         .vp-container {
+            right: $unit-large * 0.1;
+            bottom: $unit-large * 0.1;
+            width: $unit-large * 2;
+            height: $unit-large * 2;
+         }
+         .description {
+            font-size: $unit-large * 0.39;
+            line-height: $unit-large * 0.39;
+         }
+      }
+   }
+   &.medium {
+      width: $width-medium;
+      height: $width-medium * 1.4;
+      border-radius: $unit-medium * 0.5;
+      box-shadow: 0 0 $unit-medium * 2.5 $unit-medium rgba(0, 0, 0, 0.8);
+      .card {
+         border-radius: $unit-medium * 0.5;
+         .black-border {
+            inset: $unit-medium * 0.15;
+            border: $unit-medium * 0.1 solid #000;
+            border-radius: $unit-medium * 0.5 * 0.8;
+         }
+         .cost {
+            font-size: $unit-medium * 1.1;
+         }
+         .id {
+            font-size: $unit-medium * 0.6;
+         }
+         .info-btn {
+            width: $unit-medium * 0.92;
+            height: $unit-medium * 0.92;
+            border: $unit-medium * 0.05 solid rgba(9, 0, 87, 0.7);
+            font-size: $unit-medium * 0.75;
+         }
+         .info-section {
+            font-size: $unit-medium * 0.5;
+            span {
+               line-height: $unit-medium * 0.5;
+               &:not(:last-of-type) {
+                  margin-bottom: $unit-medium * 0.3;
+               }
+            }
+         }
+         .req {
+            border: $unit-medium * 0.1 solid #333;
+            box-shadow: 0 0 0 $unit-medium * 0.06 #fff;
+            font-size: $unit-medium * 0.8;
+         }
+         .name {
+            font-size: $unit-medium * 0.73;
+            &.mid-long {
+               font-size: $unit-medium * 0.63;
+            }
+            &.long {
+               font-size: $unit-medium * 0.53;
+            }
+         }
+         .vp-container {
+            right: $unit-medium * 0.1;
+            bottom: $unit-medium * 0.1;
+            width: $unit-medium * 2;
+            height: $unit-medium * 2;
+         }
+         .description {
+            font-size: $unit-medium * 0.39;
+            line-height: $unit-medium * 0.39;
+         }
+      }
+   }
 
    .card-bg-green {
       background-color: rgb(13, 68, 13);

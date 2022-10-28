@@ -62,57 +62,64 @@ export const Signup: React.FC<Props> = ({ tiersClicked, setTiersClicked }) => {
    }
 
    return (
-      <section className="section signin-section-content article-section-content">
-         <Form onSubmit={handleSubmit}>
-            {error && <div className="form-error">{error}</div>}
+      <>
+         <section className="auth-bg"></section>
+         <section className="section form-section-content article-section-content">
+            <Form onSubmit={handleSubmit}>
+               {error && <div className="form-error">{error}</div>}
 
-            <Form.Group className="mb-3" controlId="formBasicUsername">
-               <Form.Label>Username</Form.Label>
-               <Form.Control
-                  type="text"
-                  placeholder="Enter username"
-                  onInput={(e: React.ChangeEvent<HTMLInputElement>) => handleInput(e, setUsername)}
-                  required
-               />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-               <Form.Label>Email address</Form.Label>
-               <Form.Control
-                  type="email"
-                  placeholder="Enter email address"
-                  onInput={(e: React.ChangeEvent<HTMLInputElement>) => handleInput(e, setEmail)}
-                  required
-               />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-               <Form.Label>Password</Form.Label>
-               <Form.Control
-                  type="password"
-                  placeholder="Enter password"
-                  onInput={(e: React.ChangeEvent<HTMLInputElement>) => handleInput(e, setPassword)}
-                  required
-               />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPasswordConf">
-               <Form.Label>Re-enter Password </Form.Label>
-               <Form.Control
-                  type="password"
-                  placeholder="Re-enter password"
-                  onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                     handleInput(e, setPasswordConf)
-                  }
-                  required
-               />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-               <Form.Text>
-                  Already have an account? <LinkToTop to="/signin">Sign In</LinkToTop>
-               </Form.Text>
-            </Form.Group>
-            <button type="submit" className='button-signin' disabled={loading}>
-               CREATE ACCOUNT
-            </button>
-         </Form>
-      </section>
+               <Form.Group className="mb-3" controlId="formBasicUsername">
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control
+                     type="text"
+                     placeholder="Enter username"
+                     onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleInput(e, setUsername)
+                     }
+                     required
+                  />
+               </Form.Group>
+               <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Email address</Form.Label>
+                  <Form.Control
+                     type="email"
+                     placeholder="Enter email address"
+                     onInput={(e: React.ChangeEvent<HTMLInputElement>) => handleInput(e, setEmail)}
+                     required
+                  />
+               </Form.Group>
+               <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                     type="password"
+                     placeholder="Enter password"
+                     onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleInput(e, setPassword)
+                     }
+                     required
+                  />
+               </Form.Group>
+               <Form.Group className="mb-3" controlId="formBasicPasswordConf">
+                  <Form.Label>Re-enter Password </Form.Label>
+                  <Form.Control
+                     type="password"
+                     placeholder="Re-enter password"
+                     onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleInput(e, setPasswordConf)
+                     }
+                     required
+                  />
+               </Form.Group>
+               <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Text>
+                     Already have an account? <LinkToTop to="/signin">Sign In</LinkToTop>
+                  </Form.Text>
+               </Form.Group>
+               <button type="submit" className="button-submit" disabled={loading}>
+                  CREATE ACCOUNT
+               </button>
+            </Form>
+         </section>
+      </>
    )
 }

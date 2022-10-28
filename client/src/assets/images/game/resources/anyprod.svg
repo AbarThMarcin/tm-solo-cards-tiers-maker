@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.5.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="animal" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 124.7 124.7" style="enable-background:new 0 0 124.7 124.7;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;}
+	.st1{fill:#1F1F1D;}
+	.st2{fill:url(#external-border_00000037683768404672738270000009527691832957928379_);}
+	.st3{fill:url(#internal-border_00000029755880657850992720000008289191344807467151_);}
+	.st4{fill:url(#bg_00000060749323329679132090000016322114370649517489_);}
+	.st5{opacity:0.1;fill:url(#bgPattern_00000083077297010055056800000012221235693933155753_);enable-background:new    ;}
+	.st6{fill:#020203;}
+	.st7{fill:url(#SVGID_1_);}
+	.st8{fill:url(#SVGID_00000085236955602080536770000015522584430122455946_);}
+	.st9{opacity:8.000000e-02;fill:#020203;enable-background:new    ;}
+</style>
+<pattern  y="124.7" width="19.7" height="21.7" patternUnits="userSpaceOnUse" id="Nowy_wzorek" viewBox="0 -21.7 19.7 21.7" style="overflow:visible;">
+	<g>
+		<rect y="-21.7" class="st0" width="19.7" height="21.7"/>
+		<g>
+			<rect y="-21.7" class="st0" width="19.7" height="21.7"/>
+			<g>
+				<rect y="-21.7" class="st0" width="19.7" height="21.7"/>
+				<g>
+					<rect y="-21.7" class="st0" width="19.7" height="21.7"/>
+					<g>
+						<rect y="-21.7" class="st0" width="19.7" height="21.7"/>
+						<path class="st1" d="M16.6-13c2.1,2.1,2.1,5.6,0,7.7l-1.2,1.2C13.3-2,9.8-2,7.6-4.1L3.1-8.7c-2.1-2.1-2.1-5.6,0-7.7l1.2-1.2
+							c2.1-2.1,5.6-2.1,7.7,0L16.6-13z"/>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</pattern>
+<g id="prodBg">
+	
+		<linearGradient id="external-border_00000068679326083770204300000015021736375958817682_" gradientUnits="userSpaceOnUse" x1="124.7421" y1="2222.8193" x2="0.1262" y2="2098.2034" gradientTransform="matrix(1 0 0 1 0 -2098.1614)">
+		<stop  offset="0" style="stop-color:#9D9D9C"/>
+		<stop  offset="0.54" style="stop-color:#010101"/>
+		<stop  offset="1" style="stop-color:#9D9D9C"/>
+	</linearGradient>
+	
+		<rect id="external-border" x="0.2" style="fill:url(#external-border_00000068679326083770204300000015021736375958817682_);" width="124.5" height="124.7"/>
+	
+		<linearGradient id="internal-border_00000103225595245162857360000009710626259735865220_" gradientUnits="userSpaceOnUse" x1="62.4782" y1="2219.5854" x2="62.4782" y2="2101.4553" gradientTransform="matrix(1 0 0 1 0 -2098.1614)">
+		<stop  offset="0" style="stop-color:#452B1A"/>
+		<stop  offset="1" style="stop-color:#B18049"/>
+	</linearGradient>
+	
+		<rect id="internal-border" x="3.4" y="3.3" style="fill:url(#internal-border_00000103225595245162857360000009710626259735865220_);" width="118.2" height="118.1"/>
+	
+		<linearGradient id="bg_00000128473134245490425090000000934199749204966286_" gradientUnits="userSpaceOnUse" x1="62.4253" y1="2216.5959" x2="62.4253" y2="2104.3374" gradientTransform="matrix(1 0 0 1 0 -2098.1614)">
+		<stop  offset="0" style="stop-color:#946137"/>
+		<stop  offset="1" style="stop-color:#7F5026"/>
+	</linearGradient>
+	
+		<rect id="bg" x="6.2" y="6.2" style="fill:url(#bg_00000128473134245490425090000000934199749204966286_);" width="112.4" height="112.3"/>
+	
+		<pattern  id="bgPattern_00000001650297872053371340000011394276124088559536_" xlink:href="#Nowy_wzorek" patternTransform="matrix(1 0 0 1 22.8 18494.002)">
+	</pattern>
+	
+		<rect id="bgPattern" x="6.2" y="6.2" style="opacity:0.1;fill:url(#bgPattern_00000001650297872053371340000011394276124088559536_);enable-background:new    ;" width="112.4" height="112.3"/>
+</g>
+<g id="animal-2">
+	<rect x="22.1" y="21.4" class="st6" width="80.6" height="81.8"/>
+	
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="-2130.0242" y1="4358.7837" x2="-2075.5049" y2="4304.2578" gradientTransform="matrix(0.7071 -0.7071 0.7071 0.7071 -1513.5433 -4487.3677)">
+		<stop  offset="0" style="stop-color:#030303"/>
+		<stop  offset="0.43" style="stop-color:#5C5C5C"/>
+		<stop  offset="1" style="stop-color:#979797"/>
+	</linearGradient>
+	<rect x="24.4" y="23.8" class="st7" width="76" height="77.1"/>
+	
+		<radialGradient id="SVGID_00000061436106254347838500000011716218976113857680_" cx="62.7526" cy="2251.9187" r="34.4861" gradientTransform="matrix(0.9948 0 0 1.0094 8.800172e-04 -2210.7598)" gradientUnits="userSpaceOnUse">
+		<stop  offset="0.25" style="stop-color:#979797"/>
+		<stop  offset="1" style="stop-color:#4A4A4A"/>
+	</radialGradient>
+	
+		<rect x="28.1" y="27.5" style="fill:url(#SVGID_00000061436106254347838500000011716218976113857680_);" width="68.6" height="69.6"/>
+	<path id="darker_00000093176510737370214020000011027203265727817627_" class="st9" d="M100.4,100.9h-76V58.7c0,0,23.9,3.7,38,3.7
+		s38-3.7,38-3.7V100.9z"/>
+</g>
+<g>
+	<path d="M40.5,69.3V58.2h10.9v11.1H40.5z"/>
+	<path d="M57.7,69.3V58.2h10.9v11.1H57.7z"/>
+	<path d="M75,69.3V58.2h10.9v11.1H75z"/>
+</g>
+</svg>

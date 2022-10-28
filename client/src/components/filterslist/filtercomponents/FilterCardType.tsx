@@ -1,19 +1,15 @@
-import React from 'react'
+import { useFilters } from '../../../context/FiltersContext'
 import { CARD_TYPES } from '../../../data/cards'
-import { FiltersActionInt, FiltersStateInt } from '../../../interfaces/filtersInterface'
 import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
 
-interface Props {
-   stateFilters: FiltersStateInt
-   dispatchFilters: React.Dispatch<FiltersActionInt>
-}
+export const FilterCardType: React.FC = () => {
+   const { stateFilters, dispatchFilters } = useFilters()
 
-export const FilterCardType: React.FC<Props> = ({ stateFilters, dispatchFilters }) => {
    return (
-      <div className="d-flex small w-100">
+      <div style={{ width: '25.9%' }} className="custom-filters-cardtype custom-filters-rect">
          <div
             className={`pointer ${
-               stateFilters.cardTypes.includes(CARD_TYPES.GREEN) && 'bg-primary'
+               stateFilters.cardTypes.includes(CARD_TYPES.GREEN) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({
@@ -22,11 +18,11 @@ export const FilterCardType: React.FC<Props> = ({ stateFilters, dispatchFilters 
                })
             }
          >
-            automated
+            auto
          </div>
          <div
             className={`pointer ms-2 ${
-               stateFilters.cardTypes.includes(CARD_TYPES.BLUE) && 'bg-primary'
+               stateFilters.cardTypes.includes(CARD_TYPES.BLUE) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({
@@ -39,7 +35,7 @@ export const FilterCardType: React.FC<Props> = ({ stateFilters, dispatchFilters 
          </div>
          <div
             className={`pointer ms-2 ${
-               stateFilters.cardTypes.includes(CARD_TYPES.RED) && 'bg-primary'
+               stateFilters.cardTypes.includes(CARD_TYPES.RED) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({

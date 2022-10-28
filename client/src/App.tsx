@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 import { useModal } from './context/ModalContext'
 import { About } from './pages/About'
 import { Account } from './pages/Account'
-import { CardsList } from './pages/CardsList'
+import { CardsListPage } from './pages/CardsListPage'
 import { Home } from './pages/Home'
 import { NoMatch } from './pages/NoMatch'
 import { Signin } from './pages/Signin'
@@ -14,25 +14,35 @@ import { TMSoloGame } from './pages/TMSoloGame'
 import { Modal } from './components/Modal'
 import { Footer } from './components/Footer'
 import { NavBar } from './components/NavBar'
+import { FiltersProvider } from './context/FiltersContext'
+import { ModalCard } from './components/ModalCard'
 
 export const App: React.FC = () => {
    const [tiersClicked, setTiersClicked] = useState(false)
-   const { modal } = useModal()
+   const { modal, modalCardId } = useModal()
 
    return (
       <>
          <NavBar setTiersClicked={setTiersClicked} />
          <main>
-            <Container className='section-container'>
+            <Container className="page-container">
                <Routes>
-                  <Route index element={<Home />} />
-                  <Route path="home" element={<Home />} />
+                  <Route index element={<Home setTiersClicked={setTiersClicked} />} />
+                  <Route path="home" element={<Home setTiersClicked={setTiersClicked} />} />
                   <Route path="about" element={<About />} />
                   <Route
                      path="lists/*"
                      element={<TiersMaker setTiersClicked={setTiersClicked} />}
                   />
-                  <Route path="cards" element={<CardsList />} />
+
+                  <Route
+                     path="cards"
+                     element={
+                        <FiltersProvider>
+                           <CardsListPage />
+                        </FiltersProvider>
+                     }
+                  />
                   <Route path="tm-solo-game" element={<TMSoloGame />} />
                   <Route
                      path="signin"
@@ -53,6 +63,7 @@ export const App: React.FC = () => {
          </main>
          <Footer />
          {modal.show && <Modal />}
+         {modalCardId !== 0 && <ModalCard />}
       </>
    )
 }

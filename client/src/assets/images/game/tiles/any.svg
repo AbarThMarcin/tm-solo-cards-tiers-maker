@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.5.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="ocean" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 103.7 119.7" style="enable-background:new 0 0 103.7 119.7;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#SVGID_1_);}
+	.st1{fill:url(#SVGID_00000142150968521007043470000010885795843181425077_);}
+</style>
+<g id="ocean_00000127009148237097876030000010990688086464965300_">
+	<polygon points="103.7,89.8 103.7,29.9 51.9,0 0,29.9 0,89.8 51.9,119.7 	"/>
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="51.9" y1="3.8803" x2="51.9" y2="115.8199">
+		<stop  offset="0" style="stop-color:#969696"/>
+		<stop  offset="1" style="stop-color:#000000"/>
+	</linearGradient>
+	<polygon class="st0" points="100.4,87.9 100.4,31.9 51.9,3.9 3.4,31.9 3.4,87.9 51.9,115.8 	"/>
+	
+		<radialGradient id="SVGID_00000181087609373780815670000012088087589172690106_" cx="51.85" cy="59.8501" r="48.2482" gradientUnits="userSpaceOnUse">
+		<stop  offset="0" style="stop-color:#969696"/>
+		<stop  offset="0.25" style="stop-color:#969696"/>
+		<stop  offset="1" style="stop-color:#4A4A4A"/>
+	</radialGradient>
+	<polygon style="fill:url(#SVGID_00000181087609373780815670000012088087589172690106_);" points="96.5,85.6 96.5,34.1 51.9,8.2 
+		7.2,34.1 7.2,85.6 51.9,111.5 	"/>
+</g>
+<g>
+	<path d="M16.8,68.3V51.4h16.9v16.9H16.8z"/>
+	<path d="M43.4,68.3V51.4h16.9v16.9H43.4z"/>
+	<path d="M70.1,68.3V51.4H87v16.9H70.1z"/>
+</g>
+</svg>

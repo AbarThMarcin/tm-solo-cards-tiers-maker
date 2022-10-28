@@ -1,20 +1,23 @@
-import React from 'react'
+import { AND_OR, useFilters } from '../../../context/FiltersContext'
 import { REQUIREMENTS } from '../../../data/requirements'
-import { FiltersActionInt, FiltersStateInt } from '../../../interfaces/filtersInterface'
-import { AND_OR } from '../../../pages/CardsList'
 import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
+import Tippy from '@tippyjs/react'
+import reqTemp from '../../../assets/images/game/other/tempIcon.svg'
+import reqOx from '../../../assets/images/game/other/oxIcon.svg'
+import reqOcean from '../../../assets/images/game/tiles/ocean.svg'
+import reqTags from '../../../assets/images/game/tags/any.svg'
+import reqProd from '../../../assets/images/game/resources/anyprod.svg'
+import reqRes from '../../../assets/images/game/resources/any.svg'
+import reqBoard from '../../../assets/images/game/tiles/any.svg'
 
-interface Props {
-   stateFilters: FiltersStateInt
-   dispatchFilters: React.Dispatch<FiltersActionInt>
-}
+export const FilterReqs: React.FC = () => {
+   const { stateFilters, dispatchFilters } = useFilters()
 
-export const FilterReqs: React.FC<Props> = ({ stateFilters, dispatchFilters }) => {
    return (
-      <div className="d-flex small justify-content-between w-100">
+      <div style={{ width: '100%' }} className="custom-filters-req custom-filters-rect">
          <div
             className={`pointer ${
-               stateFilters.requirements.includes(REQUIREMENTS.TEMPERATURE) && 'bg-primary'
+               stateFilters.requirements.includes(REQUIREMENTS.TEMPERATURE) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({
@@ -23,11 +26,11 @@ export const FilterReqs: React.FC<Props> = ({ stateFilters, dispatchFilters }) =
                })
             }
          >
-            temp
+            <img style={{ height: '40px' }} src={reqTemp} alt="icon_temp" />
          </div>
          <div
             className={`pointer ${
-               stateFilters.requirements.includes(REQUIREMENTS.OXYGEN) && 'bg-primary'
+               stateFilters.requirements.includes(REQUIREMENTS.OXYGEN) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({
@@ -36,31 +39,31 @@ export const FilterReqs: React.FC<Props> = ({ stateFilters, dispatchFilters }) =
                })
             }
          >
-            ox
+            <img style={{ height: '35px' }} src={reqOx} alt="icon_ox" />
          </div>
          <div
             className={`pointer ${
-               stateFilters.requirements.includes(REQUIREMENTS.OCEAN) && 'bg-primary'
+               stateFilters.requirements.includes(REQUIREMENTS.OCEAN) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_REQ, payload: REQUIREMENTS.OCEAN })
             }
          >
-            ocean
+            <img style={{ height: '35px' }} src={reqOcean} alt="icon_ocean" />
          </div>
          <div
             className={`pointer ${
-               stateFilters.requirements.includes(REQUIREMENTS.TAGS) && 'bg-primary'
+               stateFilters.requirements.includes(REQUIREMENTS.TAGS) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_REQ, payload: REQUIREMENTS.TAGS })
             }
          >
-            tags
+            <img style={{ height: '33px' }} src={reqTags} alt="icon_tags" />
          </div>
          <div
             className={`pointer ${
-               stateFilters.requirements.includes(REQUIREMENTS.PRODUCTION) && 'bg-primary'
+               stateFilters.requirements.includes(REQUIREMENTS.PRODUCTION) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({
@@ -69,50 +72,65 @@ export const FilterReqs: React.FC<Props> = ({ stateFilters, dispatchFilters }) =
                })
             }
          >
-            prod
+            <img style={{ height: '33px' }} src={reqProd} alt="icon_prod" />
          </div>
-         <div
-            className={`pointer ${
-               stateFilters.requirements.includes(REQUIREMENTS.RESOURCES) && 'bg-primary'
-            }`}
-            onClick={() =>
-               dispatchFilters({
-                  type: ACTIONS_FILTERS.TOGGLE_REQ,
-                  payload: REQUIREMENTS.RESOURCES,
-               })
-            }
+         <Tippy
+            content="Any cards with resources requirements, i.e. Moss (you need 1 plant in order to be able to play that card)"
+            delay={[200, null]}
          >
-            res
-         </div>
-         <div
-            className={`pointer ${
-               stateFilters.requirements.includes(REQUIREMENTS.BOARD) && 'bg-primary'
-            }`}
-            onClick={() =>
-               dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_REQ, payload: REQUIREMENTS.BOARD })
-            }
+            <div
+               className={`pointer ${
+                  stateFilters.requirements.includes(REQUIREMENTS.RESOURCES) && 'bg-selected'
+               }`}
+               onClick={() =>
+                  dispatchFilters({
+                     type: ACTIONS_FILTERS.TOGGLE_REQ,
+                     payload: REQUIREMENTS.RESOURCES,
+                  })
+               }
+            >
+               <img style={{ height: '29px' }} src={reqRes} alt="icon_res" />
+            </div>
+         </Tippy>
+         <Tippy
+            content="Any cards with board requirements, which are all cards that allows you to place a city, greenery or a special tile on the Tharsis planet"
+            delay={[200, null]}
          >
-            board
-         </div>
-         <div
-            className={`pointer ${
-               stateFilters.requirements.includes(REQUIREMENTS.OTHER) && 'bg-primary'
-            }`}
-            onClick={() =>
-               dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_REQ, payload: REQUIREMENTS.OTHER })
-            }
+            <div
+               className={`pointer ${
+                  stateFilters.requirements.includes(REQUIREMENTS.BOARD) && 'bg-selected'
+               }`}
+               onClick={() =>
+                  dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_REQ, payload: REQUIREMENTS.BOARD })
+               }
+            >
+               <img style={{ height: '33px' }} src={reqBoard} alt="icon_board" />
+            </div>
+         </Tippy>
+         <Tippy
+            content="Any cards with special, not listed, requirements, which are: Robotic Workforce (86), Ecological Zone (128), CEO's Favourite Project (149) and Rad-Suits (186)"
+            delay={[200, null]}
          >
-            other
-         </div>
+            <div
+               className={`pointer ${
+                  stateFilters.requirements.includes(REQUIREMENTS.OTHER) && 'bg-selected'
+               }`}
+               onClick={() =>
+                  dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_REQ, payload: REQUIREMENTS.OTHER })
+               }
+            >
+               OTHER
+            </div>
+         </Tippy>
          <div
             className={`pointer ${
-               stateFilters.requirements.includes(REQUIREMENTS.NONE) && 'bg-primary'
+               stateFilters.requirements.includes(REQUIREMENTS.NONE) && 'bg-selected'
             }`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_REQ, payload: REQUIREMENTS.NONE })
             }
          >
-            no req
+            NO REQ
          </div>
          <input
             type="radio"
@@ -123,7 +141,7 @@ export const FilterReqs: React.FC<Props> = ({ stateFilters, dispatchFilters }) =
                dispatchFilters({ type: ACTIONS_FILTERS.SET_REQ_ANDOR, payload: AND_OR.AND })
             }
          />
-         <label htmlFor="reqand">And</label>
+         <label htmlFor="reqand">AND</label>
          <input
             type="radio"
             id="reqor"
@@ -133,7 +151,7 @@ export const FilterReqs: React.FC<Props> = ({ stateFilters, dispatchFilters }) =
                dispatchFilters({ type: ACTIONS_FILTERS.SET_REQ_ANDOR, payload: AND_OR.OR })
             }
          />
-         <label htmlFor="reqor">Or</label>
+         <label htmlFor="reqor">OR</label>
          <button onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.RESET_REQS })}>
             <small>RESET REQS</small>
          </button>

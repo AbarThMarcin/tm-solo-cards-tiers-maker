@@ -76,42 +76,47 @@ export const ListDetails: React.FC = () => {
       navigate('/lists')
    }
 
-   return (
-      <div className="w-100">
-         {list ? (
-            <>
-               {/* Go Back Button */}
-               <RiArrowGoBackFill className="pointer" onClick={handleClickGoBack} />
-               {/* Tiers List Name */}
-               <h1
-                  className="text-center ms-auto me-auto pointer ps-5 pe-5 position-relative"
-                  style={{ width: 'max-content' }}
-                  onMouseEnter={() => setEditNameMode(true)}
-                  onMouseLeave={() => setEditNameMode(false)}
-               >
-                  {list?.name}
-                  {editNameMode && (
-                     <div
-                        className="position-absolute h-100 d-flex justify-content-center align-items-center"
-                        style={{ aspectRatio: '1', right: '0', top: '0' }}
-                        onClick={handleClickEditListName}
-                     >
-                        <AiTwotoneEdit className="w-75 h-75" />
-                     </div>
-                  )}
-               </h1>
-               {/* Table with buttons */}
-               <ListDetailsTable list={list} handleClickAddPlayer={handleClickAddPlayer} />
-               {list.drawnCardsIds.length < 208 && (
-                  <button onClick={() => navigate('new-rate')}>RATE NEW CARD</button>
+   return list ? (
+      <>
+         {/* Go Back Button */}
+         <RiArrowGoBackFill className="btn-back pointer" onClick={handleClickGoBack} size={40} />
+         {/* Tiers List Name */}
+         <header style={{ marginBottom: '30px' }}>
+            <h1
+               className="text-center ms-auto me-auto ps-5 pe-5 position-relative"
+               style={{ width: 'max-content' }}
+               onMouseEnter={() => setEditNameMode(true)}
+               onMouseLeave={() => setEditNameMode(false)}
+            >
+               {list?.name}
+               {editNameMode && (
+                  <div
+                     className="position-absolute h-100 d-flex justify-content-center align-items-center pointer"
+                     style={{ aspectRatio: '1', right: '-20px', top: '0' }}
+                     onClick={handleClickEditListName}
+                  >
+                     <AiTwotoneEdit className="w-75 h-75" />
+                  </div>
                )}
-               {list.players.length < 5 && (
-                  <button onClick={handleClickAddPlayer}>ADD NEW PLAYER</button>
-               )}
-            </>
-         ) : (
-            <NoTiersList />
-         )}
-      </div>
+            </h1>
+         </header>
+         {/* Buttons */}
+         <div className='buttons'>
+            {list.drawnCardsIds.length < 208 && (
+               <button className="button-light green" onClick={() => navigate('new-rate')}>
+                  RATE NEW CARD
+               </button>
+            )}
+            {list.players.length < 5 && (
+               <button className="button-light" onClick={handleClickAddPlayer}>
+                  ADD NEW PLAYER
+               </button>
+            )}
+         </div>
+         {/* Table */}
+         <ListDetailsTable list={list} handleClickAddPlayer={handleClickAddPlayer} />
+      </>
+   ) : (
+      <NoTiersList />
    )
 }

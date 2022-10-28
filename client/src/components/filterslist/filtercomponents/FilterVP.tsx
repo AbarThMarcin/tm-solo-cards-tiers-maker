@@ -1,27 +1,29 @@
-import React from 'react'
-import { FiltersActionInt, FiltersStateInt } from '../../../interfaces/filtersInterface'
-import { NEG_ALL_POS } from '../../../pages/CardsList'
+import { NEG_ALL_POS, useFilters } from '../../../context/FiltersContext'
 import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
+import vpAny from '../../../assets/images/game/vp/any.svg'
 
-interface Props {
-   stateFilters: FiltersStateInt
-   dispatchFilters: React.Dispatch<FiltersActionInt>
-}
+export const FilterVP: React.FC = () => {
+   const { stateFilters, dispatchFilters } = useFilters()
 
-export const FilterVP: React.FC<Props> = ({ stateFilters, dispatchFilters }) => {
    return (
-      <div className="d-flex small w-100">
+      <div className="custom-filters-vp custom-filters-rounded" style={{ width: '40%' }}>
          <div
-            className={`pointer ${stateFilters.vp && 'bg-primary'}`}
+            className={`pointer ${stateFilters.vp && 'bg-selected'}`}
             onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_VP, payload: 'true' })}
          >
-            VP
+            <div>
+               <img src={vpAny} alt="vp_any" />
+               <span>VP</span>
+            </div>
          </div>
          <div
-            className={`pointer ${stateFilters.vp === false && 'bg-primary'}`}
+            className={`pointer ${stateFilters.vp === false && 'bg-selected'}`}
             onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_VP, payload: 'false' })}
          >
-            NO VP
+            <div>
+               <img src={vpAny} alt="vp_any" />
+               <span>NOVP</span>
+            </div>
          </div>
          <input
             type="radio"
@@ -35,8 +37,9 @@ export const FilterVP: React.FC<Props> = ({ stateFilters, dispatchFilters }) => 
                })
             }
             disabled={!stateFilters.vp}
+            className={!stateFilters.vp ? 'opacity-half' : ''}
          />
-         <label htmlFor="vpneg">NEGATIVE</label>
+         <label htmlFor="vpneg" className={!stateFilters.vp ? 'opacity-half' : ''}>NEGATIVE</label>
          <input
             type="radio"
             id="vpall"
@@ -49,8 +52,9 @@ export const FilterVP: React.FC<Props> = ({ stateFilters, dispatchFilters }) => 
                })
             }
             disabled={!stateFilters.vp}
+            className={!stateFilters.vp ? 'opacity-half' : ''}
          />
-         <label htmlFor="vpall">ALL</label>
+         <label htmlFor="vpall" className={!stateFilters.vp ? 'opacity-half' : ''}>ALL</label>
          <input
             type="radio"
             id="vppos"
@@ -63,8 +67,9 @@ export const FilterVP: React.FC<Props> = ({ stateFilters, dispatchFilters }) => 
                })
             }
             disabled={!stateFilters.vp}
+            className={!stateFilters.vp ? 'opacity-half' : ''}
          />
-         <label htmlFor="vppos">POSITIVE</label>
+         <label htmlFor="vppos" className={!stateFilters.vp ? 'opacity-half' : ''}>POSITIVE</label>
       </div>
    )
 }

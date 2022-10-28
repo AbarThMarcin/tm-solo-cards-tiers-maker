@@ -1,112 +1,118 @@
-import React from 'react'
+import { AND_OR, useFilters } from '../../../context/FiltersContext'
 import { TAGS } from '../../../data/tags'
-import { FiltersActionInt, FiltersStateInt } from '../../../interfaces/filtersInterface'
-import { AND_OR } from '../../../pages/CardsList'
 import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
+import tagBuilding from '../../../assets/images/game/tags/building.svg'
+import tagSpace from '../../../assets/images/game/tags/space.svg'
+import tagScience from '../../../assets/images/game/tags/science.svg'
+import tagPlant from '../../../assets/images/game/tags/plant.svg'
+import tagMicrobe from '../../../assets/images/game/tags/microbe.svg'
+import tagAnimal from '../../../assets/images/game/tags/animal.svg'
+import tagPower from '../../../assets/images/game/tags/power.svg'
+import tagJovian from '../../../assets/images/game/tags/jovian.svg'
+import tagEarth from '../../../assets/images/game/tags/earth.svg'
+import tagCity from '../../../assets/images/game/tags/city.svg'
+import tagEvent from '../../../assets/images/game/tags/event.svg'
 
-interface Props {
-   stateFilters: FiltersStateInt
-   dispatchFilters: React.Dispatch<FiltersActionInt>
-}
+export const FilterTags: React.FC = () => {
+   const { stateFilters, dispatchFilters } = useFilters()
 
-export const FilterTags: React.FC<Props> = ({ stateFilters, dispatchFilters }) => {
    return (
-      <div className="d-flex small justify-content-between w-100">
+      <div className="custom-filters-rounded" style={{ width: '100%' }}>
          <div
-            className={`pointer ${stateFilters.tags.includes(TAGS.BUILDING) && 'bg-primary'}`}
+            className={`pointer ${stateFilters.tags.includes(TAGS.BUILDING) && 'bg-selected'}`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_TAG, payload: TAGS.BUILDING })
             }
          >
-            building
+            <img src={tagBuilding} alt="tag_building" />
          </div>
          <div
-            className={`pointer ${stateFilters.tags.includes(TAGS.SPACE) && 'bg-primary'}`}
+            className={`pointer ${stateFilters.tags.includes(TAGS.SPACE) && 'bg-selected'}`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_TAG, payload: TAGS.SPACE })
             }
          >
-            space
+            <img src={tagSpace} alt="tag_space" />
          </div>
          <div
-            className={`pointer ${stateFilters.tags.includes(TAGS.SCIENCE) && 'bg-primary'}`}
+            className={`pointer ${stateFilters.tags.includes(TAGS.SCIENCE) && 'bg-selected'}`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_TAG, payload: TAGS.SCIENCE })
             }
          >
-            science
+            <img src={tagScience} alt="tag_science" />
          </div>
          <div
-            className={`pointer ${stateFilters.tags.includes(TAGS.PLANT) && 'bg-primary'}`}
+            className={`pointer ${stateFilters.tags.includes(TAGS.PLANT) && 'bg-selected'}`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_TAG, payload: TAGS.PLANT })
             }
          >
-            plant
+            <img src={tagPlant} alt="tag_plant" />
          </div>
          <div
-            className={`pointer ${stateFilters.tags.includes(TAGS.MICROBE) && 'bg-primary'}`}
+            className={`pointer ${stateFilters.tags.includes(TAGS.MICROBE) && 'bg-selected'}`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_TAG, payload: TAGS.MICROBE })
             }
          >
-            microbe
+            <img src={tagMicrobe} alt="tag_microbe" />
          </div>
          <div
-            className={`pointer ${stateFilters.tags.includes(TAGS.ANIMAL) && 'bg-primary'}`}
+            className={`pointer ${stateFilters.tags.includes(TAGS.ANIMAL) && 'bg-selected'}`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_TAG, payload: TAGS.ANIMAL })
             }
          >
-            animal
+            <img src={tagAnimal} alt="tag_animal" />
          </div>
          <div
-            className={`pointer ${stateFilters.tags.includes(TAGS.POWER) && 'bg-primary'}`}
+            className={`pointer ${stateFilters.tags.includes(TAGS.POWER) && 'bg-selected'}`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_TAG, payload: TAGS.POWER })
             }
          >
-            power
+            <img src={tagPower} alt="tag_power" />
          </div>
          <div
-            className={`pointer ${stateFilters.tags.includes(TAGS.JOVIAN) && 'bg-primary'}`}
+            className={`pointer ${stateFilters.tags.includes(TAGS.JOVIAN) && 'bg-selected'}`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_TAG, payload: TAGS.JOVIAN })
             }
          >
-            jovian
+            <img src={tagJovian} alt="tag_jovian" />
          </div>
          <div
-            className={`pointer ${stateFilters.tags.includes(TAGS.EARTH) && 'bg-primary'}`}
+            className={`pointer ${stateFilters.tags.includes(TAGS.EARTH) && 'bg-selected'}`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_TAG, payload: TAGS.EARTH })
             }
          >
-            earth
+            <img src={tagEarth} alt="tag_earth" />
          </div>
          <div
-            className={`pointer ${stateFilters.tags.includes(TAGS.CITY) && 'bg-primary'}`}
+            className={`pointer ${stateFilters.tags.includes(TAGS.CITY) && 'bg-selected'}`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_TAG, payload: TAGS.CITY })
             }
          >
-            city
+            <img src={tagCity} alt="tag_city" />
          </div>
          <div
-            className={`pointer ${stateFilters.tags.includes(TAGS.EVENT) && 'bg-primary'}`}
+            className={`pointer ${stateFilters.tags.includes(TAGS.EVENT) && 'bg-selected'}`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_TAG, payload: TAGS.EVENT })
             }
          >
-            event
+            <img src={tagEvent} alt="tag_event" />
          </div>
          <div
-            className={`pointer ${stateFilters.tags.includes(TAGS.NONE) && 'bg-primary'}`}
+            className={`pointer ${stateFilters.tags.includes(TAGS.NONE) && 'bg-selected'}`}
             onClick={() =>
                dispatchFilters({ type: ACTIONS_FILTERS.TOGGLE_TAG, payload: TAGS.NONE })
             }
          >
-            none
+            <div className="no-tag">NO TAG</div>
          </div>
          <input
             type="radio"
@@ -117,7 +123,7 @@ export const FilterTags: React.FC<Props> = ({ stateFilters, dispatchFilters }) =
                dispatchFilters({ type: ACTIONS_FILTERS.SET_TAG_ANDOR, payload: AND_OR.AND })
             }
          />
-         <label htmlFor="tagsand">And</label>
+         <label htmlFor="tagsand">AND</label>
          <input
             type="radio"
             id="tagsor"
@@ -127,7 +133,7 @@ export const FilterTags: React.FC<Props> = ({ stateFilters, dispatchFilters }) =
                dispatchFilters({ type: ACTIONS_FILTERS.SET_TAG_ANDOR, payload: AND_OR.OR })
             }
          />
-         <label htmlFor="tagsor">Or</label>
+         <label htmlFor="tagsor">OR</label>
          <button onClick={() => dispatchFilters({ type: ACTIONS_FILTERS.RESET_TAGS })}>
             <small>RESET TAGS</small>
          </button>

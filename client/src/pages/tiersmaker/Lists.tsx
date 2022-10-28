@@ -11,22 +11,25 @@ interface Props {
 export const Lists: React.FC<Props> = ({ stateLists, selectedListId }) => {
    return (
       <>
-         <header className="mt-5">
-            <p>
-               Welcome to the tiers list! Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-               Harum amet mollitia quidem officiis cupiditate obcaecati autem nam, eaque odio
-               officia assumenda distinctio quae et ab, accusantium optio id. Aspernatur, illo?
-               Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque porro obcaecati
-               labore nemo ut tenetur asperiores minus soluta consequuntur, possimus dolores
-               repellendus, quisquam sed ipsam, adipisci ex itaque corporis. Enim.
-            </p>
+         <header>
+            <h1 className="text-center">TIERS MAKER!</h1>
          </header>
+         <p>
+            Welcome to the <strong className="red">Terraforming Mars Solo</strong> cards{' '}
+            <strong className="red">Tiers Maker</strong>! Create Tiers list and start rating cards!
+            The tiers are as follows: from the worst <strong className="red">F</strong> (0 points),
+            through E, D, C, B, A and to the best <strong className="green">S</strong> (6 points).
+            You can have max. 5 players rating cards in one list. You can have as many lists as you
+            want. Have fun!
+         </p>
          {stateLists.length === 0 ? (
             // No tiers lists
-            <ListCreateSnap />
+            <div className="lists-wrapper full-size">
+               <ListCreateSnap />
+            </div>
          ) : (
             // Tiers lists
-            <div className="d-flex w-100 h-100 mt-5">
+            <div className="lists-wrapper full-size">
                <ListLinks />
                {!selectedListId ? <ListCreateSnap /> : <ListSnap />}
             </div>

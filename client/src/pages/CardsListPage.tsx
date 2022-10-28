@@ -1,98 +1,70 @@
-import React, { useEffect, useReducer, useState, useTransition } from 'react'
-import { Card } from '../components/Card'
-import { FiltersList } from '../components/filterslist/FiltersList'
+import { useEffect, useState, useTransition } from 'react'
 import { CARDS } from '../data/cards'
 import { CardInterface } from '../interfaces/cardInterface'
-import { reducerFilters } from '../store/reducers/reducerFilters'
-import { getCards, matchesAnd, matchesOr } from '../utils/arrays'
-import spinner from '../assets/animated/spinner.gif'
+import { matchesAnd, matchesOr } from '../utils/arrays'
 import { FiltersStateInt } from '../interfaces/filtersInterface'
-import { SortBy } from '../components/SortBy'
+import { FiltersSection } from '../components/filterslist/FiltersSection'
+import { CardsList } from '../components/filterslist/CardsList'
+import { AND_OR, COST_TYPES, NEG_ALL_POS, SORT_BY, useFilters } from '../context/FiltersContext'
 
-export const SORT_BY = {
-   ID_ASC: 'id_asc',
-   ID_DESC: 'id_desc',
-   NAME_ASC: 'name_asc',
-   NAME_DESC: 'name_desc',
-   COST_ASC: 'cost_asc',
-   COST_DESC: 'cost_desc',
-}
-export const COST_TYPES = {
-   MIN: 'min',
-   MAX: 'max',
-   EQUAL: 'equal',
-}
-export const AND_OR = {
-   AND: 'and',
-   OR: 'or',
-}
-export const NEG_ALL_POS = {
-   NEGATIVE: 'negative',
-   ALL: 'all',
-   POSITIVE: 'positive',
-}
-
-export const initFilters = {
-   searchValue: '',
-   tags: [],
-   tagsAndOr: AND_OR.AND,
-   cardTypes: [],
-   cost: 0,
-   costMinMaxEqual: COST_TYPES.MIN,
-   production: [],
-   productionAndOr: AND_OR.AND,
-   vp: null,
-   vpNegPosAll: NEG_ALL_POS.ALL,
-   requirements: [],
-   requirementsAndOr: AND_OR.AND,
-   parameters: [],
-   parametersAndOr: AND_OR.AND,
-   canHaveUnits: [],
-}
-
-export const CardsList: React.FC = () => {
+export const CardsListPage: React.FC = () => {
    const [isPending, startTransition] = useTransition()
-   const [stateFilters, dispatchFilters] = useReducer(reducerFilters, initFilters)
-   const [sortBy, setSortBy] = useState<string>(SORT_BY.ID_ASC)
-   const [cardsIds, setCardsIds] = useState<number[]>(CARDS.map(({ id }) => id))
+   const { stateFilters, sortBy } = useFilters()
+   const [cardsIds, setCardsIds] = useState<number[]>([])
+   const [loading, setLoading] = useState(true)
+   const [showSumOfVP, setShowSumOfVP] = useState<boolean>(false)
 
    useEffect(() => {
-      startTransition(() => filterCards())
+      setCardsIds(CARDS.map(({ id }) => id))
+      setLoading(false)
+   }, [])
+
+   useEffect(() => {
+      startTransition(() => {
+         filterCards()
+         if (stateFilters.vp) {
+            setShowSumOfVP(true)
+         } else {
+            setShowSumOfVP(false)
+         }
+      })
    }, [stateFilters])
 
    useEffect(() => {
-      startTransition(() => setCardsIds(sortedCardsIds(cardsIds)))
+      startTransition(() => {
+         if (cardsIds.length > 0) setCardsIds(sortedCardsIds(cardsIds))
+      })
    }, [sortBy])
 
    function filterCards(): void {
       let newCards: CardInterface[] = CARDS
-      newCards = filteredByTags(newCards, stateFilters)
-      newCards = filteredByCardType(newCards, stateFilters)
-      newCards = filteredByCost(newCards, stateFilters)
-      newCards = filteredBySearch(newCards, stateFilters)
-      newCards = filteredByProduction(newCards, stateFilters)
-      newCards = filteredByVP(newCards, stateFilters)
-      newCards = filteredByRequirements(newCards, stateFilters)
-      newCards = filteredByParameters(newCards, stateFilters)
-      newCards = filteredByCanHaveUnits(newCards, stateFilters)
+      newCards = getFilteredTags(newCards, stateFilters)
+      newCards = getFilteredCardType(newCards, stateFilters)
+      newCards = getFilteredCost(newCards, stateFilters)
+      newCards = getFilteredSearch(newCards, stateFilters)
+      newCards = getFilteredProduction(newCards, stateFilters)
+      newCards = getFilteredVP(newCards, stateFilters)
+      newCards = getFilteredRequirements(newCards, stateFilters)
+      newCards = getFilteredParameters(newCards, stateFilters)
+      newCards = getFilteredCanHaveUnits(newCards, stateFilters)
       const newCardsIds = newCards.map(({ id }) => id)
       const sortedNewCardsIds = sortedCardsIds(newCardsIds)
       setCardsIds(sortedNewCardsIds)
    }
 
-   function filteredByTags(
+   function getFilteredTags(
       filtered: CardInterface[],
       stateFilters: FiltersStateInt
    ): CardInterface[] {
       if (stateFilters.tags.length > 0) {
          filtered =
             stateFilters.tagsAndOr === AND_OR.AND
-               ? CARDS.filter((card) => matchesAnd(card.tags, stateFilters.tags))
-               : CARDS.filter((card) => matchesOr(card.tags, stateFilters.tags))
+               ? filtered.filter((card) => matchesAnd(card.tags, stateFilters.tags))
+               : filtered.filter((card) => matchesOr(card.tags, stateFilters.tags))
       }
       return filtered
    }
-   function filteredByCardType(
+   function getFilteredCardType(
       filtered: CardInterface[],
       stateFilters: FiltersStateInt
    ): CardInterface[] {
@@ -101,7 +73,7 @@ export const CardsList: React.FC = () => {
       }
       return filtered
    }
-   function filteredByCost(
+   function getFilteredCost(
       filtered: CardInterface[],
       stateFilters: FiltersStateInt
    ): CardInterface[] {
@@ -120,7 +92,7 @@ export const CardsList: React.FC = () => {
       }
       return filtered
    }
-   function filteredBySearch(
+   function getFilteredSearch(
       filtered: CardInterface[],
       stateFilters: FiltersStateInt
    ): CardInterface[] {
@@ -135,7 +107,7 @@ export const CardsList: React.FC = () => {
       }
       return filtered
    }
-   function filteredByProduction(
+   function getFilteredProduction(
       filtered: CardInterface[],
       stateFilters: FiltersStateInt
    ): CardInterface[] {
@@ -147,7 +119,7 @@ export const CardsList: React.FC = () => {
       }
       return filtered
    }
-   function filteredByVP(
+   function getFilteredVP(
       filtered: CardInterface[],
       stateFilters: FiltersStateInt
    ): CardInterface[] {
@@ -165,7 +137,7 @@ export const CardsList: React.FC = () => {
       }
       return filtered
    }
-   function filteredByRequirements(
+   function getFilteredRequirements(
       filtered: CardInterface[],
       stateFilters: FiltersStateInt
    ): CardInterface[] {
@@ -187,7 +159,7 @@ export const CardsList: React.FC = () => {
       }
       return filtered
    }
-   function filteredByParameters(
+   function getFilteredParameters(
       filtered: CardInterface[],
       stateFilters: FiltersStateInt
    ): CardInterface[] {
@@ -199,7 +171,7 @@ export const CardsList: React.FC = () => {
       }
       return filtered
    }
-   function filteredByCanHaveUnits(
+   function getFilteredCanHaveUnits(
       filtered: CardInterface[],
       stateFilters: FiltersStateInt
    ): CardInterface[] {
@@ -247,50 +219,29 @@ export const CardsList: React.FC = () => {
    }
 
    return (
-      <article className="section justify-content-start" style={{ minHeight: '860px' }}>
-         {/* Header */}
-         <section className="w-75">
-            <header>
-               <h1 className="text-center">TERRAFORMING MARS SOLO - CARDS LIST</h1>
-            </header>
-            <p>
-               Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis maiores molestiae
-               commodi est architecto dolore fugit cum eaque consequuntur, dolorem deserunt quaerat?
-               Doloremque repellat excepturi libero possimus accusamus porro voluptas ipsum sequi
-               non reprehenderit sit velit nulla rem.
+      <article className="article-section-content">
+         <header className="w-100 ms-auto me-auto custom-title">
+            <h1 className="text-center" style={{ fontSize: '4rem' }}>
+               TERRAFORMING MARS SOLO - CARDS LIST
+            </h1>
+            <p className="text-center">
+               Welcome to the cards list! Browse cards by tags, cost, production, requirements and
+               many more!
+               <br />
+               <strong className='yellow'>IMPORTANT:</strong> Selecting 'AND' shows cards that meet all requirements in
+               the current section, while selecting
+               <br />
+               'OR' shows every card that has at least one of the selected elements in the current
+               filter section.
             </p>
-         </section>
-         <div className="w-100 d-flex justify-content-between">
-            {/* Filters Section */}
-            <FiltersList stateFilters={stateFilters} dispatchFilters={dispatchFilters} />
-            {/* Additional Information */}
-            {!isPending && <span>{cardsIds.length}</span>}
-            {!isPending && stateFilters.vp && (
-               <span>
-                  {CARDS.filter(({ id }) => cardsIds.includes(id)).reduce(
-                     (total, card) => total + card.vp,
-                     0
-                  )}
-               </span>
-            )}
-            {/* Sort By Section */}
-            <SortBy sortBy={sortBy} setSortBy={setSortBy} />
-         </div>
-         {/* Cards */}
-         <div
-            className="d-flex justify-content-center flex-wrap mt-4 position-relative"
-            style={{ gap: '20px', opacity: isPending ? '0.2' : '1' }}
-         >
-            {isPending ? (
-               <div className="spinner spinner-lg">
-                  <img className="full-size" src={spinner} alt="spinner" />
-               </div>
-            ) : cardsIds.length === 0 ? (
-               'NO CARDS'
-            ) : (
-               getCards(CARDS, cardsIds).map((card, idx) => <Card key={idx} card={card} />)
-            )}
-         </div>
+         </header>
+         <FiltersSection
+            isPending={isPending}
+            loading={loading}
+            showSumOfVP={showSumOfVP}
+            cardsIds={cardsIds}
+         />
+         <CardsList cardsIds={cardsIds} isPending={isPending} loading={loading} />
       </article>
    )
 }
