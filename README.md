@@ -1,12 +1,10 @@
 # The Terraforming Mars Solo - Cards Tiers Maker
 
-# **_(IN DEVELOPMENT)_**
-
 #### One place for all Terraforming Mars Solo content, including full cards list and tier maker for solo cards.
 
 ## Demo
 
-Working live demo: TBD
+Working live demo: https://tm-cards-tiers-maker.herokuapp.com/
 
 ## Built with
 
