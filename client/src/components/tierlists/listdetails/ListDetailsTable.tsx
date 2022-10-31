@@ -7,7 +7,8 @@ import { ListDetailsRate } from './ListDetailsRate'
 import { AiTwotoneEdit, AiFillEye } from 'react-icons/ai'
 import { FaExclamation } from 'react-icons/fa'
 import { RiFilterFill, RiFilterOffFill } from 'react-icons/ri'
-import { TiDelete, TiDeleteOutline } from 'react-icons/ti'
+import { TiDelete } from 'react-icons/ti'
+import { FcClearFilters } from 'react-icons/fc'
 import { HiOutlineArrowSmDown, HiOutlineArrowSmUp } from 'react-icons/hi'
 import { INPUT_TYPES } from '../../../interfaces/modalInterface'
 import { CardInterface } from '../../../interfaces/cardInterface'
@@ -38,18 +39,26 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
    const [filteredCardsDrawn, setFilteredCardsDrawn] = useState(getCards(CARDS, filteredCardsIds))
    const [loading, setLoading] = useState<boolean>(true)
    // Filter cards
-   const [showFilter, setShowFilter] = useState(false)
+   const [showFilterCard, setShowFilterCard] = useState<boolean>(false)
+   const [showFilterRate, setShowFilterRate] = useState<boolean[]>([
+      false,
+      false,
+      false,
+      false,
+      false,
+   ])
    const [filterCard, setFilterCard] = useState<string>('')
+   const [filterRate, setFilterRate] = useState<string[]>(['', '', '', '', ''])
    // Sort Cards
    const [sortBy, setSortBy] = useState(SORT_BY.RATING_DESC)
 
    useEffect(() => {
       filterCardsDrawn()
       setLoading(false)
-   }, [filterCard, sortBy, list.drawnCardsIds])
+   }, [filterCard, filterRate, sortBy, list.drawnCardsIds])
 
    const filterCardsDrawn = (): void => {
-      // Filter cards
+      // Filter cards by Id, Name or Description
       let newFilteredCards: CardInterface[] = getCards(CARDS, list.drawnCardsIds).filter((card) => {
          if (filterCard) {
             return (
@@ -61,7 +70,21 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
             return true
          }
       })
-      // Sort cards
+      // Filter Cards by Players' rates
+      list.players.forEach((_, idx) => {
+         if (filterRate[idx]) {
+            const playerId = list.players[idx]._id
+            newFilteredCards = newFilteredCards.filter((card) => {
+               const rate = getRate(card.id, playerId)
+               if (
+                  rate?.toUpperCase() === filterRate[idx] ||
+                  (rate === undefined && filterRate[idx] === 'X')
+               )
+                  return true
+            })
+         }
+      })
+      // Sort cards by Card Id or Rating
       switch (sortBy) {
          case SORT_BY.CARD_ID_ASC:
             newFilteredCards = sortedByCardId(newFilteredCards, SORT_BY.CARD_ID_ASC)
@@ -78,6 +101,9 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
          default:
             break
       }
+      // Sort cards by player's rate
+      if (sortBy.slice(0, 1).toUpperCase() === 'P')
+         newFilteredCards = sortedByPlayerRate(newFilteredCards)
 
       const newFilteredCardsIds = newFilteredCards.map((card) => card.id)
       setFilteredCardsDrawn(newFilteredCards)
@@ -99,6 +125,18 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
          sortBy === SORT_BY.RATING_ASC ? a.avgRate - b.avgRate : b.avgRate - a.avgRate
       )
       return sortedCards
+   }
+
+   const sortedByPlayerRate = (cards: CardInterface[]): CardInterface[] => {
+      const playerIndex: number = parseInt(sortBy.slice(1, 2))
+      const cardsWithRates = cards.map((card) => {
+         return { ...card, rate: numRate(getRate(card.id, list.players[playerIndex]._id) || 'X') }
+      })
+      const sorted = cardsWithRates.sort((a, b) =>
+         sortBy.slice(3) === 'ASC' ? b.rate - a.rate : a.rate - b.rate
+      )
+
+      return cardsWithRates
    }
 
    const handleClickDeletePlayer = (playerId: string): void => {
@@ -135,6 +173,15 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
 
    const handleClickShowCard = (cardId: number): void => {
       setModalCardId(cardId)
+   }
+
+   const handleInputFilterRate = (e: React.ChangeEvent<HTMLInputElement>, idx: number): void => {
+      const lastChar = e.target.value.slice(-1).toUpperCase()
+      if ('SABCDEFX'.includes(lastChar)) {
+         let newFilterRate = [...filterRate]
+         newFilterRate[idx] = lastChar
+         setFilterRate(newFilterRate)
+      }
    }
 
    const deletePlayer = async (
@@ -195,6 +242,19 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       return player.rates.length < filteredCardsDrawn.length
    }
 
+   const getRate = (cardId: number, playerId: string): string | undefined => {
+      let foundRate: string | undefined
+      foundRate = undefined
+      list.players.forEach((player) => {
+         player.rates.forEach((rate) => {
+            if (player._id === playerId && rate.cardId === cardId) {
+               foundRate = rate.value
+            }
+         })
+      })
+      return foundRate
+   }
+
    const getAvgRate = (cardId: number = -1, playerId: string = ''): number | string => {
       let cardRates: string[] = []
       list.players.forEach((player) => {
@@ -247,7 +307,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
          case 'F':
             return 0
          default:
-            return 0
+            return sortBy.slice(3) === 'ASC' ? -1 : 999
       }
    }
 
@@ -265,53 +325,66 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                      )
                   }
                >
+                  {/* Sort arrows */}
                   {sortBy === SORT_BY.CARD_ID_ASC && (
-                     <HiOutlineArrowSmDown className="position-absolute sort-btn" size={20} />
-                  )}
-                  {sortBy === SORT_BY.CARD_ID_DESC && (
                      <HiOutlineArrowSmUp className="position-absolute sort-btn" size={20} />
                   )}
-                  CARD
-                  {showFilter ? (
-                     <>
+                  {sortBy === SORT_BY.CARD_ID_DESC && (
+                     <HiOutlineArrowSmDown className="position-absolute sort-btn" size={20} />
+                  )}
+                  <span className="d-flex justify-content-center align-items-center position-relative ms-auto me-auto">
+                     {/* Filter Buttons */}
+                     {showFilterCard ? (
                         <RiFilterOffFill
-                           className="pointer position-absolute filter-btn"
+                           className="filter-btn pointer"
                            onClick={(e) => {
                               e.stopPropagation()
-                              setShowFilter((prev) => {
+                              setShowFilterCard((prev) => {
                                  if (prev) setFilterCard('')
                                  return !prev
                               })
                            }}
                            size={16}
                         />
-                        <div className="filter">
-                           <input
-                              type="text"
-                              value={filterCard}
-                              onChange={(e) => setFilterCard(e.target.value)}
-                              onClick={(e) => e.stopPropagation()}
-                              placeholder="SEARCH BY ID, NAME OR DESCRIPTION"
-                           />
-                           {filterCard && (
-                              <TiDeleteOutline
-                                 className="position-absolute pointer delete-filter"
-                                 onClick={() => setFilterCard('')}
-                                 size={30}
-                              />
-                           )}
-                        </div>
-                     </>
-                  ) : (
-                     <RiFilterFill
-                        className="pointer position-absolute filter-btn"
-                        onClick={(e) => {
-                           e.stopPropagation()
-                           setShowFilter((prev) => !prev)
-                        }}
-                        size={16}
+                     ) : (
+                        <RiFilterFill
+                           className="filter-btn pointer"
+                           onClick={(e) => {
+                              e.stopPropagation()
+                              setShowFilterCard((prev) => !prev)
+                           }}
+                           size={16}
+                        />
+                     )}
+                     {filterCard !== '' && (
+                        <FcClearFilters
+                           className="filter-btn clear pointer"
+                           onClick={(e) => {
+                              e.stopPropagation()
+                              setFilterCard('')
+                              setShowFilterCard(false)
+                           }}
+                           size={15}
+                        />
+                     )}
+                     {/* Header */}
+                     <span>CARD</span>
+                  </span>
+                  {/* Filter Input */}
+                  {showFilterCard && (
+                     <input
+                        type="text"
+                        value={filterCard}
+                        onChange={(e) => setFilterCard(e.target.value)}
+                        onClick={(e) => e.stopPropagation()}
+                        placeholder="SEARCH BY ID, NAME OR DESCRIPTION"
+                        onBlur={() => setShowFilterCard(false)}
+                        autoFocus
+                        onFocus={(e: React.ChangeEvent<HTMLInputElement>) => e.target.select()}
                      />
                   )}
+                  {/* Card Counter */}
+                  <div className="card-count">{filteredCardsIds.length}</div>
                </th>
                <th
                   className="pointer"
@@ -322,15 +395,35 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                   }
                >
                   {sortBy === SORT_BY.RATING_ASC && (
-                     <HiOutlineArrowSmDown className="position-absolute sort-btn" size={20} />
+                     <HiOutlineArrowSmUp className="position-absolute sort-btn" size={20} />
                   )}
                   {sortBy === SORT_BY.RATING_DESC && (
-                     <HiOutlineArrowSmUp className="position-absolute sort-btn" size={20} />
+                     <HiOutlineArrowSmDown className="position-absolute sort-btn" size={20} />
                   )}
                   RATING
                </th>
                {list.players.map((player, idx) => (
-                  <th key={idx} className={isIncomplete(player) ? 'red' : ''}>
+                  <th
+                     key={idx}
+                     className={isIncomplete(player) ? 'red pointer' : 'pointer'}
+                     onClick={() => {
+                        let newSortBy = ''
+                        if (sortBy.slice(0, 1).toUpperCase() === 'P' && sortBy === `P${idx}_ASC`) {
+                           newSortBy = `P${idx}_DESC`
+                        } else {
+                           newSortBy = `P${idx}_ASC`
+                        }
+
+                        setSortBy(newSortBy)
+                     }}
+                  >
+                     {/* Sort arrows */}
+                     {parseInt(sortBy.slice(1, 2)) === idx && sortBy.slice(3, 7) === 'DESC' && (
+                        <HiOutlineArrowSmUp className="position-absolute sort-btn" size={20} />
+                     )}
+                     {parseInt(sortBy.slice(1, 2)) === idx && sortBy.slice(3, 6) === 'ASC' && (
+                        <HiOutlineArrowSmDown className="position-absolute sort-btn" size={20} />
+                     )}
                      {isIncomplete(player) && (
                         <Tippy
                            content="One or more cards have not been rated by this player"
@@ -341,7 +434,75 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                            </div>
                         </Tippy>
                      )}
-                     <div style={{ marginRight: '25px' }}>{player.name}</div>
+                     <div style={{ marginRight: '25px' }}>
+                        {/* Player Name */}
+                        <span className="d-flex align-items-center position-relative ms-auto me-auto">
+                           {/* Filter Buttons */}
+                           {showFilterRate[idx] ? (
+                              <RiFilterOffFill
+                                 className="filter-btn pointer"
+                                 onClick={(e) => {
+                                    e.stopPropagation()
+                                    let newShowFilterRate = [...showFilterRate]
+                                    newShowFilterRate[idx] = !newShowFilterRate[idx]
+                                    setShowFilterRate(newShowFilterRate)
+                                 }}
+                                 size={16}
+                              />
+                           ) : (
+                              <RiFilterFill
+                                 className="filter-btn pointer"
+                                 onClick={(e) => {
+                                    e.stopPropagation()
+                                    let newShowFilterRate = [...showFilterRate]
+                                    newShowFilterRate[idx] = !newShowFilterRate[idx]
+                                    setShowFilterRate(newShowFilterRate)
+                                 }}
+                                 size={16}
+                              />
+                           )}
+                           {filterRate[idx] !== '' && (
+                              <FcClearFilters
+                                 className="filter-btn clear pointer"
+                                 onClick={(e) => {
+                                    e.stopPropagation()
+                                    let newShowFilterRate = [...showFilterRate]
+                                    newShowFilterRate[idx] = false
+                                    setShowFilterRate(newShowFilterRate)
+                                    let newFilterRate = [...filterRate]
+                                    newFilterRate[idx] = ''
+                                    setFilterRate(newFilterRate)
+                                 }}
+                                 size={15}
+                              />
+                           )}
+                           {player.name}
+                        </span>
+                     </div>
+                     {/* Filter Input */}
+                     {showFilterRate[idx] && (
+                        <Tippy content="Type 'X' to filter cards with no rate" delay={[200, null]}>
+                           <input
+                              type="text"
+                              value={filterRate[idx]}
+                              onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                 handleInputFilterRate(e, idx)
+                              }
+                              onClick={(e) => e.stopPropagation()}
+                              placeholder="SEARCH BY RATE"
+                              onBlur={() => {
+                                 let newShowFilterRate = [...showFilterRate]
+                                 newShowFilterRate[idx] = false
+                                 setShowFilterRate(newShowFilterRate)
+                              }}
+                              autoFocus
+                              onFocus={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                 e.target.select()
+                              }
+                           />
+                        </Tippy>
+                     )}
+
                      <AiTwotoneEdit
                         className="pointer position-absolute show-edit-delete second-icon"
                         onClick={() => handleClickEditPlayer(player._id, player.name)}
@@ -385,7 +546,9 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                                  ? 'blue'
                                  : 'red'
                            }
-                        >{idx + 1}</div>
+                        >
+                           {idx + 1}
+                        </div>
                      </td>
                      <td className="with-rate">{getAvgRate(card.id)}</td>
                      {list.players.map((player, idx) => (

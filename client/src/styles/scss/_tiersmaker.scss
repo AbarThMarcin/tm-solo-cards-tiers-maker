@@ -116,8 +116,7 @@
             margin-inline: auto;
             width: 100%;
             height: 300px;
-            background: url('../../assets/images/mars-raw.png') center
-               center / contain no-repeat;
+            background: url('../../assets/images/mars-raw.png') center center / contain no-repeat;
             margin-bottom: 30px;
             div {
                background: radial-gradient(
@@ -139,8 +138,7 @@
                }
             }
             &.bg-new {
-               background: url('../../assets/images/mars-raw.png')
-                  center center / contain no-repeat;
+               background: url('../../assets/images/mars-raw.png') center center / contain no-repeat;
             }
          }
       }
@@ -169,14 +167,23 @@
             display: none;
             opacity: 0.5;
          }
-         & > .filter-btn {
-            top: 50%;
-            translate: 0 -50%;
-            right: 170px;
-            opacity: 0.5;
+         > span {
+            width: fit-content;
          }
-         &:hover > .show-edit-delete,
-         &:hover > .filter-btn {
+         .filter-btn {
+            opacity: 0.5;
+            margin-right: 3px;
+            &:hover {
+               opacity: 1;
+            }
+            &.clear {
+               position: absolute;
+               top: 50%;
+               left: 0;
+               translate: calc(-100% - 2px) -50%;
+            }
+         }
+         &:hover > .show-edit-delete {
             display: block;
             &:hover {
                opacity: 1;
@@ -184,6 +191,19 @@
          }
          &.red {
             color: rgb(255, 132, 132);
+         }
+         .card-count {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            translate: 0 -50%;
+            background-color: rgba($color: #000000, $alpha: 0.5);
+            border-radius: 8px;
+            width: 60px;
+            height: 32px;
+            display: grid;
+            place-items: center;
+            user-select: none;
          }
       }
       th:first-child,
@@ -220,26 +240,22 @@
             justify-content: center;
             align-items: center;
          }
-         &:first-child .filter {
+         input {
             position: absolute;
-            top: 38px;
-            left: 0;
-            width: 100%;
-            input {
-               padding-left: 10px;
-               padding-right: 40px;
-               width: 90%;
-               background-color: rgba($color: #000, $alpha: 0.97);
-               outline: none;
-               border: 2px solid #555;
-               border-radius: 5px;
-               color: #fff;
-            }
-            .delete-filter {
-               top: 50%;
-               translate: 0 -50%;
-               right: 6%;
-            }
+            top: 42px;
+            left: 50%;
+            translate: -50% 0;
+            width: 125px;
+            padding-inline: 10px;
+            background-color: rgba($color: #000, $alpha: 0.97);
+            outline: none;
+            border: 2px solid #555;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1.1rem;
+         }
+         &:first-child input {
+            width: 250px;
          }
          .sort-btn {
             top: 50%;
@@ -247,10 +263,11 @@
             left: 3px;
             opacity: 0.5;
          }
-         &:not(:first-child) div {
+         &:not(:first-child) {
+            padding-left: 38px;
+            div {
             height: 30px;
-            overflow-y: hidden;
-         }
+         }}
       }
       td.with-rate {
          font-size: 1.8rem;
@@ -325,7 +342,9 @@
                &.red {
                   background-color: rgb(83, 26, 16);
                }
-               &.green, &.blue, &.red {
+               &.green,
+               &.blue,
+               &.red {
                   display: grid;
                   place-items: center;
                   font-size: 0.9rem;

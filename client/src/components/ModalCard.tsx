@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { useModal } from '../context/ModalContext'
 import { CARDS } from '../data/cards'
 import { Card } from './Card'

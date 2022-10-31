@@ -23,8 +23,7 @@ export function matchesAnd(arr: string[], filterArr: string[]): boolean {
          if (
             !arr.includes(REQUIREMENTS.ROBOTIC_WORKFORCE) &&
             !arr.includes(REQUIREMENTS.CEOS_FAVOURITE_PROJECT) &&
-            !arr.includes(REQUIREMENTS.RAD_SUITS) &&
-            !arr.includes(REQUIREMENTS.ECOLOGICAL_ZONE)
+            !arr.includes(REQUIREMENTS.RAD_SUITS)
          ) {
             match = false
             return

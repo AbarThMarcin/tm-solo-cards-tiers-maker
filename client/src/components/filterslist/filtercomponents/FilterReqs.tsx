@@ -93,7 +93,7 @@ export const FilterReqs: React.FC = () => {
             </div>
          </Tippy>
          <Tippy
-            content="Any cards with board requirements, which are all cards that allows you to place a city, greenery or a special tile on the Tharsis planet"
+            content="Any cards with a hidden tile requirement; basically any card that allows you to place a city (except noctis city), greenery (except Mangrove and Protected Valley) or a special tile ON THARSIS PLANET"
             delay={[200, null]}
          >
             <div
@@ -108,7 +108,7 @@ export const FilterReqs: React.FC = () => {
             </div>
          </Tippy>
          <Tippy
-            content="Any cards with special, not listed, requirements, which are: Robotic Workforce (86), Ecological Zone (128), CEO's Favourite Project (149) and Rad-Suits (186)"
+            content="Any cards with special, not listed, requirements, which are: Robotic Workforce (86), CEO's Favourite Project (149) and Rad-Suits (186)"
             delay={[200, null]}
          >
             <div

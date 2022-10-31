@@ -120,15 +120,7 @@ export const ListNewRate: React.FC = () => {
                   />
                </motion.div>
             </AnimatePresence>
-         ) : // <div className="card-drawn-container">
-         //    <Card card={getCards(CARDS, [drawnCardId])[0]} newRate={true} />
-         //    <ListNewRatePlayers
-         //       list={list}
-         //       handleClickGoBack={handleClickGoBack}
-         //       drawnCardId={drawnCardId}
-         //    />
-         // </div>
-         list.drawnCardsIds.length === 208 ? (
+         ) : list.drawnCardsIds.length === 208 ? (
             <div className="all-cards-drawn">ALL CARDS HAVE BEEN DRAWN</div>
          ) : (
             <>
