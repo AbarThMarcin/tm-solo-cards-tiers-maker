@@ -95,7 +95,7 @@ export const Modal: React.FC = () => {
    }
 
    return (
-      <div className="modal-bg">
+      <div className={`modal-bg ${loading && 'hidden'}`}>
          <div className="modal-container">
             <h3>
                <strong>{modal.text}</strong>

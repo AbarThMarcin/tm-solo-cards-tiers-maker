@@ -3,6 +3,7 @@ import { AiTwotoneEdit } from 'react-icons/ai'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 import { useParams } from 'react-router-dom'
 import { updateTiersList } from '../../api/apiTiersList'
+import { ModalCharts } from '../../components/ModalCharts'
 import { ListDetailsTable } from '../../components/tierlists/listdetails/ListDetailsTable'
 import { NoTiersList } from '../../components/tierlists/NoTiersList'
 import { useLists } from '../../context/ListsContext'
@@ -13,15 +14,17 @@ import { PlayerInterface } from '../../interfaces/listInterface'
 import { INPUT_TYPES } from '../../interfaces/modalInterface'
 import { ACTIONS_LISTS } from '../../store/actions/actionsLists'
 import { toUrl } from '../../utils/strings'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export const ListDetails: React.FC = () => {
    const navigate = useNavigateToTop()
    const { listName } = useParams()
    const { user } = useUser()
    const { stateLists, dispatchLists } = useLists()
-   const { setModal } = useModal()
+   const { setModal, modalCharts } = useModal()
    const list = stateLists.find((l) => toUrl(l.name) === listName)
    const [editNameMode, setEditNameMode] = useState(false)
+   const { setModalCharts } = useModal()
 
    const handleClickAddPlayer = (): void => {
       setModal({
@@ -101,7 +104,7 @@ export const ListDetails: React.FC = () => {
             </h1>
          </header>
          {/* Buttons */}
-         <div className='buttons'>
+         <div className="buttons">
             {list.drawnCardsIds.length < 208 && (
                <button className="button-light green" onClick={() => navigate('new-rate')}>
                   RATE NEW CARD
@@ -115,6 +118,23 @@ export const ListDetails: React.FC = () => {
          </div>
          {/* Table */}
          <ListDetailsTable list={list} handleClickAddPlayer={handleClickAddPlayer} />
+
+         <AnimatePresence>
+            {modalCharts && (
+               <motion.div
+                  key="keyModalCharts"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="modal-bg"
+                  style={{ backgroundColor: 'rgba(0, 0, 0, 0.92)' }}
+                  onClick={() => setModalCharts(false)}
+               >
+                  <ModalCharts list={list} />
+               </motion.div>
+            )}
+         </AnimatePresence>
       </>
    ) : (
       <NoTiersList />

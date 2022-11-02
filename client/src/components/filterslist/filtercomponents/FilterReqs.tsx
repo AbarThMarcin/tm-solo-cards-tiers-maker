@@ -93,7 +93,7 @@ export const FilterReqs: React.FC = () => {
             </div>
          </Tippy>
          <Tippy
-            content="Any cards with a hidden tile requirement; basically any card that allows you to place a city (except noctis city), greenery (except Mangrove and Protected Valley) or a special tile ON THARSIS PLANET"
+            content="Any cards with a hidden tile requirement; basically any card that allows you to place on THARSIS planet: a city (except noctis city), greenery (except Mangrove and Protected Valley) or any special tile"
             delay={[200, null]}
          >
             <div

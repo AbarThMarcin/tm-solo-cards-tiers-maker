@@ -144,6 +144,22 @@
       }
    }
    // List Details page
+   .btns-table-features {
+      display: flex;
+      margin: -20px 0 20px 20px;
+      div {
+         width: 30px;
+         height: 35px;
+         opacity: 0.5;
+         &:hover {
+            opacity: 1;
+         }
+         a:link {
+            color: #fff;
+         }
+      }
+   }
+   // Table
    table {
       margin-inline: auto;
       th,
@@ -217,7 +233,7 @@
       }
       th:last-child,
       td:last-child {
-         min-width: 160px;
+         min-width: 180px;
       }
       th {
          padding: 8px 20px;
@@ -266,8 +282,9 @@
          &:not(:first-child) {
             padding-left: 38px;
             div {
-            height: 30px;
-         }}
+               height: 30px;
+            }
+         }
       }
       td.with-rate {
          font-size: 1.8rem;
@@ -301,25 +318,25 @@
       tbody {
          td span {
             &.s-tier {
-               color: rgb(255, 255, 255);
+               color: v.$tierS-color;
             }
             &.a-tier {
-               color: rgb(83, 244, 255);
+               color: v.$tierA-color;
             }
             &.b-tier {
-               color: rgb(83, 255, 140);
+               color: v.$tierB-color;
             }
             &.c-tier {
-               color: rgb(166, 255, 83);
+               color: v.$tierC-color;
             }
             &.d-tier {
-               color: rgb(255, 229, 83);
+               color: v.$tierD-color;
             }
             &.e-tier {
-               color: rgb(255, 132, 83);
+               color: v.$tierE-color;
             }
             &.f-tier {
-               color: rgb(255, 83, 83);
+               color: v.$tierF-color;
             }
          }
          td:first-child {

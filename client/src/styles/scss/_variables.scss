@@ -29,5 +29,20 @@ $btn-theme-light-lightgreen: rgba(175, 240, 202, 0.8);
 $btn-theme-darker-green: rgba(9, 94, 37, 0.8);
 
 // Tiers List
-$table-border: 1px solid rgba($color: #060606, $alpha: 1);
-$table-foot-border: 2px solid rgba($color: #111, $alpha: 1);
+$table-border: 1px solid
+   rgba(
+      $color: #060606,
+      $alpha: 1,
+   );
+$table-foot-border: 2px solid
+   rgba(
+      $color: #111,
+      $alpha: 1,
+   );
+$tierS-color: rgb(255, 255, 255);
+$tierA-color: rgb(83, 244, 255);
+$tierB-color: rgb(83, 255, 140);
+$tierC-color: rgb(166, 255, 83);
+$tierD-color: rgb(255, 229, 83);
+$tierE-color: rgb(255, 132, 83);
+$tierF-color: rgb(255, 83, 83);
