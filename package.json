@@ -17,6 +17,7 @@
       "@react-icons/all-files": "^4.1.0",
       "bcryptjs": "^2.4.3",
       "chart.js": "^3.9.1",
+      "chartjs-plugin-datalabels": "^2.1.0",
       "colors": "^1.4.0",
       "cors": "^2.8.5",
       "dotenv": "^16.0.2",

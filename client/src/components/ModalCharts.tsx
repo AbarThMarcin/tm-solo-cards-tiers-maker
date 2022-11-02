@@ -1,8 +1,9 @@
 import { Bar } from 'react-chartjs-2'
 import { ListInterface, PlayerInterface } from '../interfaces/listInterface'
 import { Chart as ChartJS, registerables } from 'chart.js'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 
-ChartJS.register(...registerables)
+ChartJS.register(...registerables, ChartDataLabels)
 
 const LABELS = ['S', 'A', 'B', 'C', 'D', 'E', 'F']
 const BG_COLORS = [
@@ -105,6 +106,16 @@ export const ChartFC: React.FC<PropsChart> = ({ player }) => {
                      data: getTiersCounts(player),
                      backgroundColor: BG_COLORS,
                      maxBarThickness: 40,
+                     datalabels: {
+                        font: {
+                           weight: 'bold',
+                        },
+                        color: '#fff',
+                        anchor: 'end',
+                        clamp: true,
+                        align: 'top',
+                        offset: -4
+                     }
                   },
                ],
             }}
