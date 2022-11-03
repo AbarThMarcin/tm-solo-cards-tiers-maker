@@ -32,6 +32,12 @@ const tiersListSchema = mongoose.Schema({
       required: true,
       default: [],
    },
+   options: {
+      orderedFocus: {
+         type: Boolean,
+         default: false,
+      }
+   }
 })
 
 module.exports = mongoose.model('tiers-lists', tiersListSchema)

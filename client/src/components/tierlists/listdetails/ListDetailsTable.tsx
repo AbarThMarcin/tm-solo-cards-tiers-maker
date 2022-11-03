@@ -11,6 +11,7 @@ import { TiDelete } from 'react-icons/ti'
 import { FcClearFilters } from 'react-icons/fc'
 import { HiOutlineArrowSmDown, HiOutlineArrowSmUp } from 'react-icons/hi'
 import { BiExport } from 'react-icons/bi'
+import { GoListOrdered } from 'react-icons/go'
 import { INPUT_TYPES } from '../../../interfaces/modalInterface'
 import { CardInterface } from '../../../interfaces/cardInterface'
 import { useUser } from '../../../context/UserContext'
@@ -40,6 +41,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
    const [filteredCardsIds, setFilteredCardsIds] = useState<number[]>(list.drawnCardsIds)
    const [filteredCardsDrawn, setFilteredCardsDrawn] = useState(getCards(CARDS, filteredCardsIds))
    const [loading, setLoading] = useState<boolean>(true)
+   const [orderedFocus, setOrderedFocus] = useState(list.options.orderedFocus)
    // Filter cards
    const [showFilterCard, setShowFilterCard] = useState<boolean>(false)
    const [showFilterRate, setShowFilterRate] = useState<boolean[]>([
@@ -148,7 +150,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
          inputType: INPUT_TYPES.PLAYER,
          inputText: '',
          text: 'Are you sure you want to delete this player?\nThis action is irreversible!',
-         onContinue: () => deletePlayer(list._id, playerId, list.players),
+         onContinue: () => deletePlayer(playerId, list.players),
       })
    }
    const handleClickEditPlayer = (playerId: string, playerName: string): void => {
@@ -158,7 +160,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
          inputType: INPUT_TYPES.PLAYER,
          inputText: playerName,
          text: "Enter player's new name:",
-         onContinue: (playerName) => editPlayer(list._id, playerId, playerName, list.players),
+         onContinue: (playerName) => editPlayer(playerId, playerName, list.players),
       })
    }
 
@@ -169,7 +171,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
          inputType: INPUT_TYPES.LIST,
          inputText: '',
          text: 'Are you sure you want to delete this card?\nThis action is irreversible!',
-         onContinue: () => deleteCard(list._id, card.id, list.players),
+         onContinue: () => deleteCard(card.id, list.players),
       })
    }
 
@@ -187,13 +189,12 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
    }
 
    const deletePlayer = async (
-      listId: string,
       playerId: string,
       players: PlayerInterface[]
    ): Promise<any> => {
       if (!user) return
       const newPlayers = players.filter((p) => p._id !== playerId)
-      const res = await updateTiersList(user.token, { listId, players: newPlayers })
+      const res = await updateTiersList(user.token, { listId: list._id, players: newPlayers })
       if (res.success) {
          const newList = res.data
          dispatchLists({ type: ACTIONS_LISTS.EDIT_LIST, payload: newList })
@@ -201,7 +202,6 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       return res
    }
    const editPlayer = async (
-      listId: string,
       playerId: string,
       playerName: string,
       players: PlayerInterface[]
@@ -210,7 +210,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       const newPlayers = players.map((p) =>
          p._id === playerId ? { name: playerName, rates: p.rates } : p
       )
-      const res = await updateTiersList(user.token, { listId, players: newPlayers })
+      const res = await updateTiersList(user.token, { listId: list._id, players: newPlayers })
       if (res.success) {
          const newList = res.data
          dispatchLists({ type: ACTIONS_LISTS.EDIT_LIST, payload: newList })
@@ -219,7 +219,6 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
    }
 
    const deleteCard = async (
-      listId: string,
       cardId: number,
       players: PlayerInterface[]
    ): Promise<any> => {
@@ -229,10 +228,21 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
          return { ...p, rates: p.rates.filter((rate) => rate.cardId !== cardId) }
       })
       const res = await updateTiersList(user.token, {
-         listId,
+         listId: list._id,
          drawnCardsIds: newDrawnCardsIds,
          players: newPlayers,
       })
+      if (res.success) {
+         const newList = res.data
+         dispatchLists({ type: ACTIONS_LISTS.EDIT_LIST, payload: newList })
+      }
+      return res
+   }
+
+   const editOptions = async (orderedFocus: boolean): Promise<any> => {
+      if (!user) return
+      const newOptions = { orderedFocus }
+      const res = await updateTiersList(user.token, { listId: list._id, options: newOptions })
       if (res.success) {
          const newList = res.data
          dispatchLists({ type: ACTIONS_LISTS.EDIT_LIST, payload: newList })
@@ -351,6 +361,17 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                   </div>
                </Tippy>
             )}
+            <Tippy
+               content="If checked, first person, whose rate input box is focused is dependent on the number of cards drawn"
+               delay={[200, null]}
+            >
+               <div className={`pointer ${orderedFocus && 'checked'}`} onClick={() => {
+                  setOrderedFocus((v) => !v)
+                  editOptions(!orderedFocus)
+               }}>
+                  <GoListOrdered size={28} />
+               </div>
+            </Tippy>
          </div>
          <table>
             <thead>

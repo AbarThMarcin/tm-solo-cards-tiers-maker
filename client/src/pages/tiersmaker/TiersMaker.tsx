@@ -18,7 +18,7 @@ interface Props {
 export const TiersMaker: React.FC<Props> = ({ setTiersClicked }) => {
    const navigate = useNavigateToTop()
    const { user } = useUser()
-   const { stateLists, dispatchLists, selectedListId } = useLists()
+   const { stateLists, dispatchLists } = useLists()
    const [isLoading, setIsLoading] = useState(true)
 
    useEffect(() => {
@@ -42,15 +42,17 @@ export const TiersMaker: React.FC<Props> = ({ setTiersClicked }) => {
       <article>
          <section className="lists-section-content article-section-content justify-content-start">
             {isLoading ? (
-               <Loading large={true} forPage={true}/>
+               <Loading large={true} forPage={true} />
             ) : (
                <Routes>
-                  <Route
-                     index
-                     element={<Lists stateLists={stateLists} selectedListId={selectedListId} />}
-                  />
+                  <Route index element={<Lists stateLists={stateLists} />} />
                   <Route path=":listName/*">
-                     <Route index element={<ListDetails />} />
+                     <Route
+                        index
+                        element={
+                           <ListDetails />
+                        }
+                     />
                      <Route path="new-rate" element={<ListNewRate />} />
                      <Route path="*" element={<NoTiersList />} />
                   </Route>

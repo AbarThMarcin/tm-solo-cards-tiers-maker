@@ -1,14 +1,21 @@
+import { useEffect } from 'react'
 import { ListCreateSnap } from '../../components/tierlists/ListCreateSnap'
 import { ListLinks } from '../../components/tierlists/ListLinks'
 import { ListSnap } from '../../components/tierlists/ListSnap'
+import { useLists } from '../../context/ListsContext'
 import { ListInterface } from '../../interfaces/listInterface'
 
 interface Props {
    stateLists: ListInterface[]
-   selectedListId: string | null
 }
 
-export const Lists: React.FC<Props> = ({ stateLists, selectedListId }) => {
+export const Lists: React.FC<Props> = ({ stateLists }) => {
+   const { selectedListId, setSelectedListId } = useLists()
+
+   useEffect(() => {
+      if (stateLists.length && !selectedListId) setSelectedListId(stateLists[0]._id)
+   }, [])
+
    return (
       <>
          <header>

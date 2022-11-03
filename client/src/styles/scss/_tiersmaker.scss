@@ -157,6 +157,9 @@
          a:link {
             color: #fff;
          }
+         &:last-child.checked {
+            opacity: 1
+         }
       }
    }
    // Table

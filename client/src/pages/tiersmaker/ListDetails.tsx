@@ -117,7 +117,10 @@ export const ListDetails: React.FC = () => {
             )}
          </div>
          {/* Table */}
-         <ListDetailsTable list={list} handleClickAddPlayer={handleClickAddPlayer} />
+         <ListDetailsTable
+            list={list}
+            handleClickAddPlayer={handleClickAddPlayer}
+         />
          {/* CHarts Modal */}
          <AnimatePresence>
             {modalCharts && (

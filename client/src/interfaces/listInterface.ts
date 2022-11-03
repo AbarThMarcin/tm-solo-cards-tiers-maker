@@ -4,12 +4,17 @@ export interface ListInterface {
    user: string
    drawnCardsIds: number[]
    players: PlayerInterface[]
+   options: OptionsInterface
 }
 
 export interface PlayerInterface {
    _id: string
    name: string
    rates: RateInterface[]
+}
+
+export interface OptionsInterface {
+   orderedFocus: boolean
 }
 
 export interface RateInterface {
