@@ -157,7 +157,7 @@
          a:link {
             color: #fff;
          }
-         &:last-child.checked {
+         &.checked {
             opacity: 1
          }
       }
@@ -223,6 +223,20 @@
             display: grid;
             place-items: center;
             user-select: none;
+         }
+         .sort-by-add-time {
+            position: absolute;
+            left: 5px;
+            top: 50%;
+            translate: 0 -50%;
+            border-radius: 10px;
+            padding: 2px;
+            width:  125px;
+            font-size: 0.7rem;
+            background-color: rgba($color: #000, $alpha: 0.5);
+            > div {
+               margin-inline: auto;
+            }
          }
       }
       th:first-child,
@@ -427,7 +441,8 @@
       justify-content: center;
       align-items: center;
       .player-inputs {
-         margin-block: 30px;
+         margin-top: 10px;
+         margin-bottom: 30px;
          display: flex;
          justify-content: space-evenly;
          width: 100%;

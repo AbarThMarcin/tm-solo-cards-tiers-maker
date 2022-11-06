@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useModal } from '../../../context/ModalContext'
 import { CARDS, CARD_TYPES } from '../../../data/cards'
-import { ListInterface, PlayerInterface } from '../../../interfaces/listInterface'
+import { ListInterface, OptionsInterface, PlayerInterface } from '../../../interfaces/listInterface'
 import { getCards } from '../../../utils/arrays'
 import { ListDetailsRate } from './ListDetailsRate'
 import { AiTwotoneEdit, AiFillEye, AiOutlineBarChart } from 'react-icons/ai'
@@ -28,6 +28,8 @@ interface Props {
 }
 
 const SORT_BY = {
+   ADD_TIME_ASC: 'ADD_TIME_ASC',
+   ADD_TIME_DESC: 'ADD_TIME_DESC',
    CARD_ID_ASC: 'CARD_ID_ASC',
    CARD_ID_DESC: 'CARD_ID_DESC',
    RATING_ASC: 'RATING_ASC',
@@ -42,8 +44,10 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
    const [filteredCardsDrawn, setFilteredCardsDrawn] = useState(getCards(CARDS, filteredCardsIds))
    const [loading, setLoading] = useState<boolean>(true)
    const [orderedFocus, setOrderedFocus] = useState(list.options.orderedFocus)
+   const lastId: number = list.drawnCardsIds[list.drawnCardsIds.length - 1] || -1
    // Filter cards
    const [showFilterCard, setShowFilterCard] = useState<boolean>(false)
+   const [showFilterAvgRate, setShowFilterAvgRate] = useState<boolean>(false)
    const [showFilterRate, setShowFilterRate] = useState<boolean[]>([
       false,
       false,
@@ -52,14 +56,15 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       false,
    ])
    const [filterCard, setFilterCard] = useState<string>('')
+   const [filterAvgRate, setFilterAvgRate] = useState<string>('')
    const [filterRate, setFilterRate] = useState<string[]>(['', '', '', '', ''])
    // Sort Cards
-   const [sortBy, setSortBy] = useState(SORT_BY.RATING_DESC)
+   const [sortBy, setSortBy] = useState(list.options.sortBy)
 
    useEffect(() => {
       filterCardsDrawn()
       setLoading(false)
-   }, [filterCard, filterRate, sortBy, list.drawnCardsIds])
+   }, [filterCard, filterAvgRate, filterRate, sortBy, list.drawnCardsIds])
 
    const filterCardsDrawn = (): void => {
       // Filter cards by Id, Name or Description
@@ -70,6 +75,76 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                card.name.toString().toUpperCase().includes(filterCard.toUpperCase()) ||
                card.description.toString().includes(filterCard.toUpperCase())
             )
+         } else {
+            return true
+         }
+      })
+      // Filter Cards by Avg Rate
+      newFilteredCards = newFilteredCards.filter((card) => {
+         if (filterAvgRate) {
+            if (!isNaN(Number(filterAvgRate))) {
+               return (
+                  Number(
+                     getAvgRate(
+                        card.id,
+                        '',
+                        newFilteredCards.map((c) => c.id)
+                     )
+                  ) === Number(filterAvgRate)
+               )
+            } else if (
+               !isNaN(Number(filterAvgRate.slice(1))) &&
+               filterAvgRate.slice(0, 1) === '>'
+            ) {
+               return (
+                  Number(
+                     getAvgRate(
+                        card.id,
+                        '',
+                        newFilteredCards.map((c) => c.id)
+                     )
+                  ) > Number(filterAvgRate.slice(1))
+               )
+            } else if (
+               !isNaN(Number(filterAvgRate.slice(1))) &&
+               filterAvgRate.slice(0, 1) === '<'
+            ) {
+               return (
+                  Number(
+                     getAvgRate(
+                        card.id,
+                        '',
+                        newFilteredCards.map((c) => c.id)
+                     )
+                  ) < Number(filterAvgRate.slice(1))
+               )
+            } else if (
+               !isNaN(Number(filterAvgRate.slice(2))) &&
+               filterAvgRate.slice(0, 2) === '>='
+            ) {
+               return (
+                  Number(
+                     getAvgRate(
+                        card.id,
+                        '',
+                        newFilteredCards.map((c) => c.id)
+                     )
+                  ) >= Number(filterAvgRate.slice(2))
+               )
+            } else if (
+               !isNaN(Number(filterAvgRate.slice(2))) &&
+               filterAvgRate.slice(0, 2) === '<='
+            ) {
+               return (
+                  Number(
+                     getAvgRate(
+                        card.id,
+                        '',
+                        newFilteredCards.map((c) => c.id)
+                     )
+                  ) <= Number(filterAvgRate.slice(2))
+               )
+            }
          } else {
             return true
          }
@@ -90,6 +165,12 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       })
       // Sort cards by Card Id or Rating
       switch (sortBy) {
+         case SORT_BY.ADD_TIME_ASC:
+            newFilteredCards = sortedByAddTime(newFilteredCards, SORT_BY.ADD_TIME_ASC)
+            break
+         case SORT_BY.ADD_TIME_DESC:
+            newFilteredCards = sortedByAddTime(newFilteredCards, SORT_BY.ADD_TIME_DESC)
+            break
          case SORT_BY.CARD_ID_ASC:
             newFilteredCards = sortedByCardId(newFilteredCards, SORT_BY.CARD_ID_ASC)
             break
@@ -114,6 +195,13 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       setFilteredCardsIds(newFilteredCardsIds)
    }
 
+   const sortedByAddTime = (cards: CardInterface[], sortBy: string): CardInterface[] => {
+      const cardsIds = cards.map((c) => c.id)
+      const sortedCards = getCards(CARDS, list.drawnCardsIds).filter((c) => cardsIds.includes(c.id))
+      if (sortBy === SORT_BY.ADD_TIME_DESC) sortedCards.reverse()
+      return sortedCards
+   }
+
    const sortedByCardId = (cards: CardInterface[], sortBy: string): CardInterface[] => {
       const sortedCards = cards.sort((a, b) =>
          sortBy === SORT_BY.CARD_ID_ASC ? a.id - b.id : b.id - a.id
@@ -123,7 +211,16 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
 
    const sortedByRating = (cards: CardInterface[], sortBy: string): CardInterface[] => {
       const cardsWithAvgRates = cards.map((card) => {
-         return { ...card, avgRate: Number(getAvgRate(card.id)) }
+         return {
+            ...card,
+            avgRate: Number(
+               getAvgRate(
+                  card.id,
+                  '',
+                  cards.map((c) => c.id)
+               )
+            ),
+         }
       })
       const sortedCards = cardsWithAvgRates.sort((a, b) =>
          sortBy === SORT_BY.RATING_ASC ? a.avgRate - b.avgRate : b.avgRate - a.avgRate
@@ -188,10 +285,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       }
    }
 
-   const deletePlayer = async (
-      playerId: string,
-      players: PlayerInterface[]
-   ): Promise<any> => {
+   const deletePlayer = async (playerId: string, players: PlayerInterface[]): Promise<any> => {
       if (!user) return
       const newPlayers = players.filter((p) => p._id !== playerId)
       const res = await updateTiersList(user.token, { listId: list._id, players: newPlayers })
@@ -218,10 +312,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       return res
    }
 
-   const deleteCard = async (
-      cardId: number,
-      players: PlayerInterface[]
-   ): Promise<any> => {
+   const deleteCard = async (cardId: number, players: PlayerInterface[]): Promise<any> => {
       if (!user) return
       const newDrawnCardsIds = list.drawnCardsIds.filter((id) => id !== cardId)
       const newPlayers = players.map((p) => {
@@ -239,9 +330,9 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       return res
    }
 
-   const editOptions = async (orderedFocus: boolean): Promise<any> => {
+   const editOptions = async (options: OptionsInterface): Promise<any> => {
       if (!user) return
-      const newOptions = { orderedFocus }
+      const newOptions = options
       const res = await updateTiersList(user.token, { listId: list._id, options: newOptions })
       if (res.success) {
          const newList = res.data
@@ -255,8 +346,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
    }
 
    const getRate = (cardId: number, playerId: string): string | undefined => {
-      let foundRate: string | undefined
-      foundRate = undefined
+      let foundRate: string | undefined = undefined
       list.players.forEach((player) => {
          player.rates.forEach((rate) => {
             if (player._id === playerId && rate.cardId === cardId) {
@@ -267,26 +357,30 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       return foundRate
    }
 
-   const getAvgRate = (cardId: number = -1, playerId: string = ''): number | string => {
+   const getAvgRate = (
+      cardId: number = -1,
+      playerId: string = '',
+      cardsIds: number[] = list.drawnCardsIds
+   ): number | string => {
       let cardRates: string[] = []
       list.players.forEach((player) => {
          player.rates.forEach((rate) => {
             if (cardId === -1) {
                if (!playerId) {
-                  if (filteredCardsIds.includes(rate.cardId)) cardRates.push(rate.value)
+                  if (cardsIds.includes(rate.cardId)) cardRates.push(rate.value)
                } else {
-                  if (player._id === playerId && filteredCardsIds.includes(rate.cardId))
+                  if (player._id === playerId && cardsIds.includes(rate.cardId))
                      cardRates.push(rate.value)
                }
             } else {
                if (!playerId) {
-                  if (rate.cardId === cardId && filteredCardsIds.includes(rate.cardId))
+                  if (rate.cardId === cardId && cardsIds.includes(rate.cardId))
                      cardRates.push(rate.value)
                } else {
                   if (
                      player._id === playerId &&
                      rate.cardId === cardId &&
-                     filteredCardsIds.includes(rate.cardId)
+                     cardsIds.includes(rate.cardId)
                   )
                      cardRates.push(rate.value)
                }
@@ -346,7 +440,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       <Loading large={true} />
    ) : (
       <>
-         <div className="btns-table-features">
+         <div className="btns-table-features d-flex align-items-center">
             <Tippy content="Export data to csv" delay={[200, null]}>
                <div>
                   <CSVLink data={getArrayForCsv()}>
@@ -365,33 +459,78 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                content="If checked, first person, whose rate input box is focused is dependent on the number of cards drawn"
                delay={[200, null]}
             >
-               <div className={`pointer ${orderedFocus && 'checked'}`} onClick={() => {
-                  setOrderedFocus((v) => !v)
-                  editOptions(!orderedFocus)
-               }}>
+               <div
+                  className={`pointer ${orderedFocus && 'checked'}`}
+                  onClick={() => {
+                     setOrderedFocus((v) => !v)
+                     editOptions({ ...list.options, orderedFocus: !orderedFocus })
+                  }}
+               >
                   <GoListOrdered size={28} />
                </div>
             </Tippy>
+            {lastId !== -1 && (
+               <span style={{ marginLeft: '20px' }}>
+                  LAST CARD DRAWN:{' '}
+                  <strong>
+                     {CARDS.find((c) => c.id === lastId)?.name}
+                     {' ('}
+                     {CARDS.find((c) => c.id === lastId)?.id}
+                     {')'}
+                  </strong>
+               </span>
+            )}
          </div>
          <table>
             <thead>
                <tr>
                   <th
                      className="pointer"
-                     onClick={() =>
-                        setSortBy(
+                     onClick={() => {
+                        const newSortBy =
                            sortBy === SORT_BY.CARD_ID_ASC
                               ? SORT_BY.CARD_ID_DESC
                               : SORT_BY.CARD_ID_ASC
-                        )
-                     }
+                        setSortBy(newSortBy)
+                        editOptions({ ...list.options, sortBy: newSortBy })
+                     }}
                   >
+                     {/* Sort by Add Time */}
+                     <div
+                        className="sort-by-add-time"
+                        onClick={(e) => {
+                           e.stopPropagation()
+                           const newSortBy =
+                              sortBy === SORT_BY.ADD_TIME_ASC
+                                 ? SORT_BY.ADD_TIME_DESC
+                                 : SORT_BY.ADD_TIME_ASC
+                           setSortBy(newSortBy)
+                           editOptions({ ...list.options, sortBy: newSortBy })
+                        }}
+                     >
+                        {/* Sort arrows */}
+                        {sortBy === SORT_BY.ADD_TIME_ASC && (
+                           <HiOutlineArrowSmUp className="position-absolute sort-btn" size={13} />
+                        )}
+                        {sortBy === SORT_BY.ADD_TIME_DESC && (
+                           <HiOutlineArrowSmDown className="position-absolute sort-btn" size={13} />
+                        )}
+                        <div>SORT BY ADD TIME</div>
+                     </div>
                      {/* Sort arrows */}
                      {sortBy === SORT_BY.CARD_ID_ASC && (
-                        <HiOutlineArrowSmUp className="position-absolute sort-btn" size={20} />
+                        <HiOutlineArrowSmUp
+                           className="position-absolute sort-btn"
+                           style={{ left: '130px' }}
+                           size={20}
+                        />
                      )}
                      {sortBy === SORT_BY.CARD_ID_DESC && (
-                        <HiOutlineArrowSmDown className="position-absolute sort-btn" size={20} />
+                        <HiOutlineArrowSmDown
+                           className="position-absolute sort-btn"
+                           style={{ left: '130px' }}
+                           size={20}
+                        />
                      )}
                      <span className="d-flex justify-content-center align-items-center position-relative ms-auto me-auto">
                         {/* Filter Buttons */}
@@ -429,7 +568,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                            />
                         )}
                         {/* Header */}
-                        <span>CARD</span>
+                        CARD
                      </span>
                      {/* Filter Input */}
                      {showFilterCard && (
@@ -449,11 +588,12 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                   </th>
                   <th
                      className="pointer"
-                     onClick={() =>
-                        setSortBy(
+                     onClick={() => {
+                        const newSortBy =
                            sortBy === SORT_BY.RATING_DESC ? SORT_BY.RATING_ASC : SORT_BY.RATING_DESC
-                        )
-                     }
+                        setSortBy(newSortBy)
+                        editOptions({ ...list.options, sortBy: newSortBy })
+                     }}
                   >
                      {sortBy === SORT_BY.RATING_ASC && (
                         <HiOutlineArrowSmUp className="position-absolute sort-btn" size={20} />
@@ -461,7 +601,71 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                      {sortBy === SORT_BY.RATING_DESC && (
                         <HiOutlineArrowSmDown className="position-absolute sort-btn" size={20} />
                      )}
-                     RATING
+                     <span className="d-flex justify-content-center align-items-center position-relative ms-auto me-auto">
+                        {/* Filter Buttons */}
+                        {showFilterAvgRate ? (
+                           <Tippy
+                              content='Examples: "5.00", "4.67", "3", ">3.5", "<=2"'
+                              delay={[200, null]}
+                           >
+                              <span style={{ translate: '0 -6%' }}>
+                                 <RiFilterOffFill
+                                    className="filter-btn pointer"
+                                    onClick={(e) => {
+                                       e.stopPropagation()
+                                       setShowFilterAvgRate((prev) => {
+                                          if (prev) setFilterAvgRate('')
+                                          return !prev
+                                       })
+                                    }}
+                                    size={16}
+                                 />
+                              </span>
+                           </Tippy>
+                        ) : (
+                           <Tippy
+                              content='Examples: "5.00", "4.67", "3", ">3.5", "<=2"'
+                              delay={[200, null]}
+                           >
+                              <span style={{ translate: '0 -6%' }}>
+                                 <RiFilterFill
+                                    className="filter-btn pointer"
+                                    onClick={(e) => {
+                                       e.stopPropagation()
+                                       setShowFilterAvgRate((prev) => !prev)
+                                    }}
+                                    size={16}
+                                 />
+                              </span>
+                           </Tippy>
+                        )}
+                        {filterAvgRate !== '' && (
+                           <FcClearFilters
+                              className="filter-btn clear pointer"
+                              onClick={(e) => {
+                                 e.stopPropagation()
+                                 setFilterAvgRate('')
+                                 setShowFilterAvgRate(false)
+                              }}
+                              size={15}
+                           />
+                        )}
+                        {/* Header */}
+                        RATING
+                     </span>
+                     {/* Filter Input */}
+                     {showFilterAvgRate && (
+                        <input
+                           type="text"
+                           value={filterAvgRate}
+                           onChange={(e) => setFilterAvgRate(e.target.value)}
+                           onClick={(e) => e.stopPropagation()}
+                           placeholder="SEARCH BY RATE"
+                           onBlur={() => setShowFilterAvgRate(false)}
+                           autoFocus
+                           onFocus={(e: React.ChangeEvent<HTMLInputElement>) => e.target.select()}
+                        />
+                     )}
                   </th>
                   {list.players.map((player, idx) => (
                      <th
@@ -479,6 +683,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                            }
 
                            setSortBy(newSortBy)
+                           editOptions({ ...list.options, sortBy: newSortBy })
                         }}
                      >
                         {/* Sort arrows */}

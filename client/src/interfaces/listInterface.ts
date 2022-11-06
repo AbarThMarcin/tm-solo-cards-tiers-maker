@@ -15,6 +15,7 @@ export interface PlayerInterface {
 
 export interface OptionsInterface {
    orderedFocus: boolean
+   sortBy: string
 }
 
 export interface RateInterface {

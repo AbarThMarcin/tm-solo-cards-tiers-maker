@@ -36,6 +36,10 @@ const tiersListSchema = mongoose.Schema({
       orderedFocus: {
          type: Boolean,
          default: false,
+      },
+      sortBy: {
+         type: String,
+         default: 'ADD_TIME_ASC',
       }
    }
 })

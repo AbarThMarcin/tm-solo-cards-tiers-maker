@@ -75,7 +75,19 @@ export const ListNewRatePlayers: React.FC<PropsPlayers> = ({
 
    return (
       <>
+         {/* First Player to Rate */}
+         {list.options.orderedFocus && list.players.length > 0 && (
+            <div style={{ marginTop: '30px' }}>
+               <span>
+                  FIRST PLAYER TO RATE:{' '}
+                  <strong>
+                     {list.players[(list.drawnCardsIds.length - 1) % list.players.length].name}
+                  </strong>
+               </span>
+            </div>
+         )}
          <div className="player-inputs">
+            {/* Inputs */}
             {list.players.map((player, idx) => (
                <ListNewRatePlayer
                   key={idx}
@@ -139,11 +151,6 @@ const ListNewRatePlayer = forwardRef<HTMLInputElement, PropsPlayer>((props, ref)
       }
    }
 
-   const getFirstInput = (): boolean => {
-      if (!props.list.options.orderedFocus) return props.idx === 0
-      return props.idx === (props.list.drawnCardsIds.length - 1) % props.players.length
-   }
-
    function setFocus() {
       if (props.players.length - 1 === props.idx) {
          props.refBtnDone.current.focus()
@@ -179,7 +186,7 @@ const ListNewRatePlayer = forwardRef<HTMLInputElement, PropsPlayer>((props, ref)
             type="text"
             value={rate || ''}
             onInput={handleInputRate}
-            autoFocus={getFirstInput()}
+            autoFocus={props.idx === 0}
          />
       </div>
    )
