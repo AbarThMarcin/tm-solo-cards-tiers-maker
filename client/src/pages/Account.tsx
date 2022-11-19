@@ -99,15 +99,15 @@ export const Account: React.FC = () => {
                <button type="submit" className="button-submit" disabled={loading}>
                   APPLY CHANGES
                </button>
+               <button
+                  style={{ zIndex: 1 }}
+                  className="button-submit red"
+                  onClick={handleSignout}
+                  disabled={loading}
+               >
+                  LOGOUT
+               </button>
             </Form>
-            <button
-               style={{ zIndex: 1 }}
-               className="button-light red"
-               onClick={handleSignout}
-               disabled={loading}
-            >
-               LOGOUT
-            </button>
          </section>
       </article>
    )

@@ -5,6 +5,10 @@
    p {
       text-align: justify;
    }
+   img {
+      max-width: calc(100vw - 20px);
+      max-height: 215px
+   }
 }
 
 h1 {

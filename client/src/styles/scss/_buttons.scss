@@ -8,13 +8,12 @@
    border: 3px solid v.$btn-theme-light;
    color: v.$btn-theme-light;
    transition: all 80ms ease-in-out;
-   line-height: 20px;
 }
 
 .button-light {
    @extend .button;
-   height: 60px;
-   font-size: 2.4rem;
+   padding-block: -5px;
+   font-size: clamp(1.4rem, 3.5vw, 2.4rem);
    margin-block-end: 10px;
 }
 
@@ -41,38 +40,45 @@ button:hover {
    color: #fff;
 }
 button.red {
-   color: v.$btn-theme-light-red;
-   border: 3px solid v.$btn-theme-light-red;
+   color: v.$btn-theme-light-red !important;
+   border: 3px solid v.$btn-theme-light-red !important;
    &:hover {
-      background-color: v.$btn-theme-darker-red;
-      border: 3px solid v.$btn-theme-darker-red;
-      color: #fff;
+      background-color: v.$btn-theme-darker-red !important;
+      border: 3px solid v.$btn-theme-darker-red !important;
+      color: #fff !important;
    }
 }
 button.green {
-   color: v.$btn-theme-light-green;
-   border: 3px solid v.$btn-theme-light-green;
+   color: v.$btn-theme-light-green !important;
+   border: 3px solid v.$btn-theme-light-green !important;
    &:hover {
-      background-color: v.$btn-theme-darker-green;
-      border: 3px solid v.$btn-theme-darker-green;
-      color: #fff;
+      background-color: v.$btn-theme-darker-green !important;
+      border: 3px solid v.$btn-theme-darker-green !important;
+      color: #fff !important;
    }
 }
 button.light-green {
-   color: v.$btn-theme-light-lightgreen;
-   border: 3px solid v.$btn-theme-light-lightgreen;
+   color: v.$btn-theme-light-lightgreen !important;
+   border: 3px solid v.$btn-theme-light-lightgreen !important;
    &:hover {
-      background-color: v.$btn-theme-darker-green;
-      border: 3px solid v.$btn-theme-darker-green;
-      color: #fff;
+      background-color: v.$btn-theme-darker-green !important;
+      border: 3px solid v.$btn-theme-darker-green !important;
+      color: #fff !important;
    }
 }
 button.grey {
-   color: #333;
-   border: 3px solid #333;
+   color: #333 !important;
+   border: 3px solid #333 !important;
    &:hover {
-      background-color: v.$btn-theme-darker-red;
-      border: 3px solid v.$btn-theme-darker-red;
-      color: #fff;
+      background-color: v.$btn-theme-darker-red !important;
+      border: 3px solid v.$btn-theme-darker-red !important;
+      color: #fff !important;
+   }
+}
+
+@media (max-width: 430px) {
+   .tm-solo-game-btns {
+      display: flex;
+      flex-direction: column;
    }
 }

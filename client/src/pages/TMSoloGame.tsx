@@ -6,7 +6,7 @@ export const TMSoloGame: React.FC = () => {
          <section className="article-section-content">
             <header className="mb-5">
                <div className="w-100 d-flex justify-content-center">
-                  <img src={imgTMSoloGame} alt="mars-tm-solo-game" height="215" />
+                  <img src={imgTMSoloGame} alt="mars-tm-solo-game" />
                </div>
             </header>
             <p>All rules apply as usual for solo play, with these exceptions:</p>

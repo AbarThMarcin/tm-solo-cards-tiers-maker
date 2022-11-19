@@ -7,18 +7,19 @@
    margin-bottom: 30px;
    // Image
    img {
-      height: 450px;
+      width: 450px;
+      max-width: calc(100% - 20px);
    }
    // Short Description
    p {
       letter-spacing: 1px;
-      font-size: 2rem;
-      line-height: 2.2rem;
+      font-size: clamp(1.2rem, 3.5vw, 2rem);
+      line-height: clamp(1.5rem, 4vw, 2.3rem);
       font-weight: 400;
    }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 991px) {
    .home-section-content {
       flex-direction: column !important;
       img {

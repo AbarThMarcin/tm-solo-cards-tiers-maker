@@ -22,7 +22,7 @@ export const Home: React.FC<Props> = ({ setTiersClicked }) => {
                   <header className="text-center">
                      <h1>TIERS MAKER</h1>
                   </header>
-                  <p data-tip="hello world">
+                  <p>
                      Are you in love with terraforming mars solo? Would you like to rate all cards
                      in{' '}
                      <strong className="red">
@@ -103,7 +103,7 @@ export const Home: React.FC<Props> = ({ setTiersClicked }) => {
                   </p>
                </div>
             </div>
-            <div>
+            <div className='tm-solo-game-btns'>
                <button className="button-light green" onClick={() => navigate('/tm-solo-game')}>
                   SEE DETAILS
                </button>
