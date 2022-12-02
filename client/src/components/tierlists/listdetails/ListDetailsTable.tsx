@@ -21,6 +21,9 @@ import { ACTIONS_LISTS } from '../../../store/actions/actionsLists'
 import Tippy from '@tippyjs/react'
 import { Loading } from '../../../pages/Loading'
 import { CSVLink } from 'react-csv'
+import { TAGS } from '../../../data/tags'
+import { RESOURCES } from '../../../data/resources'
+import { PARAMETERS } from '../../../data/parameters'
 
 interface Props {
    list: ListInterface
@@ -73,7 +76,8 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
             return (
                card.id.toString().includes(filterCard) ||
                card.name.toString().toUpperCase().includes(filterCard.toUpperCase()) ||
-               card.description.toString().includes(filterCard.toUpperCase())
+               card.description.toString().includes(filterCard.toUpperCase()) ||
+               getAdvancedFilter(card, filterCard)
             )
          } else {
             return true
@@ -193,6 +197,60 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       const newFilteredCardsIds = newFilteredCards.map((card) => card.id)
       setFilteredCardsDrawn(newFilteredCards)
       setFilteredCardsIds(newFilteredCardsIds)
+   }
+
+   // TEMPORARY SOLUTION
+   const getAdvancedFilter = (card: CardInterface, filterCard: string): boolean => {
+      // Tags
+      if (card.tags.includes(TAGS.BUILDING) && filterCard.includes('&tagpower')) return true
+      if (card.tags.includes(TAGS.SPACE) && filterCard.includes('&tagspace')) return true
+      if (card.tags.includes(TAGS.SCIENCE) && filterCard.includes('&tagscience')) return true
+      if (card.tags.includes(TAGS.PLANT) && filterCard.includes('&tagplant')) return true
+      if (card.tags.includes(TAGS.MICROBE) && filterCard.includes('&tagmicrobe')) return true
+      if (card.tags.includes(TAGS.ANIMAL) && filterCard.includes('&taganimal')) return true
+      if (card.tags.includes(TAGS.POWER) && filterCard.includes('&tagpower')) return true
+      if (card.tags.includes(TAGS.JOVIAN) && filterCard.includes('&tagjovian')) return true
+      if (card.tags.includes(TAGS.EARTH) && filterCard.includes('&tagearth')) return true
+      if (card.tags.includes(TAGS.CITY) && filterCard.includes('&tagcity')) return true
+      if (card.tags.includes(TAGS.EVENT) && filterCard.includes('&tagevent')) return true
+      if (card.tags.length === 0 && filterCard.includes('&tag')) return true
+
+      // Automated / Active / Event
+      if (card.type === CARD_TYPES.GREEN && filterCard.includes('&auto')) return true
+      if (card.type === CARD_TYPES.BLUE && filterCard.includes('&active')) return true
+      if (card.type === CARD_TYPES.RED && filterCard.includes('&event')) return true
+
+      // VP or No VP
+      if (card.iconNames.vp && filterCard.includes('&vp')) return true
+      if (!card.iconNames.vp && filterCard.includes('&novp')) return true
+
+      // Production
+      if (card.production.includes(RESOURCES.MLN) && filterCard.includes('&prodmln')) return true
+      if (card.production.includes(RESOURCES.STEEL) && filterCard.includes('&prodsteel'))
+         return true
+      if (card.production.includes(RESOURCES.TITAN) && filterCard.includes('&prodtitan'))
+         return true
+      if (card.production.includes(RESOURCES.PLANT) && filterCard.includes('&prodplant'))
+         return true
+      if (card.production.includes(RESOURCES.ENERGY) && filterCard.includes('&prodenergy'))
+         return true
+      if (card.production.includes(RESOURCES.HEAT) && filterCard.includes('&prodheat')) return true
+      if (card.production.includes(RESOURCES.CARD) && filterCard.includes('&prodcard')) return true
+      if (card.production.length === 0 && filterCard.includes('&prodnone')) return true
+
+      // Parameters
+      if (card.parameters.includes(PARAMETERS.TR) && filterCard.includes('&paramtr')) return true
+      if (card.parameters.includes(PARAMETERS.TEMPERATURE) && filterCard.includes('&paramtemp'))
+         return true
+      if (card.parameters.includes(PARAMETERS.OCEAN) && filterCard.includes('&paramocean'))
+         return true
+      if (card.parameters.includes(PARAMETERS.GREENERY) && filterCard.includes('&paramgreenery'))
+         return true
+      if (card.parameters.includes(PARAMETERS.OXYGEN) && filterCard.includes('&paramox'))
+         return true
+      if (card.parameters.length === 0 && filterCard.includes('&paramnone')) return true
+
+      return false
    }
 
    const sortedByAddTime = (cards: CardInterface[], sortBy: string): CardInterface[] => {
@@ -360,7 +418,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
    const getAvgRate = (
       cardId: number = -1,
       playerId: string = '',
-      cardsIds: number[] = list.drawnCardsIds
+      cardsIds: number[] = filteredCardsIds
    ): number | string => {
       let cardRates: string[] = []
       list.players.forEach((player) => {
@@ -501,9 +559,9 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                         onClick={(e) => {
                            e.stopPropagation()
                            const newSortBy =
-                              sortBy === SORT_BY.ADD_TIME_ASC
-                                 ? SORT_BY.ADD_TIME_DESC
-                                 : SORT_BY.ADD_TIME_ASC
+                              sortBy === SORT_BY.ADD_TIME_DESC
+                                 ? SORT_BY.ADD_TIME_ASC
+                                 : SORT_BY.ADD_TIME_DESC
                            setSortBy(newSortBy)
                            editOptions({ ...list.options, sortBy: newSortBy })
                         }}
