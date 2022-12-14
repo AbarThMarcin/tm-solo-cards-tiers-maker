@@ -202,7 +202,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
    // TEMPORARY SOLUTION
    const getAdvancedFilter = (card: CardInterface, filterCard: string): boolean => {
       // Tags
-      if (card.tags.includes(TAGS.BUILDING) && filterCard.includes('&tagpower')) return true
+      if (card.tags.includes(TAGS.BUILDING) && filterCard.includes('&tagbuilding')) return true
       if (card.tags.includes(TAGS.SPACE) && filterCard.includes('&tagspace')) return true
       if (card.tags.includes(TAGS.SCIENCE) && filterCard.includes('&tagscience')) return true
       if (card.tags.includes(TAGS.PLANT) && filterCard.includes('&tagplant')) return true
@@ -213,7 +213,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       if (card.tags.includes(TAGS.EARTH) && filterCard.includes('&tagearth')) return true
       if (card.tags.includes(TAGS.CITY) && filterCard.includes('&tagcity')) return true
       if (card.tags.includes(TAGS.EVENT) && filterCard.includes('&tagevent')) return true
-      if (card.tags.length === 0 && filterCard.includes('&tag')) return true
+      if (card.tags.length === 0 && filterCard.includes('&tagnone')) return true
 
       // Automated / Active / Event
       if (card.type === CARD_TYPES.GREEN && filterCard.includes('&auto')) return true
