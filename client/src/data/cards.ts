@@ -3074,7 +3074,7 @@ export const CARDS = [
          action: null,
       },
       production: [],
-      parameters: [PARAMETERS.GREENERY],
+      parameters: [],
       canHaveUnits: RESOURCES.ANIMAL,
    },
    {

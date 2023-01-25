@@ -6,10 +6,11 @@ import { FiltersStateInt } from '../interfaces/filtersInterface'
 import { FiltersSection } from '../components/filterslist/FiltersSection'
 import { CardsList } from '../components/filterslist/CardsList'
 import { AND_OR, COST_TYPES, NEG_ALL_POS, SORT_BY, useFilters } from '../context/FiltersContext'
+import { ACTIONS_FILTERS } from '../store/actions/actionsFilters'
 
 export const CardsListPage: React.FC = () => {
    const [isPending, startTransition] = useTransition()
-   const { stateFilters, sortBy } = useFilters()
+   const { stateFilters, dispatchFilters, sortBy } = useFilters()
    const [cardsIds, setCardsIds] = useState<number[]>([])
    const [loading, setLoading] = useState(true)
    const [showSumOfVP, setShowSumOfVP] = useState<boolean>(false)
@@ -17,6 +18,7 @@ export const CardsListPage: React.FC = () => {
    useEffect(() => {
       setCardsIds(CARDS.map(({ id }) => id))
       setLoading(false)
+      dispatchFilters({ type: ACTIONS_FILTERS.RESET_ALL })
    }, [])
 
    useEffect(() => {

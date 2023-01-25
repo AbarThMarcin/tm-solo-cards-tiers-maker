@@ -15,19 +15,31 @@ import { SortBy } from './SortBy'
 import { BtnShowHide } from './filtercomponents/BtnShowHide'
 
 interface Props {
-   isPending: boolean
-   loading: boolean
-   showSumOfVP: boolean
-   cardsIds: number[]
+   isPending?: boolean
+   loading?: boolean
+   showSumOfVP?: boolean
+   cardsIds?: number[]
+   inTiersMaker?: boolean
 }
 
-export const FiltersSection: React.FC<Props> = ({ isPending, loading, showSumOfVP, cardsIds }) => {
+export const FiltersSection: React.FC<Props> = ({
+   isPending,
+   loading,
+   showSumOfVP,
+   cardsIds,
+   inTiersMaker,
+}) => {
    const { sortBy, setSortBy } = useFilters()
    const [showFilters, setShowFilters] = useState<boolean>(true)
    const searchRef = useRef<HTMLInputElement>(null!)
 
    return (
-      <section className={`custom-filters-container ${!showFilters && 'hidden'}`}>
+      <section
+         className={`custom-filters-container ${!showFilters && 'hidden'} ${
+            inTiersMaker && 'in-tiers-maker'
+         }`}
+         onClick={(e) => e.stopPropagation()}
+      >
          <div className="custom-filters">
             {showFilters && (
                <>
@@ -43,19 +55,22 @@ export const FiltersSection: React.FC<Props> = ({ isPending, loading, showSumOfV
                   <FilterUnits />
                   <FilterResetAll searchRef={searchRef} />
                   {/* Sort By */}
-                  <SortBy sortBy={sortBy} setSortBy={setSortBy} />
+                  {!inTiersMaker && <SortBy sortBy={sortBy} setSortBy={setSortBy} />}
                </>
             )}
-            {/* Number of filtered cards and total of VP */}
-            <FilterCounts
-               isPending={isPending}
-               loading={loading}
-               showSumOfVP={showSumOfVP}
-               cardsIds={cardsIds}
-            />
-
-            {/* Hide / Show button */}
-            <BtnShowHide showFilters={showFilters} setShowFilters={setShowFilters} />
+            {!inTiersMaker && (
+               <>
+                  {/* Number of filtered cards and total of VP */}
+                  <FilterCounts
+                     isPending={isPending}
+                     loading={loading}
+                     showSumOfVP={showSumOfVP}
+                     cardsIds={cardsIds}
+                  />
+                  {/* Hide / Show button */}
+                  <BtnShowHide showFilters={showFilters} setShowFilters={setShowFilters} />
+               </>
+            )}
          </div>
       </section>
    )

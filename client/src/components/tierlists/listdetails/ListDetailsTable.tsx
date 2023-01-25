@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { useModal } from '../../../context/ModalContext'
 import { CARDS, CARD_TYPES } from '../../../data/cards'
 import { ListInterface, OptionsInterface, PlayerInterface } from '../../../interfaces/listInterface'
-import { getCards } from '../../../utils/arrays'
+import { getCards, matchesAnd, matchesOr } from '../../../utils/arrays'
+import { deepEqual } from '../../../utils/objects'
 import { ListDetailsRate } from './ListDetailsRate'
 import { AiTwotoneEdit, AiFillEye, AiOutlineBarChart } from 'react-icons/ai'
 import { FaExclamation } from 'react-icons/fa'
@@ -11,7 +12,10 @@ import { TiDelete } from 'react-icons/ti'
 import { FcClearFilters } from 'react-icons/fc'
 import { HiOutlineArrowSmDown, HiOutlineArrowSmUp } from 'react-icons/hi'
 import { BiExport } from 'react-icons/bi'
+import { BsFilterRight } from 'react-icons/bs'
 import { GoListOrdered } from 'react-icons/go'
+import { TbFilterOff } from 'react-icons/tb'
+import { ImFilter } from 'react-icons/im'
 import { INPUT_TYPES } from '../../../interfaces/modalInterface'
 import { CardInterface } from '../../../interfaces/cardInterface'
 import { useUser } from '../../../context/UserContext'
@@ -21,9 +25,16 @@ import { ACTIONS_LISTS } from '../../../store/actions/actionsLists'
 import Tippy from '@tippyjs/react'
 import { Loading } from '../../../pages/Loading'
 import { CSVLink } from 'react-csv'
-import { TAGS } from '../../../data/tags'
-import { RESOURCES } from '../../../data/resources'
-import { PARAMETERS } from '../../../data/parameters'
+import { FiltersSection } from '../../filterslist/FiltersSection'
+import {
+   useFilters,
+   initFilters,
+   AND_OR,
+   COST_TYPES,
+   NEG_ALL_POS,
+} from '../../../context/FiltersContext'
+import { ACTIONS_FILTERS } from '../../../store/actions/actionsFilters'
+import { FiltersStateInt } from '../../../interfaces/filtersInterface'
 
 interface Props {
    list: ListInterface
@@ -43,49 +54,56 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
    const { user } = useUser()
    const { dispatchLists } = useLists()
    const { setModal, setModalCardId, setModalCharts } = useModal()
-   const [filteredCardsIds, setFilteredCardsIds] = useState<number[]>(list.drawnCardsIds)
-   const [filteredCardsDrawn, setFilteredCardsDrawn] = useState(getCards(CARDS, filteredCardsIds))
+   const [filteredCardsDrawn, setFilteredCardsDrawn] = useState(getCards(CARDS, list.drawnCardsIds))
    const [loading, setLoading] = useState<boolean>(true)
    const [orderedFocus, setOrderedFocus] = useState(list.options.orderedFocus)
    const lastId: number = list.drawnCardsIds[list.drawnCardsIds.length - 1] || -1
    // Filter cards
    const [showFilterCard, setShowFilterCard] = useState<boolean>(false)
    const [showFilterAvgRate, setShowFilterAvgRate] = useState<boolean>(false)
-   const [showFilterRate, setShowFilterRate] = useState<boolean[]>([
-      false,
-      false,
-      false,
-      false,
-      false,
-   ])
+   const [showFilterRate, setShowFilterRate] = useState<boolean[]>(new Array(5).fill(false))
+   const [showAdvFilter, setShowAdvFilter] = useState<boolean>(false)
    const [filterCard, setFilterCard] = useState<string>('')
    const [filterAvgRate, setFilterAvgRate] = useState<string>('')
    const [filterRate, setFilterRate] = useState<string[]>(['', '', '', '', ''])
+   const { stateFilters, dispatchFilters } = useFilters()
+   const [selectedIds, setSelectedIds] = useState<number[]>([])
+   const [manualIds, setManualIds] = useState<number[]>([])
    // Sort Cards
    const [sortBy, setSortBy] = useState(list.options.sortBy)
 
    useEffect(() => {
       filterCardsDrawn()
       setLoading(false)
-   }, [filterCard, filterAvgRate, filterRate, sortBy, list.drawnCardsIds])
+   }, [filterCard, filterAvgRate, filterRate, sortBy, stateFilters, manualIds, list.drawnCardsIds])
 
    const filterCardsDrawn = (): void => {
+      let newFilteredCards: CardInterface[] = getCards(CARDS, list.drawnCardsIds)
+
       // Filter cards by Id, Name or Description
-      let newFilteredCards: CardInterface[] = getCards(CARDS, list.drawnCardsIds).filter((card) => {
-         if (filterCard) {
+      if (filterCard) {
+         newFilteredCards = newFilteredCards.filter((card) => {
             return (
                card.id.toString().includes(filterCard) ||
                card.name.toString().toUpperCase().includes(filterCard.toUpperCase()) ||
-               card.description.toString().includes(filterCard.toUpperCase()) ||
-               getAdvancedFilter(card, filterCard)
+               card.description.toString().includes(filterCard.toUpperCase())
             )
-         } else {
-            return true
-         }
-      })
+         })
+      } else if (!deepEqual(stateFilters, initFilters)) {
+         newFilteredCards = getFilteredTags(newFilteredCards, stateFilters)
+         newFilteredCards = getFilteredCardType(newFilteredCards, stateFilters)
+         newFilteredCards = getFilteredCost(newFilteredCards, stateFilters)
+         newFilteredCards = getFilteredSearch(newFilteredCards, stateFilters)
+         newFilteredCards = getFilteredProduction(newFilteredCards, stateFilters)
+         newFilteredCards = getFilteredVP(newFilteredCards, stateFilters)
+         newFilteredCards = getFilteredRequirements(newFilteredCards, stateFilters)
+         newFilteredCards = getFilteredParameters(newFilteredCards, stateFilters)
+         newFilteredCards = getFilteredCanHaveUnits(newFilteredCards, stateFilters)
+      }
+
       // Filter Cards by Avg Rate
-      newFilteredCards = newFilteredCards.filter((card) => {
-         if (filterAvgRate) {
+      if (filterAvgRate) {
+         newFilteredCards = newFilteredCards.filter((card) => {
             if (!isNaN(Number(filterAvgRate))) {
                return (
                   Number(
@@ -149,10 +167,8 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                   ) <= Number(filterAvgRate.slice(2))
                )
             }
-         } else {
-            return true
-         }
-      })
+         })
+      }
       // Filter Cards by Players' rates
       list.players.forEach((_, idx) => {
          if (filterRate[idx]) {
@@ -194,63 +210,143 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       if (sortBy.slice(0, 1).toUpperCase() === 'P')
          newFilteredCards = sortedByPlayerRate(newFilteredCards)
 
-      const newFilteredCardsIds = newFilteredCards.map((card) => card.id)
+      // Filter by manually selected cards
+      if (manualIds.length > 0) {
+         newFilteredCards = sortedManually(newFilteredCards)
+      }
+
       setFilteredCardsDrawn(newFilteredCards)
-      setFilteredCardsIds(newFilteredCardsIds)
    }
 
-   // TEMPORARY SOLUTION
-   const getAdvancedFilter = (card: CardInterface, filterCard: string): boolean => {
-      // Tags
-      if (card.tags.includes(TAGS.BUILDING) && filterCard.includes('&tagbuilding')) return true
-      if (card.tags.includes(TAGS.SPACE) && filterCard.includes('&tagspace')) return true
-      if (card.tags.includes(TAGS.SCIENCE) && filterCard.includes('&tagscience')) return true
-      if (card.tags.includes(TAGS.PLANT) && filterCard.includes('&tagplant')) return true
-      if (card.tags.includes(TAGS.MICROBE) && filterCard.includes('&tagmicrobe')) return true
-      if (card.tags.includes(TAGS.ANIMAL) && filterCard.includes('&taganimal')) return true
-      if (card.tags.includes(TAGS.POWER) && filterCard.includes('&tagpower')) return true
-      if (card.tags.includes(TAGS.JOVIAN) && filterCard.includes('&tagjovian')) return true
-      if (card.tags.includes(TAGS.EARTH) && filterCard.includes('&tagearth')) return true
-      if (card.tags.includes(TAGS.CITY) && filterCard.includes('&tagcity')) return true
-      if (card.tags.includes(TAGS.EVENT) && filterCard.includes('&tagevent')) return true
-      if (card.tags.length === 0 && filterCard.includes('&tagnone')) return true
-
-      // Automated / Active / Event
-      if (card.type === CARD_TYPES.GREEN && filterCard.includes('&auto')) return true
-      if (card.type === CARD_TYPES.BLUE && filterCard.includes('&active')) return true
-      if (card.type === CARD_TYPES.RED && filterCard.includes('&event')) return true
-
-      // VP or No VP
-      if (card.iconNames.vp && filterCard.includes('&vp')) return true
-      if (!card.iconNames.vp && filterCard.includes('&novp')) return true
-
-      // Production
-      if (card.production.includes(RESOURCES.MLN) && filterCard.includes('&prodmln')) return true
-      if (card.production.includes(RESOURCES.STEEL) && filterCard.includes('&prodsteel'))
-         return true
-      if (card.production.includes(RESOURCES.TITAN) && filterCard.includes('&prodtitan'))
-         return true
-      if (card.production.includes(RESOURCES.PLANT) && filterCard.includes('&prodplant'))
-         return true
-      if (card.production.includes(RESOURCES.ENERGY) && filterCard.includes('&prodenergy'))
-         return true
-      if (card.production.includes(RESOURCES.HEAT) && filterCard.includes('&prodheat')) return true
-      if (card.production.includes(RESOURCES.CARD) && filterCard.includes('&prodcard')) return true
-      if (card.production.length === 0 && filterCard.includes('&prodnone')) return true
-
-      // Parameters
-      if (card.parameters.includes(PARAMETERS.TR) && filterCard.includes('&paramtr')) return true
-      if (card.parameters.includes(PARAMETERS.TEMPERATURE) && filterCard.includes('&paramtemp'))
-         return true
-      if (card.parameters.includes(PARAMETERS.OCEAN) && filterCard.includes('&paramocean'))
-         return true
-      if (card.parameters.includes(PARAMETERS.GREENERY) && filterCard.includes('&paramgreenery'))
-         return true
-      if (card.parameters.includes(PARAMETERS.OXYGEN) && filterCard.includes('&paramox'))
-         return true
-      if (card.parameters.length === 0 && filterCard.includes('&paramnone')) return true
-
-      return false
+   function getFilteredTags(
+      filtered: CardInterface[],
+      stateFilters: FiltersStateInt
+   ): CardInterface[] {
+      if (stateFilters.tags.length > 0) {
+         filtered =
+            stateFilters.tagsAndOr === AND_OR.AND
+               ? filtered.filter((card) => matchesAnd(card.tags, stateFilters.tags))
+               : filtered.filter((card) => matchesOr(card.tags, stateFilters.tags))
+      }
+      return filtered
+   }
+   function getFilteredCardType(
+      filtered: CardInterface[],
+      stateFilters: FiltersStateInt
+   ): CardInterface[] {
+      if (stateFilters.cardTypes.length > 0) {
+         filtered = filtered.filter((card) => stateFilters.cardTypes.includes(card.type))
+      }
+      return filtered
+   }
+   function getFilteredCost(
+      filtered: CardInterface[],
+      stateFilters: FiltersStateInt
+   ): CardInterface[] {
+      switch (stateFilters.costMinMaxEqual) {
+         case COST_TYPES.MIN:
+            filtered = filtered.filter((card) => card.cost >= stateFilters.cost)
+            break
+         case COST_TYPES.EQUAL:
+            filtered = filtered.filter((card) => card.cost == stateFilters.cost)
+            break
+         case COST_TYPES.MAX:
+            filtered = filtered.filter((card) => card.cost <= stateFilters.cost)
+            break
+         default:
+            break
+      }
+      return filtered
+   }
+   function getFilteredSearch(
+      filtered: CardInterface[],
+      stateFilters: FiltersStateInt
+   ): CardInterface[] {
+      const v = stateFilters.searchValue.toUpperCase()
+      if (v !== '') {
+         filtered = filtered.filter(
+            (card) =>
+               card.id.toString().toUpperCase().includes(v) ||
+               card.name.toUpperCase().includes(v) ||
+               card.description.toUpperCase().includes(v)
+         )
+      }
+      return filtered
+   }
+   function getFilteredProduction(
+      filtered: CardInterface[],
+      stateFilters: FiltersStateInt
+   ): CardInterface[] {
+      if (stateFilters.production.length > 0) {
+         filtered =
+            stateFilters.productionAndOr === AND_OR.AND
+               ? filtered.filter((card) => matchesAnd(card.production, stateFilters.production))
+               : filtered.filter((card) => matchesOr(card.production, stateFilters.production))
+      }
+      return filtered
+   }
+   function getFilteredVP(
+      filtered: CardInterface[],
+      stateFilters: FiltersStateInt
+   ): CardInterface[] {
+      if (stateFilters.vp !== null) {
+         if (stateFilters.vp) {
+            filtered =
+               stateFilters.vpNegPosAll === NEG_ALL_POS.NEGATIVE
+                  ? filtered.filter((card) => card.vp < 0)
+                  : stateFilters.vpNegPosAll === NEG_ALL_POS.POSITIVE
+                  ? filtered.filter((card) => card.iconNames.vp !== null && card.vp >= 0)
+                  : filtered.filter((card) => card.iconNames.vp !== null)
+         } else {
+            filtered = filtered.filter((card) => card.iconNames.vp === null)
+         }
+      }
+      return filtered
+   }
+   function getFilteredRequirements(
+      filtered: CardInterface[],
+      stateFilters: FiltersStateInt
+   ): CardInterface[] {
+      if (stateFilters.requirements.length > 0) {
+         filtered =
+            stateFilters.requirementsAndOr === AND_OR.AND
+               ? filtered.filter((card) =>
+                    matchesAnd(
+                       card.requirements.map((req) => req.type),
+                       stateFilters.requirements
+                    )
+                 )
+               : filtered.filter((card) =>
+                    matchesOr(
+                       card.requirements.map((req) => req.type),
+                       stateFilters.requirements
+                    )
+                 )
+      }
+      return filtered
+   }
+   function getFilteredParameters(
+      filtered: CardInterface[],
+      stateFilters: FiltersStateInt
+   ): CardInterface[] {
+      if (stateFilters.parameters.length > 0) {
+         filtered =
+            stateFilters.parametersAndOr === AND_OR.AND
+               ? filtered.filter((card) => matchesAnd(card.parameters, stateFilters.parameters))
+               : filtered.filter((card) => matchesOr(card.parameters, stateFilters.parameters))
+      }
+      return filtered
+   }
+   function getFilteredCanHaveUnits(
+      filtered: CardInterface[],
+      stateFilters: FiltersStateInt
+   ): CardInterface[] {
+      if (stateFilters.canHaveUnits.length > 0) {
+         filtered = filtered.filter((card) =>
+            stateFilters.canHaveUnits.includes(card.canHaveUnits || '')
+         )
+      }
+      return filtered
    }
 
    const sortedByAddTime = (cards: CardInterface[], sortBy: string): CardInterface[] => {
@@ -296,6 +392,10 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
       )
 
       return cardsWithRates
+   }
+
+   const sortedManually = (cards: CardInterface[]): CardInterface[] => {
+      return cards.filter(card => manualIds.includes(card.id))
    }
 
    const handleClickDeletePlayer = (playerId: string): void => {
@@ -418,7 +518,7 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
    const getAvgRate = (
       cardId: number = -1,
       playerId: string = '',
-      cardsIds: number[] = filteredCardsIds
+      cardsIds: number[] = filteredCardsDrawn.map((card) => card.id)
    ): number | string => {
       let cardRates: string[] = []
       list.players.forEach((player) => {
@@ -568,10 +668,10 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                      >
                         {/* Sort arrows */}
                         {sortBy === SORT_BY.ADD_TIME_ASC && (
-                           <HiOutlineArrowSmUp className="position-absolute sort-btn" size={13} />
+                           <HiOutlineArrowSmUp className="position-absolute sort-btn" size={20} />
                         )}
                         {sortBy === SORT_BY.ADD_TIME_DESC && (
-                           <HiOutlineArrowSmDown className="position-absolute sort-btn" size={13} />
+                           <HiOutlineArrowSmDown className="position-absolute sort-btn" size={20} />
                         )}
                         <div>SORT BY ADD TIME</div>
                      </div>
@@ -579,14 +679,12 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                      {sortBy === SORT_BY.CARD_ID_ASC && (
                         <HiOutlineArrowSmUp
                            className="position-absolute sort-btn"
-                           style={{ left: '130px' }}
                            size={20}
                         />
                      )}
                      {sortBy === SORT_BY.CARD_ID_DESC && (
                         <HiOutlineArrowSmDown
                            className="position-absolute sort-btn"
-                           style={{ left: '130px' }}
                            size={20}
                         />
                      )}
@@ -597,10 +695,12 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                               className="filter-btn pointer"
                               onClick={(e) => {
                                  e.stopPropagation()
-                                 setShowFilterCard((prev) => {
-                                    if (prev) setFilterCard('')
-                                    return !prev
-                                 })
+                                 setShowFilterCard((prev) => !prev)
+                                 setShowAdvFilter(false)
+                                 // setShowFilterCard((prev) => {
+                                 //    if (prev) setFilterCard('')
+                                 //    return !prev
+                                 // })
                               }}
                               size={16}
                            />
@@ -610,19 +710,44 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                               onClick={(e) => {
                                  e.stopPropagation()
                                  setShowFilterCard((prev) => !prev)
+                                 setShowAdvFilter(false)
                               }}
                               size={16}
                            />
                         )}
-                        {filterCard !== '' && (
+                        {(filterCard !== '' || !deepEqual(stateFilters, initFilters) || manualIds.length > 0) && (
                            <FcClearFilters
                               className="filter-btn clear pointer"
                               onClick={(e) => {
                                  e.stopPropagation()
                                  setFilterCard('')
+                                 dispatchFilters({ type: ACTIONS_FILTERS.RESET_ALL })
                                  setShowFilterCard(false)
+                                 setManualIds([])
+                                 setSelectedIds([])
                               }}
                               size={15}
+                           />
+                        )}
+                        {selectedIds.length > 0 && (
+                           <TbFilterOff
+                              className="filter-btn clear manual pointer"
+                              onClick={(e) => {
+                                 e.stopPropagation()
+                                 setSelectedIds([])
+                              }}
+                              size={17}
+                           />
+                        )}
+                        {selectedIds.length > 0 && (
+                           <ImFilter
+                              className="filter-btn pointer"
+                              onClick={(e) => {
+                                 e.stopPropagation()
+                                 setManualIds(selectedIds)
+                                 setSelectedIds([])
+                              }}
+                              size={14}
                            />
                         )}
                         {/* Header */}
@@ -630,19 +755,35 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                      </span>
                      {/* Filter Input */}
                      {showFilterCard && (
-                        <input
-                           type="text"
-                           value={filterCard}
-                           onChange={(e) => setFilterCard(e.target.value)}
-                           onClick={(e) => e.stopPropagation()}
-                           placeholder="SEARCH BY ID, NAME OR DESCRIPTION"
-                           onBlur={() => setShowFilterCard(false)}
-                           autoFocus
-                           onFocus={(e: React.ChangeEvent<HTMLInputElement>) => e.target.select()}
-                        />
+                        <>
+                           <input
+                              type="text"
+                              value={showAdvFilter ? '' : filterCard}
+                              onChange={(e) => {
+                                 if (!showAdvFilter) setFilterCard(e.target.value)
+                              }}
+                              onClick={(e) => e.stopPropagation()}
+                              placeholder="SEARCH BY ID, NAME OR DESC."
+                              // onBlur={() => setShowFilterCard(false)}
+                              autoFocus
+                              onFocus={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                 e.target.select()
+                              }
+                           />
+                           <BsFilterRight
+                              className="adv-filter"
+                              size={30}
+                              onClick={(e) => {
+                                 e.stopPropagation()
+                                 setFilterCard('')
+                                 setShowAdvFilter((prev) => !prev)
+                              }}
+                           />
+                           {showAdvFilter && <FiltersSection inTiersMaker={true} />}
+                        </>
                      )}
                      {/* Card Counter */}
-                     <div className="card-count">{filteredCardsIds.length}</div>
+                     <div className="card-count">{filteredCardsDrawn.length}</div>
                   </th>
                   <th
                      className="pointer"
@@ -856,16 +997,33 @@ export const ListDetailsTable: React.FC<Props> = ({ list, handleClickAddPlayer }
                {filteredCardsDrawn.length > 0 ? (
                   filteredCardsDrawn.map((card, idx) => (
                      <tr key={idx}>
-                        <td style={{ textAlign: 'left' }}>
+                        <td
+                           className={selectedIds.includes(card.id) ? 'selected' : ''}
+                           onClick={() => {
+                              if (selectedIds.includes(card.id)) {
+                                 setSelectedIds(selectedIds.filter((id) => id !== card.id))
+                              } else {
+                                 let newIds = [...selectedIds]
+                                 newIds.push(card.id)
+                                 setSelectedIds(newIds)
+                              }
+                           }}
+                        >
                            {card.name} ({card.id})
                            <AiFillEye
                               className="pointer position-absolute show-edit-delete second-icon"
-                              onClick={() => handleClickShowCard(card.id)}
+                              onClick={(e) => {
+                                 e.stopPropagation()
+                                 handleClickShowCard(card.id)
+                              }}
                               size={16}
                            />
                            <TiDelete
                               className="pointer position-absolute show-edit-delete"
-                              onClick={() => handleClickDeleteCard(card)}
+                              onClick={(e) => {
+                                 e.stopPropagation()
+                                 handleClickDeleteCard(card)
+                              }}
                               size={16}
                            />
                            <div

@@ -32,7 +32,11 @@ export const App: React.FC = () => {
                   <Route path="about" element={<About />} />
                   <Route
                      path="lists/*"
-                     element={<TiersMaker setTiersClicked={setTiersClicked} />}
+                     element={
+                        <FiltersProvider>
+                           <TiersMaker setTiersClicked={setTiersClicked} />
+                        </FiltersProvider>
+                     }
                   />
 
                   <Route

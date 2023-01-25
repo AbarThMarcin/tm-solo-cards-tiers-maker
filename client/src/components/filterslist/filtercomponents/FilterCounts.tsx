@@ -3,10 +3,10 @@ import { CARDS } from '../../../data/cards'
 import Tippy from '@tippyjs/react'
 
 interface Props {
-   isPending: boolean
-   loading: boolean
-   showSumOfVP: boolean
-   cardsIds: number[]
+   isPending?: boolean
+   loading?: boolean
+   showSumOfVP?: boolean
+   cardsIds?: number[]
 }
 
 export const FilterCounts: React.FC<Props> = ({ isPending, loading, showSumOfVP, cardsIds }) => {
@@ -17,7 +17,7 @@ export const FilterCounts: React.FC<Props> = ({ isPending, loading, showSumOfVP,
          {!isPending && !loading && (
             <span style={{ marginRight: '10px' }}>
                CARDS:{' '}
-               <span style={{ fontSize: '1.4rem', fontWeight: '600' }}>{cardsIds.length}</span>
+               <span style={{ fontSize: '1.4rem', fontWeight: '600' }}>{cardsIds?.length}</span>
             </span>
          )}
          {showSumOfVP && stateFilters.vp && (
@@ -28,7 +28,7 @@ export const FilterCounts: React.FC<Props> = ({ isPending, loading, showSumOfVP,
                <span>
                   TOTAL VP:{' '}
                   <span style={{ fontSize: '1.4rem', fontWeight: '600' }}>
-                     {CARDS.filter(({ id }) => cardsIds.includes(id)).reduce(
+                     {CARDS.filter(({ id }) => cardsIds?.includes(id)).reduce(
                         (total, card) => total + card.vp,
                         0
                      )}

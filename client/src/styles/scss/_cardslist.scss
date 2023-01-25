@@ -28,6 +28,7 @@
    transition: height 200ms ease-in-out;
    transform-origin: left;
    .custom-filters {
+      text-align: left !important;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -355,6 +356,12 @@
    }
    &.hidden {
       height: 127px;
+   }
+   &.in-tiers-maker {
+      position: absolute;
+      padding-top: 0;
+      top: 73px;
+      left: 82px;
    }
 }
 
